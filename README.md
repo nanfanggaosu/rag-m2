@@ -102,7 +102,10 @@ Teacher-provided data (PDF, SQLite, data dictionary) is committed under
 - **Package manager:** `uv` (2026-10-29). Faster than pip; `uv.lock` makes the
   partner's env reproducible.
 - **Vector DB:** TBD — likely ChromaDB for simplicity.
-- **Embedding model:** TBD — pick from MTEB leaderboard, open-source, small.
+- **Embedding model:** `BAAI/bge-small-en-v1.5` (2026-10-29). 512-token context,
+  384-dim, strong on the MTEB leaderboard among small open-source models. All 261
+  chunks of `Core Rules.pdf` fit (max 374 tokens), so no truncation and no need
+  to split long elements by sentence.
 - **LLM provider:** Google AI Studio (per teacher's grading convention).
 - **SQL connection:** must be opened with `mode=ro`. Never writable from
   LLM-reachable code paths.
