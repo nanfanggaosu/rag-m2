@@ -13,7 +13,7 @@ chunk:
 	uv run python -m rag.src_rag.chunker.chunk
 
 index:
-	uv run python -m rag.src_rag.retriever.build_index
+	uv run python -m rag.src_rag.retriever.pdf
 
 chat:
 	uv run python -m rag.src_rag.chatbot.app
