@@ -119,6 +119,19 @@ Teacher-provided data (PDF, SQLite, data dictionary) is committed under
   Prefix alone did not fix either case — scores shifted but rankings did not.
   Kept anyway per the model card; the next improvement (section prepending)
   targets the actual failure mode.
+- **Section prepending at index time:** embed `"{section}\n{text}"` instead of
+  just `text`. Sections like `DEEP STRIKE` or `DETERMINE ATTACKER AND DEFENDER`
+  are topical signals that body sentences alone don't carry. Max token count
+  rises from 374 → 390, still well under 512. Same sanity, same 2 questions,
+  top-3 retrieval:
+
+  | Question | After prefix only | After prefix + section prepended |
+  |---|---|---|
+  | "How does deep strike work?" | p49 EXAMPLE BATTLEFIELDS (0.639), p32 FIGHT PHASE (0.632), p32 FIGHTS FIRST (0.626) — all wrong | **p39 DEEP STRIKE (0.696)** ✓, p33 FIGHT (0.631), p32 FIGHT PHASE (0.626) |
+  | "When do I determine the attacker and defender?" | p57 / p59 DECLARE BATTLE FORMATIONS (0.704), p33 MAKE MELEE ATTACKS (0.685) | **p57 / p59 DETERMINE ATTACKER AND DEFENDER (0.779)** ✓, p60 DETERMINE VICTOR (0.708) |
+
+  Top-1 is now correct on both. Rebuild the index with `make index` after any
+  chunker change.
 - **LLM provider:** Google AI Studio (per teacher's grading convention).
 - **SQL connection:** must be opened with `mode=ro`. Never writable from
   LLM-reachable code paths.

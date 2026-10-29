@@ -47,6 +47,12 @@ def _collection() -> chromadb.Collection:
     )
 
 
+def _doc_for_embedding(section: str | None, text: str) -> str:
+    """Prepend the section title so the embedding carries topical context, not
+    just the body sentence. Verified against the token budget (max 390 < 512)."""
+    return f"{section}\n{text}" if section else text
+
+
 def build_index() -> int:
     """Read chunks.jsonl, embed everything, store in Chroma. Returns #indexed."""
     if not CHUNKS_PATH.exists():
@@ -57,14 +63,14 @@ def build_index() -> int:
     existing = col.get(include=[])["ids"]
     if existing:
         col.delete(ids=existing)
-    texts = [c["text"] for c in chunks]
+    docs = [_doc_for_embedding(c.get("section"), c["text"]) for c in chunks]
     embeddings = _model().encode(
-        texts, normalize_embeddings=True, show_progress_bar=False
+        docs, normalize_embeddings=True, show_progress_bar=False
     ).tolist()
     col.add(
         ids=[c["chunk_id"] for c in chunks],
         embeddings=embeddings,
-        documents=texts,
+        documents=[c["text"] for c in chunks],
         metadatas=[
             {"page": c["page"], "section": c.get("section") or ""} for c in chunks
         ],
