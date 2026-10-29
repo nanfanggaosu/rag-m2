@@ -106,6 +106,19 @@ Teacher-provided data (PDF, SQLite, data dictionary) is committed under
   384-dim, strong on the MTEB leaderboard among small open-source models. All 261
   chunks of `Core Rules.pdf` fit (max 374 tokens), so no truncation and no need
   to split long elements by sentence.
+- **Query prefix:** apply the model card's recommended prefix
+  `"Represent this sentence for searching relevant passages: "` to the query
+  only (passages take no prefix). Sanity-check (same 2 hard questions, top-3
+  retrieval, bge-small cosine):
+
+  | Question | Before prefix | After prefix |
+  |---|---|---|
+  | "How does deep strike work?" | p49 EXAMPLE BATTLEFIELDS (0.665), p33 FIGHT (0.659), p32 FIGHT PHASE (0.659) — all wrong | p49 EXAMPLE BATTLEFIELDS (0.639), p32 FIGHT PHASE (0.632), p32 FIGHTS FIRST (0.626) — still all wrong |
+  | "When do I determine the attacker and defender?" | p57 / p59 DECLARE BATTLE FORMATIONS (0.720), p33 MAKE MELEE ATTACKS (0.703) | p57 / p59 DECLARE BATTLE FORMATIONS (0.704), p33 MAKE MELEE ATTACKS (0.685) |
+
+  Prefix alone did not fix either case — scores shifted but rankings did not.
+  Kept anyway per the model card; the next improvement (section prepending)
+  targets the actual failure mode.
 - **LLM provider:** Google AI Studio (per teacher's grading convention).
 - **SQL connection:** must be opened with `mode=ro`. Never writable from
   LLM-reachable code paths.

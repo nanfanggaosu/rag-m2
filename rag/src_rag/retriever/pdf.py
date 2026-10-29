@@ -27,6 +27,8 @@ CHUNKS_PATH = PROJECT_ROOT / "rag" / "data" / "chunks.jsonl"
 INDEX_DIR = PROJECT_ROOT / "rag" / "data" / "index" / "chroma"
 COLLECTION = "pdf_core_rules"
 MODEL_NAME = "BAAI/bge-small-en-v1.5"
+# bge-en-v1.5 model card: prepend this to the QUERY only; passages take no prefix.
+_QUERY_PREFIX = "Represent this sentence for searching relevant passages: "
 
 
 @lru_cache(maxsize=1)
@@ -72,7 +74,7 @@ def build_index() -> int:
 
 def pdf_rag(question: str, *, k: int = 5) -> PdfRagResult:
     q_emb = _model().encode(
-        [question], normalize_embeddings=True, show_progress_bar=False
+        [_QUERY_PREFIX + question], normalize_embeddings=True, show_progress_bar=False
     ).tolist()
     res = _collection().query(query_embeddings=q_emb, n_results=k)
     out: list[PdfChunk] = []
