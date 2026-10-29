@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# uv / virtual env
+.venv/
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Raw & derived data — share via Drive, not Git (per lecture 2)
+rag/data/raw/*.pdf
+rag/data/parsed/
+rag/data/index/
+
+# Teacher-provided materials — share via Drive, not Git
+rag/wahadb.sqlite
+rag/*.sqlite-journal
+rag/*.sqlite-wal
+rag/*.sqlite-shm
+rag/SQL_AGENT_DATA_DICTIONARY.md

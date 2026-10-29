@@ -1,0 +1,12 @@
+[project]
+name = "rag-m2"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "docling>=2.145.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+]
