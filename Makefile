@@ -9,6 +9,9 @@ sync:
 parse:
 	uv run python -m rag.src_rag.parser.parse_pdf
 
+chunk:
+	uv run python -m rag.src_rag.chunker.chunk
+
 index:
 	uv run python -m rag.src_rag.retriever.build_index
 

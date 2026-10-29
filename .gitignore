@@ -22,6 +22,7 @@ __pycache__/
 !.env.example
 
 # Derived artifacts (regenerable, keep local)
+rag/data/chunks.jsonl
 rag/data/index/
 
 # Ephemeral SQLite side-files
