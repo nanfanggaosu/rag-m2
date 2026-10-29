@@ -21,14 +21,10 @@ __pycache__/
 .env.*
 !.env.example
 
-# Raw & derived data — share via Drive, not Git (per lecture 2)
-rag/data/raw/*.pdf
-rag/data/parsed/
+# Derived artifacts (regenerable, keep local)
 rag/data/index/
 
-# Teacher-provided materials — share via Drive, not Git
-rag/wahadb.sqlite
-rag/*.sqlite-journal
-rag/*.sqlite-wal
-rag/*.sqlite-shm
-rag/SQL_AGENT_DATA_DICTIONARY.md
+# Ephemeral SQLite side-files
+rag/data/raw/*.sqlite-journal
+rag/data/raw/*.sqlite-wal
+rag/data/raw/*.sqlite-shm

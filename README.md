@@ -3,7 +3,7 @@
 A two-source Retrieval-Augmented-Generation system for the course mini-project.
 
 - **PDF source:** Warhammer 40k Core Rules (`rag/data/raw/Core Rules.pdf`)
-- **SQL source:** `rag/wahadb.sqlite` (21 tables of Warhammer 40k rules/datasheets)
+- **SQL source:** `rag/data/raw/wahadb.sqlite` (21 tables of Warhammer 40k rules/datasheets)
 - **Router agent** picks which source to query per question.
 
 ## Architecture (phase 1 draft)
@@ -32,8 +32,11 @@ contract in [`rag/src_rag/interfaces.py`](rag/src_rag/interfaces.py).
 ```
 rag/
   data/
-    raw/       # input PDFs (git-ignored, share via Drive)
-    parsed/    # docling output .md/.json (git-ignored)
+    raw/
+      Core Rules.pdf                 # PDF corpus (teacher-provided)
+      wahadb.sqlite                  # SQLite DB (teacher-provided, read-only in code)
+      SQL_AGENT_DATA_DICTIONARY.md   # table/column docs (teacher-provided)
+    parsed/                          # docling output: Core Rules.{md,json,txt}
   src_rag/
     parser/      # docling driver (A)
     chunker/     # text + table/image linking (A)
@@ -42,8 +45,6 @@ rag/
     chatbot/     # router.py + app.py (chat UI)
     evaluation/  # test-set + LLM-as-judge (joint)
     interfaces.py  # the contract — change only by consensus
-  wahadb.sqlite               # read-only, teacher-provided, git-ignored (share via Drive)
-  SQL_AGENT_DATA_DICTIONARY.md  # teacher-provided, git-ignored
 tests/            # mirrors src_rag/
 ```
 
@@ -68,8 +69,8 @@ uv sync          # install everything from uv.lock
 uv run pytest -q # should print "3 passed"
 ```
 
-Teacher-provided data files (`rag/wahadb.sqlite`, `rag/SQL_AGENT_DATA_DICTIONARY.md`)
-are not in Git — grab them from the shared Drive folder and drop them into `rag/`.
+Teacher-provided data (PDF, SQLite, data dictionary) is committed under
+`rag/data/raw/`, so `git clone` + `uv sync` is enough to start.
 
 ## Team
 

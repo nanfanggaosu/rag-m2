@@ -4,8 +4,9 @@ Scope: this file is auto-loaded by coding agents (Claude Code, Codex, Cursor, et
 they operate on this repo. Keep it short.
 
 ## Project in one line
-A two-source RAG system (PDF: Warhammer 40k Core Rules; SQLite: `rag/wahadb.sqlite`) with a
-router agent on top, built for the RAG course mini-project.
+A two-source RAG system (PDF: Warhammer 40k Core Rules; SQLite:
+`rag/data/raw/wahadb.sqlite`) with a router agent on top, built for the RAG course
+mini-project. All teacher-provided inputs live under `rag/data/raw/`.
 
 ## Core rules
 1. **Don't add unnecessary comments.** Only write a comment when the *why* is non-obvious.
