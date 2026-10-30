@@ -19,7 +19,7 @@ chat:
 	uv run python -m rag.src_rag.chatbot.app
 
 eval:
-	uv run python -m rag.src_rag.evaluation.run
+	uv run python -m rag.src_rag.evaluation.pdf_eval --verbose
 
 test:
 	uv run pytest -q

@@ -1,0 +1,10 @@
+{"id": "deep-strike", "question": "How does deep strike work?", "expected_pages": [39], "expected_sections": ["DEEP STRIKE"]}
+{"id": "flying-charge", "question": "How do flying models charge?", "expected_pages": [30], "expected_sections": ["CHARGING WITH FLYING MODELS"]}
+{"id": "attacker-defender", "question": "When do I determine the attacker and defender?", "expected_pages": [57], "expected_sections": ["DETERMINE ATTACKER AND DEFENDER"]}
+{"id": "fight-phase", "question": "How do melee attacks resolve in the fight phase?", "expected_pages": [32, 33, 34], "expected_sections": ["FIGHT PHASE", "2. MAKE MELEE ATTACKS", "FIGHT"]}
+{"id": "engagement-range", "question": "What is engagement range?", "expected_pages": [7], "expected_sections": ["ENGAGEMENT RANGE"]}
+{"id": "saving-throw", "question": "What happens on a save roll?", "expected_pages": [22], "expected_sections": ["4. SAVING THROW"]}
+{"id": "blast", "question": "What do blast weapons do?", "expected_pages": [26], "expected_sections": ["BLAST"]}
+{"id": "feel-no-pain", "question": "How does feel no pain work?", "expected_pages": [23], "expected_sections": ["FEEL NO PAIN"]}
+{"id": "hit-roll", "question": "How is the hit roll resolved?", "expected_pages": [21], "expected_sections": ["1. HIT ROLL"]}
+{"id": "embark-disembark", "question": "How do units embark and disembark from transports?", "expected_pages": [17], "expected_sections": ["EMBARK", "DISEMBARK"]}
