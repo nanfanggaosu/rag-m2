@@ -25,6 +25,9 @@ __pycache__/
 rag/data/chunks.jsonl
 rag/data/index/
 
+# Personal course notes — not shared
+class notes/
+
 # Ephemeral SQLite side-files
 rag/data/raw/*.sqlite-journal
 rag/data/raw/*.sqlite-wal
