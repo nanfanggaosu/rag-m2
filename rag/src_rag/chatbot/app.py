@@ -1,18 +1,21 @@
-"""Minimal end-to-end chat loop wired against stubs.
+"""Minimal end-to-end chat loop.
 
-Prove the plumbing works before either side is real:
+PDF path uses the real retriever (ChromaDB + bge-small). SQL path is still a
+stub until partner B lands `retriever/sql.py`.
+
     uv run python -m rag.src_rag.chatbot.app
 """
 from __future__ import annotations
 
 from rag.src_rag.chatbot.router import route
 from rag.src_rag.interfaces import FinalAnswer, PdfRag, SqlRag
-from rag.src_rag.retriever.stubs import stub_pdf_rag, stub_sql_rag
+from rag.src_rag.retriever.pdf import pdf_rag as real_pdf_rag
+from rag.src_rag.retriever.stubs import stub_sql_rag
 
 
 def answer(
     question: str,
-    pdf_rag: PdfRag = stub_pdf_rag,
+    pdf_rag: PdfRag = real_pdf_rag,
     sql_rag: SqlRag = stub_sql_rag,
 ) -> FinalAnswer:
     decision = route(question)
