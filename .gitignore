@@ -23,6 +23,7 @@ __pycache__/
 
 # Derived artifacts (regenerable, keep local)
 rag/data/index/
+rag/data/cache/
 
 # Ephemeral SQLite side-files
 rag/data/raw/*.sqlite-journal
