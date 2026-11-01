@@ -198,3 +198,17 @@ WHERE f.name = 'Space Marines'
 
 The router correctly chose SQL (datasheet stats, not a rules question); the answer honestly flags
 that the 50-row limit cut off the full list.
+
+---
+
+## Translation (`/zh`, `/fr`, `/en`)
+
+A `/zh`, `/fr` or `/en` command in the chat translates the previous answer into that language
+while keeping `(p. XX)` citations and any trailing SQL `Source:` block unchanged. Lecture 1's
+PPT (p. 42) listed translation as a nice-to-have for the chat interface. Sample `/zh` after
+"How does deep strike work?":
+
+> "深层打击"（Deep Strike）的功能如下：
+>
+> * **部署：** 在"宣布战斗编队"步骤中，如果一个单位中的所有模型都拥有"深层打击"能力，你可以选择将该单位设置在预备队中，而不是战场上（p. 39）。
+> * **抵达：** 在你任意一个移动阶段的"增援"步骤中，你可以将因"深层打击"能力而处于预备队中的单位设置在战场上的任意位置，前提是该单位距离所有敌方模型水平距离超过9英寸（p. 39）。
