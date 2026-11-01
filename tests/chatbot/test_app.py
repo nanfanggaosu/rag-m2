@@ -1,6 +1,6 @@
 from dataclasses import replace
 
-from rag.src_rag.chatbot.app import Turn, _format_sql, answer
+from rag.src_rag.chatbot.app import Turn, _format_sql, answer, translate
 from rag.src_rag.interfaces import FinalAnswer, RouterDecision, SqlRagResult
 from rag.src_rag.llm.fake import FakeLlm
 from rag.src_rag.retriever.stubs import stub_pdf_rag, stub_sql_rag
@@ -240,6 +240,29 @@ def test_contextualize_error_falls_back_to_raw_question():
         llm=FailsFirstThenWorks(),
     )
     assert out.text == "final"
+
+
+def test_translate_wraps_the_system_prompt_and_language():
+    llm = FakeLlm(["这是回答。"])
+    out = translate("This is the answer. (p. 42)", "Simplified Chinese", llm)
+    assert out == "这是回答。"
+    prompt = llm.prompts[0]
+    assert "Simplified Chinese" in prompt
+    assert "(p. 42)" in prompt
+    assert "This is the answer." in prompt
+
+
+def test_translate_falls_back_to_original_on_error():
+    class Raising:
+        def complete(self, prompt):
+            raise RuntimeError("boom")
+
+        def complete_json(self, prompt, schema):
+            raise AssertionError("not used")
+
+    out = translate("hello", "French", Raising())
+    assert "translation failed" in out
+    assert "hello" in out
 
 
 def test_contextualized_question_feeds_retrievers():
