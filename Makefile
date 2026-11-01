@@ -1,4 +1,4 @@
-.PHONY: install sync parse chunk index chat eval eval-sql eval-e2e test clean
+.PHONY: install sync parse chunk index chat demo eval eval-sql eval-e2e test clean
 
 install:
 	uv sync
@@ -17,6 +17,9 @@ index:
 
 chat:
 	uv run python -m rag.src_rag.chatbot.app
+
+demo:
+	uv run python -m rag.src_rag.chatbot.demo
 
 eval:
 	uv run python -m rag.src_rag.evaluation.pdf_eval --verbose

@@ -13,27 +13,79 @@ Offline
   PDF -> docling -> section-aware chunks (261) -> bge-small embeddings -> ChromaDB
   SQLite + data dictionary -> schema text, join graph, value index; few-shot examples
 
-Online
-                      question
-                         │
-                         ▼
-                    LLM router ──── on LLM failure: PDF
-           ┌─────────────┼─────────────┐
-          pdf    both (splits question) sql
-           │                           │
-           ▼                           ▼
-     PDF retriever              text-to-SQL agent
-     top-5 chunks,              prompt -> LLM -> read-only run
-     page + section             -> retry on error or no rows (3 max)
-           │                           │
-           └─────────────┬─────────────┘
-                         ▼
-                 LLM final answer
-              (cites pages / SQL query)
+Online (one chat turn)
+                     user question + prior turns
+                                 │
+                                 ▼
+            ┌────────── contextualize (LLM) ──────────┐
+            │  rewrites a follow-up ("what about     │
+            │  Orks?") into a standalone question    │
+            └─────────────────┬───────────────────────┘
+                              ▼
+                        LLM router (JSON)
+                   schema={source: pdf|sql|both,
+                           rationale, pdf_question?,
+                           sql_question?}
+                   on error → defaults to pdf
+                              │
+       ┌──────────────────────┼─────────────────────────┐
+       ▼                  both: router splits           ▼
+    pdf path          into pdf_question + sql_question  sql path
+       │                      │          │                │
+       │                      ▼          ▼                │
+       ▼              pdf retriever   text-to-SQL agent   ▼
+  Chroma + bge-small     (top-5          prompt + schema      SQLite (ro)
+  query prefix +         chunks,         context + few-shot   JOIN graph
+  section-prepended      cites page      + value index        + fix-encoding
+  k=5                    + section)      retry ≤3 on error    on text columns
+       │                      │          │                │
+       └──────────────────────┼──────────┼────────────────┘
+                              ▼          ▼
+                       LLM answer synthesizer
+                 (per-source system prompt; cites PDF
+                  pages, ends SQL answers with "Source:";
+                  on LLM failure returns raw-dump fallback)
+                              │
+                              ▼
+                   FinalAnswer(text, source,
+                               pdf?, sql?, decision)
+                              │
+                              ▼
+                      added to chat history
 ```
 
 The two paths meet only at the contract in
-[`rag/src_rag/interfaces.py`](rag/src_rag/interfaces.py).
+[`rag/src_rag/interfaces.py`](rag/src_rag/interfaces.py). The router returns a
+`RouterDecision`, the retrievers return `PdfRagResult` and `SqlRagResult`, the
+synthesizer wraps everything in `FinalAnswer` — none of these types reference each
+other's internals, so each side can evolve independently.
+
+### Why these choices
+
+- **One LLM wrapper, one cache.** `GeminiLlm` is threaded through the router, SQL
+  agent and synthesizer, so retries, per-minute pacing and SHA-keyed caching
+  apply once per prompt across the whole system. See
+  [`rag/src_rag/llm/gemini.py`](rag/src_rag/llm/gemini.py).
+- **Router returns JSON, enum-restricted.** `complete_json(prompt, schema)` with
+  `source ∈ {pdf, sql, both}`. Few-shot examples live in
+  [`router_examples.py`](rag/src_rag/chatbot/router_examples.py) (6 pdf + 6 sql
+  + 3 both), separate from the prompt string.
+- **"both" is split, not duplicated.** When the router returns `both`, it also
+  returns `pdf_question` and `sql_question` — each retriever runs its own
+  focused sub-query, which raises exact-match on the SQL side without
+  overloading the PDF retriever with data-shaped text.
+- **Soft failure, loud when it matters.** The router falls back to `pdf` on any
+  LLM error; the SQL path packs its own LLM failures into `SqlRagResult.error`
+  instead of crashing the turn; the synthesizer has a raw-dump fallback. The
+  PDF indexer fails loud if the Chroma collection is empty — that's a setup
+  bug, not a per-turn hiccup.
+- **Read-only SQL.** `sqlite3.connect(..., mode=ro, uri=True)`; never writable
+  from LLM-reachable code paths.
+- **Multi-turn context.** `app.answer()` accepts `history: list[Turn]` and uses
+  the LLM to turn follow-ups into standalone questions before the router sees
+  them. The last 3 turns go into the synthesizer prompt so the answer tone
+  continues the conversation. See
+  [`rag/src_rag/chatbot/app.py`](rag/src_rag/chatbot/app.py).
 
 ## Directory layout
 
@@ -50,7 +102,7 @@ rag/
     chunker/     # text + table/image linking (A)
     retriever/   # pdf.py (A), sql*.py (B), stubs.py
     llm/         # shared Google-AI-Studio wrapper
-    chatbot/     # router.py + app.py (chat UI)
+    chatbot/     # router.py (route) + app.py (multi-turn chat) + demo.py (joint)
     evaluation/  # pdf_eval, sql_eval, e2e_eval (RAGAS) and question sets (joint)
     interfaces.py  # the contract — change only by consensus
 tests/            # mirrors src_rag/
@@ -80,6 +132,59 @@ uv run pytest -q
 Teacher-provided data (PDF, SQLite, data dictionary) is committed under
 `rag/data/raw/`, so `git clone` + `uv sync` is enough to start.
 
+Then copy `.env.example` to `.env` and set `GOOGLE_API_KEY` (Google AI Studio).
+
+## Chat
+
+```bash
+make chat
+```
+
+Multi-turn CLI. One LLM is shared across router, SQL agent and synthesizer, so
+each turn is cheap when the prompt-hash cache hits. In-chat commands:
+
+| Command | What it does |
+|---|---|
+| `/help` | list all commands |
+| `/reset` | clear conversation history |
+| `/history` | show prior turns |
+| `/last` / `/sources` | show which chunks or SQL were used in the last answer |
+| `/quit` | leave (ctrl-D / ctrl-C also work) |
+
+A short reference transcript of a mixed pdf / sql / both / follow-up run is in
+[`DEMO.md`](DEMO.md); reproduce with `make demo`.
+
+## Evaluation
+
+Three layered evaluations, each `make`-able:
+
+| Target | Scope | What it measures |
+|---|---|---|
+| `make eval` | PDF retriever alone, no LLM | Hit@5 and MRR against 20 hand-labelled questions in [`questions_pdf.jsonl`](rag/src_rag/evaluation/questions_pdf.jsonl) |
+| `make eval-sql` | SQL agent alone | Execution accuracy (exact / relaxed) against gold queries |
+| `make eval-e2e` | Router + both retrievers + answer, RAGAS judge | Router accuracy, retrieval hit@5, SQL match, faithfulness, answer relevancy / correctness, context precision / recall |
+
+Headline from the latest end-to-end run (36 mixed questions,
+`gemini-3.1-flash-lite`; full report at [`rag/data/eval_results/e2e_report.md`](rag/data/eval_results/e2e_report.md)):
+
+| Metric | Overall | pdf (14) | sql (14) | both (8) |
+|---|---|---|---|---|
+| Router accuracy | 35/36 (0.972) | 14/14 | 13/14 | 8/8 |
+| PDF section hit@5 | 22/22 (1.000) | 14/14 | — | 8/8 |
+| SQL exact / relaxed match | 17/22 / 19/22 | — | 10/14 / 12/14 | 7/8 / 7/8 |
+| RAGAS faithfulness | 0.900 | 0.935 | 0.858 | 0.914 |
+| RAGAS answer_relevancy | 0.913 | 0.859 | 0.939 | 0.964 |
+| RAGAS answer_correctness | 0.783 | 0.731 | 0.864 | 0.729 |
+| RAGAS context_recall | 0.951 | 0.982 | 0.929 | 0.938 |
+
+Three cases to read the failures from, discussed in
+[`e2e_analysis.md`](rag/data/eval_results/e2e_analysis.md): a `both`-routed SQL query that
+dropped a Fight-phase filter; a `Stealth` ability missed because the few-shot patterns don't
+cover "units with ability X"; a parsing bug on the wound-roll table (dice images → "+").
+The 0.021 context-precision figure on `both` is a measurement artefact — RAGAS judges each
+chunk against the full answer, so one chunk never looks fully useful for a two-part answer.
+Section hit@5 is still 8/8.
+
 ## Team
 
 - **A — Yawen Zhang** ([@nanfanggaosu](https://github.com/nanfanggaosu))
@@ -92,7 +197,8 @@ Teacher-provided data (PDF, SQLite, data dictionary) is committed under
 | `make parse` | Run docling on `rag/data/raw/*.pdf` |
 | `make chunk` | Chunk the parsed JSON into `rag/data/chunks.jsonl` |
 | `make index` | Embed chunks into the Chroma vector DB |
-| `make chat`  | Launch the chat loop |
+| `make chat`  | Launch the multi-turn chat loop (CLI) |
+| `make demo`  | Run the scripted 4-step demo (pdf / sql / both / follow-up) |
 | `make eval`  | Run the PDF retrieval evaluation (no LLM calls) |
 | `make eval-sql` | Run the SQL execution-accuracy evaluation |
 | `make eval-e2e` | Run the end-to-end RAGAS evaluation, written to `rag/data/eval_results/` |
