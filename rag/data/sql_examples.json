@@ -126,8 +126,8 @@
     "id": "f05",
     "split": "fewshot",
     "question": "How many units have the Fly keyword?",
-    "sql": "SELECT count(DISTINCT dk.DatasheetId) AS n_units FROM datasheets_keywords dk WHERE dk.keyword = 'Fly'",
-    "notes": "A datasheet can list the same keyword for several models; count DISTINCT DatasheetId.",
+    "sql": "SELECT count(DISTINCT d.Id) AS n_units FROM datasheets d JOIN datasheets_keywords dk ON dk.DatasheetId = d.Id WHERE dk.keyword = 'Fly' AND d.virtual = 'false'",
+    "notes": "A datasheet can list the same keyword for several models; count DISTINCT ids. Count through datasheets: junction tables contain a few ids with no datasheet.",
     "expected": [
       [
         330
@@ -522,68 +522,53 @@
     "id": "e02",
     "split": "eval",
     "question": "List all detachments of the Orks faction.",
-    "sql": "SELECT dt.name, dt.type FROM detachments dt JOIN factions f ON f.Id = dt.factionId WHERE f.name = 'Orks' ORDER BY dt.name",
-    "notes": "Includes a mis-encoded name (Rollin’ Deff).",
+    "sql": "SELECT dt.name FROM detachments dt JOIN factions f ON f.Id = dt.factionId WHERE f.name = 'Orks' ORDER BY dt.name",
+    "notes": "Includes a mis-encoded name (Rollin’ Deff). Gold originally also returned dt.type, which the question does not ask for; dropped after the first eval run.",
     "expected": [
       [
-        "Blitz Brigade",
-        ""
+        "Blitz Brigade"
       ],
       [
-        "Bully Boyz",
-        ""
+        "Bully Boyz"
       ],
       [
-        "Da Big Hunt",
-        ""
+        "Da Big Hunt"
       ],
       [
-        "Dread Mob",
-        ""
+        "Dread Mob"
       ],
       [
-        "Equatorial Hordes",
-        ""
+        "Equatorial Hordes"
       ],
       [
-        "Freebooter Krew",
-        ""
+        "Freebooter Krew"
       ],
       [
-        "Green Tide",
-        ""
+        "Green Tide"
       ],
       [
-        "Kaptin Killers",
-        "Boarding Actions"
+        "Kaptin Killers"
       ],
       [
-        "Kult of Speed",
-        ""
+        "Kult of Speed"
       ],
       [
-        "More Dakka!",
-        ""
+        "More Dakka!"
       ],
       [
-        "Ramship Raiders",
-        "Boarding Actions"
+        "Ramship Raiders"
       ],
       [
-        "Rollinâ Deff",
-        ""
+        "Rollinâ Deff"
       ],
       [
-        "Speedwaaagh!",
-        ""
+        "Speedwaaagh!"
       ],
       [
-        "Taktikal Brigade",
-        ""
+        "Taktikal Brigade"
       ],
       [
-        "War Horde",
-        ""
+        "War Horde"
       ]
     ]
   },
@@ -853,11 +838,11 @@
     "id": "e12",
     "split": "eval",
     "question": "How many units can be equipped with a Lascannon?",
-    "sql": "SELECT count(DISTINCT w.DatasheetId) AS n_units FROM datasheets_wargear w WHERE w.name = 'Lascannon'",
-    "notes": "Count distinct datasheets, not wargear rows.",
+    "sql": "SELECT count(DISTINCT d.Id) AS n_units FROM datasheets d JOIN datasheets_wargear w ON w.DatasheetId = d.Id WHERE w.name IN ('Lascannon', 'Lascannons') AND d.virtual = 'false'",
+    "notes": "Count distinct datasheets, not wargear rows. Kratos lists the same weapon as 'Lascannons' with an identical profile, and 3 wargear rows point at datasheet ids that do not exist; the original gold (132) missed both and the first eval run's answer (134) was right.",
     "expected": [
       [
-        132
+        134
       ]
     ]
   },

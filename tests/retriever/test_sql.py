@@ -48,6 +48,11 @@ def test_unknown_column_reports_error():
     assert out.error and "no_such_column" in out.error
 
 
+def test_huge_values_are_refused():
+    out = run_sql("SELECT length(randomblob(1000000000)) AS n")
+    assert out.error and "too big" in out.error
+
+
 def test_slow_query_is_interrupted():
     out = run_sql(
         "SELECT count(*) FROM datasheets_stratagems a, datasheets_stratagems b",

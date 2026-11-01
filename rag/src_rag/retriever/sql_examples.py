@@ -45,8 +45,14 @@ def result_rows(out: SqlRagResult) -> list[list[Any]]:
     return [[r[c] for c in out.columns] for r in out.rows]
 
 
+def _norm(value: Any) -> str:
+    if isinstance(value, float) and value.is_integer():
+        value = int(value)
+    return str(value)
+
+
 def _row_key(row: list[Any]) -> tuple[str, ...]:
-    return tuple(sorted(str(v) for v in row))
+    return tuple(sorted(_norm(v) for v in row))
 
 
 def results_match(expected: list[list[Any]], actual: list[list[Any]]) -> bool:
@@ -55,6 +61,27 @@ def results_match(expected: list[list[Any]], actual: list[list[Any]]) -> bool:
     Column order and aliases are free choices of whoever wrote the SQL, so they don't count.
     """
     return Counter(map(_row_key, expected)) == Counter(map(_row_key, actual))
+
+
+def results_contain(expected: list[list[Any]], actual: list[list[Any]]) -> bool:
+    """Relaxed check: same number of rows, and each expected row's values appear in its own
+    actual row, which may carry extra columns (e.g. an added Id or faction name)."""
+    if len(expected) != len(actual):
+        return False
+    exp = [Counter(map(_norm, r)) for r in expected]
+    act = [Counter(map(_norm, r)) for r in actual]
+    owner: dict[int, int] = {}
+
+    def assign(i: int, seen: set[int]) -> bool:
+        for j, a in enumerate(act):
+            if j not in seen and not exp[i] - a:
+                seen.add(j)
+                if j not in owner or assign(owner[j], seen):
+                    owner[j] = i
+                    return True
+        return False
+
+    return all(assign(i, set()) for i in range(len(exp)))
 
 
 def check_example(example: SqlExample) -> tuple[bool, SqlRagResult]:

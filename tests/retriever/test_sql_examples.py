@@ -4,6 +4,7 @@ from rag.src_rag.retriever.sql_examples import (
     check_example,
     load_examples,
     render_examples,
+    results_contain,
     results_match,
     select_examples,
 )
@@ -37,6 +38,18 @@ def test_results_match_ignores_row_and_column_order():
     assert not results_match(expected, [["Orks", 88]])
     assert not results_match(expected, [["Orks", 88], ["Necrons", 60]])
     assert not results_match([["a"]], [["a"], ["a"]])
+
+
+def test_results_match_treats_whole_floats_as_ints():
+    assert results_match([["Orks", 35]], [["Orks", 35.0]])
+
+
+def test_results_contain_allows_extra_columns():
+    expected = [["Orks", 88], ["Necrons", 61]]
+    assert results_contain(expected, [["ORK", "Orks", 88], ["NEC", "Necrons", 61]])
+    assert not results_contain(expected, [["ORK", "Orks", 88]])
+    assert not results_contain(expected, [["ORK", "Orks", 88], ["NEC", "Necrons", 60]])
+    assert not results_contain([["a"], ["a"]], [["a", "x"], ["b", "y"]])
 
 
 def test_select_examples_finds_same_pattern():

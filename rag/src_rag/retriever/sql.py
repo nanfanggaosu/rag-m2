@@ -14,6 +14,10 @@ DB_PATH = PROJECT_ROOT / "rag" / "data" / "raw" / "wahadb.sqlite"
 
 _READ_ONLY_PREFIX = re.compile(r"^\s*(select|with)\b", re.IGNORECASE)
 
+# A single function call like randomblob(1e9) is one VM step, so the timeout can't stop it;
+# capping value size can.
+MAX_VALUE_BYTES = 1_000_000
+
 # Enforced by SQLite itself at prepare time, so keyword tricks in string literals or
 # comments can't smuggle a write, PRAGMA or ATTACH past a regex check.
 _ALLOWED_ACTIONS = {
@@ -35,6 +39,7 @@ def _authorizer(action: int, *_: object) -> int:
 def _connect_read_only(db_path: Path) -> sqlite3.Connection:
     conn = sqlite3.connect(f"{db_path.as_uri()}?mode=ro", uri=True)
     conn.set_authorizer(_authorizer)
+    conn.setlimit(sqlite3.SQLITE_LIMIT_LENGTH, MAX_VALUE_BYTES)
     return conn
 
 
