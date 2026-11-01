@@ -38,7 +38,7 @@ class Question:
 
 def load_questions(path: Path = QUESTIONS_PATH) -> list[Question]:
     out = []
-    for line in path.open():
+    for line in path.open(encoding="utf-8"):
         line = line.strip()
         if not line or line.startswith("#"):
             continue

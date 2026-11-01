@@ -57,7 +57,7 @@ def build_index() -> int:
     """Read chunks.jsonl, embed everything, store in Chroma. Returns #indexed."""
     if not CHUNKS_PATH.exists():
         raise FileNotFoundError(f"{CHUNKS_PATH} missing; run `make chunk` first.")
-    chunks = [json.loads(l) for l in CHUNKS_PATH.open()]
+    chunks = [json.loads(l) for l in CHUNKS_PATH.open(encoding="utf-8")]
     col = _collection()
     # Rebuild from scratch so the index always matches the latest chunks.jsonl.
     existing = col.get(include=[])["ids"]
@@ -79,10 +79,15 @@ def build_index() -> int:
 
 
 def pdf_rag(question: str, *, k: int = 5) -> PdfRagResult:
+    col = _collection()
+    if col.count() == 0:
+        raise RuntimeError(
+            f"PDF vector index at {INDEX_DIR} is empty — run `make chunk && make index` first."
+        )
     q_emb = _model().encode(
         [_QUERY_PREFIX + question], normalize_embeddings=True, show_progress_bar=False
     ).tolist()
-    res = _collection().query(query_embeddings=q_emb, n_results=k)
+    res = col.query(query_embeddings=q_emb, n_results=k)
     out: list[PdfChunk] = []
     for cid, doc, meta, dist in zip(
         res["ids"][0], res["documents"][0], res["metadatas"][0], res["distances"][0]
