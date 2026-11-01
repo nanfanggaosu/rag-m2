@@ -111,16 +111,6 @@ rag/src_rag/             Source: parser, chunker, retriever, llm, chatbot, evalu
 tests/                   Unit tests, mirroring the source layout
 ```
 
-## Grading criteria
-
-| Criterion | Where to look |
-|---|---|
-| RAG setup | [Architecture](TECHNICAL.md#2-architecture), [PDF path](TECHNICAL.md#5-pdf-path), [SQL path](TECHNICAL.md#6-sql-path), [router](TECHNICAL.md#7-router) |
-| Evaluation and monitoring | [Evaluation](TECHNICAL.md#10-evaluation), [results](TECHNICAL.md#11-results) |
-| Advanced RAG | [SQL experiments](TECHNICAL.md#experiments): hybrid few-shot retrieval. [Router](TECHNICAL.md#7-router): query decomposition. [Conversation](TECHNICAL.md#8-answer-generation-and-conversation): follow-up rewriting |
-| Interface | `make chat`, with [source inspection and translation](TECHNICAL.md#8-answer-generation-and-conversation) |
-| Code quality | [`tests/`](tests/), [`interfaces.py`](rag/src_rag/interfaces.py), [code organisation](TECHNICAL.md#4-code-organisation) |
-
 ## Team
 
 | Member | Work |
