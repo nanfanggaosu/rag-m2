@@ -1,0 +1,891 @@
+[
+  {
+    "id": "f01",
+    "split": "fewshot",
+    "question": "How many datasheets does the Orks faction have?",
+    "sql": "SELECT count(*) AS n_datasheets FROM datasheets d JOIN factions f ON f.Id = d.factionId WHERE f.name = 'Orks' AND d.virtual = 'false'",
+    "notes": "Users name factions in full; join factions.name instead of guessing the Id code. Exclude the virtual placeholder datasheet.",
+    "expected": [
+      [
+        88
+      ]
+    ]
+  },
+  {
+    "id": "f02",
+    "split": "fewshot",
+    "question": "List all detachments of the Necrons faction.",
+    "sql": "SELECT dt.name, dt.type FROM detachments dt JOIN factions f ON f.Id = dt.factionId WHERE f.name = 'Necrons' ORDER BY dt.name",
+    "notes": "detachments.type is either empty or 'Boarding Actions'.",
+    "expected": [
+      [
+        "Annihilation Legion",
+        ""
+      ],
+      [
+        "Awakened Dynasty",
+        ""
+      ],
+      [
+        "Canoptek Court",
+        ""
+      ],
+      [
+        "Canoptek Harvesters",
+        "Boarding Actions"
+      ],
+      [
+        "Cryptek Conclave",
+        ""
+      ],
+      [
+        "Cursed Legion",
+        ""
+      ],
+      [
+        "Deranged Outcasts",
+        "Boarding Actions"
+      ],
+      [
+        "Hand of the Dynasty",
+        ""
+      ],
+      [
+        "Harbinger Cabal",
+        "Boarding Actions"
+      ],
+      [
+        "Hypercrypt Legion",
+        ""
+      ],
+      [
+        "Obeisance Phalanx",
+        ""
+      ],
+      [
+        "Pantheon of Woe",
+        ""
+      ],
+      [
+        "Skyshroud Spearhead",
+        ""
+      ],
+      [
+        "Starshatter Arsenal",
+        ""
+      ],
+      [
+        "The Phaeron's Armoury",
+        ""
+      ],
+      [
+        "Tomb Ship Complement",
+        "Boarding Actions"
+      ]
+    ]
+  },
+  {
+    "id": "f03",
+    "split": "fewshot",
+    "question": "What are the stats of the Warboss In Mega Armour?",
+    "sql": "SELECT dm.name, dm.m, dm.t, dm.sv, dm.invSv, dm.w, dm.ld, dm.oc FROM datasheets d JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE d.name = 'Warboss In Mega Armour'",
+    "notes": "Stat lines live in datasheets_models, one row per model type in the unit.",
+    "expected": [
+      [
+        "Warboss In Mega Armour",
+        "5\"",
+        "6",
+        "2+",
+        "5",
+        "7",
+        "6+",
+        "1"
+      ]
+    ]
+  },
+  {
+    "id": "f04",
+    "split": "fewshot",
+    "question": "How many points does an Intercessor Squad cost?",
+    "sql": "SELECT DISTINCT (SELECT h.description FROM datasheets_models_cost h WHERE h.DatasheetId = c.DatasheetId AND h.cost = '' AND CAST(h.line AS INTEGER) < CAST(c.line AS INTEGER) ORDER BY CAST(h.line AS INTEGER) DESC LIMIT 1) AS tier, c.description, CAST(c.cost AS INTEGER) AS points FROM datasheets d JOIN datasheets_models_cost c ON c.DatasheetId = d.Id WHERE d.name = 'Intercessor Squad' AND c.cost != '' ORDER BY points",
+    "notes": "Rows with an empty cost are tier headers ('YOUR UNIT COSTS', 'YOUR 1ST TO 3RD UNITS COST', 'YOUR 4TH + UNIT COSTS'); each price belongs to the nearest header above it (by line). Rows are also duplicated, hence DISTINCT. Cost is TEXT, so CAST before ordering or comparing.",
+    "expected": [
+      [
+        "YOUR UNIT COSTS",
+        "5 models",
+        80
+      ],
+      [
+        "YOUR UNIT COSTS",
+        "10 models",
+        150
+      ]
+    ]
+  },
+  {
+    "id": "f05",
+    "split": "fewshot",
+    "question": "How many units have the Fly keyword?",
+    "sql": "SELECT count(DISTINCT d.Id) AS n_units FROM datasheets d JOIN datasheets_keywords dk ON dk.DatasheetId = d.Id WHERE dk.keyword = 'Fly' AND d.virtual = 'false'",
+    "notes": "A datasheet can list the same keyword for several models; count DISTINCT ids. Count through datasheets: junction tables contain a few ids with no datasheet.",
+    "expected": [
+      [
+        330
+      ]
+    ]
+  },
+  {
+    "id": "f06",
+    "split": "fewshot",
+    "question": "Which stratagems can the Warboss use in the Shooting phase?",
+    "sql": "SELECT DISTINCT s.name, s.cpCost, s.phase FROM datasheets d JOIN datasheets_stratagems ds ON ds.DatasheetId = d.Id JOIN stratagems s ON s.id = ds.stratagemId WHERE d.name = 'Warboss' AND s.phase LIKE '%Shooting%' ORDER BY s.name",
+    "notes": "Unit-to-stratagem goes through the junction table datasheets_stratagems. Phases can be combined ('Shooting or Fight phase'), so use LIKE.",
+    "expected": [
+      [
+        "CALL DAT DAKKA?",
+        "1",
+        "Shooting phase"
+      ],
+      [
+        "DECK FRAGGERS",
+        "1",
+        "Shooting phase"
+      ],
+      [
+        "DUST TRAILS",
+        "1",
+        "Shooting phase"
+      ],
+      [
+        "EXPLOSIVE CLEARANCE",
+        "1",
+        "Shooting phase"
+      ],
+      [
+        "EXPLOSIVES",
+        "1",
+        "Shooting phase"
+      ],
+      [
+        "LONG, UNCONTROLLED BURSTS",
+        "1",
+        "Shooting phase"
+      ],
+      [
+        "SPESHUL AMMO",
+        "1",
+        "Shooting phase"
+      ],
+      [
+        "SPESHUL SHELLS",
+        "1",
+        "Shooting phase"
+      ],
+      [
+        "âARD AS NAILS",
+        "1",
+        "Shooting or Fight phase"
+      ]
+    ]
+  },
+  {
+    "id": "f07",
+    "split": "fewshot",
+    "question": "Which units can a Hive Tyrant lead?",
+    "sql": "SELECT a.name FROM datasheets l JOIN datasheets_leader dl ON dl.LeaderId = l.Id JOIN datasheets a ON a.Id = dl.attachedId WHERE l.name = 'Hive Tyrant' ORDER BY a.name",
+    "notes": "datasheets_leader joins datasheets twice: LeaderId is the leader, attachedId the unit it leads.",
+    "expected": [
+      [
+        "Tyrant Guard"
+      ]
+    ]
+  },
+  {
+    "id": "f08",
+    "split": "fewshot",
+    "question": "What weapons does the Warboss have?",
+    "sql": "SELECT w.name, w.type, w.range, w.a, w.bsWs, w.s, w.ap, w.d FROM datasheets d JOIN datasheets_wargear w ON w.DatasheetId = d.Id WHERE d.name = 'Warboss' ORDER BY CAST(w.line AS INTEGER), CAST(w.lineInWargear AS INTEGER)",
+    "notes": "datasheets_wargear.type is 'Ranged' or 'Melee'; melee weapons have range 'Melee'.",
+    "expected": [
+      [
+        "Kombi-weapon",
+        "Ranged",
+        "24",
+        "1",
+        "5",
+        "4",
+        "0",
+        "1"
+      ],
+      [
+        "Kustom Shoota",
+        "Ranged",
+        "18",
+        "4",
+        "5",
+        "4",
+        "0",
+        "1"
+      ],
+      [
+        "Twin slugga",
+        "Ranged",
+        "12",
+        "2",
+        "5",
+        "4",
+        "0",
+        "1"
+      ],
+      [
+        "Attack squig",
+        "Melee",
+        "Melee",
+        "2",
+        "4",
+        "4",
+        "0",
+        "1"
+      ],
+      [
+        "Big choppa",
+        "Melee",
+        "Melee",
+        "5",
+        "2",
+        "8",
+        "-1",
+        "2"
+      ],
+      [
+        "Power klaw",
+        "Melee",
+        "Melee",
+        "4",
+        "3",
+        "10",
+        "-2",
+        "2"
+      ],
+      [
+        "Kustom Choppa",
+        "Melee",
+        "Melee",
+        "6",
+        "2",
+        "8",
+        "-2",
+        "2"
+      ]
+    ]
+  },
+  {
+    "id": "f09",
+    "split": "fewshot",
+    "question": "What enhancements are available in the Gladius Task Force detachment and how much do they cost?",
+    "sql": "SELECT e.name, CAST(e.cost AS INTEGER) AS points FROM enhancements e JOIN detachments dt ON dt.Id = e.detachmentId WHERE dt.name = 'Gladius Task Force' ORDER BY e.name",
+    "notes": "Enhancements belong to a detachment via detachmentId.",
+    "expected": [
+      [
+        "Adept of the Codex",
+        20
+      ],
+      [
+        "Artificer Armour",
+        20
+      ],
+      [
+        "Fire Discipline",
+        25
+      ],
+      [
+        "The Honour Vehement",
+        15
+      ]
+    ]
+  },
+  {
+    "id": "f10",
+    "split": "fewshot",
+    "question": "What is the most expensive enhancement in the Orks faction?",
+    "sql": "SELECT e.name, e.detachment, CAST(e.cost AS INTEGER) AS points FROM enhancements e JOIN factions f ON f.Id = e.FactionId WHERE f.name = 'Orks' AND CAST(e.cost AS INTEGER) = (SELECT max(CAST(e2.cost AS INTEGER)) FROM enhancements e2 WHERE e2.FactionId = f.Id) ORDER BY e.name",
+    "notes": "Compare costs as numbers: TEXT ordering would put '5' above '30'. Two enhancements tie at the top, so compare against max() instead of LIMIT 1.",
+    "expected": [
+      [
+        "Fasta Than Yooz",
+        "Kult of Speed",
+        35
+      ],
+      [
+        "Press It Fasta!",
+        "Dread Mob",
+        35
+      ]
+    ]
+  },
+  {
+    "id": "f11",
+    "split": "fewshot",
+    "question": "Which Necrons model has the most wounds?",
+    "sql": "SELECT d.name AS unit, dm.name AS model, CAST(dm.w AS INTEGER) AS wounds FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE f.name = 'Necrons' ORDER BY wounds DESC LIMIT 1",
+    "notes": "Wounds (w) is TEXT; CAST before ordering.",
+    "expected": [
+      [
+        "Tomb Citadel Walls",
+        "Tomb Citadel Walls",
+        50
+      ]
+    ]
+  },
+  {
+    "id": "f12",
+    "split": "fewshot",
+    "question": "Which five factions have the most datasheets?",
+    "sql": "SELECT f.name, count(*) AS n_datasheets FROM datasheets d JOIN factions f ON f.Id = d.factionId WHERE d.virtual = 'false' GROUP BY f.name ORDER BY n_datasheets DESC LIMIT 5",
+    "notes": "GROUP BY on the faction name, not the Id code, so the answer is readable.",
+    "expected": [
+      [
+        "Space Marines",
+        291
+      ],
+      [
+        "Genestealer Cults",
+        139
+      ],
+      [
+        "Astra Militarum",
+        134
+      ],
+      [
+        "Chaos Space Marines",
+        111
+      ],
+      [
+        "Chaos Daemons",
+        101
+      ]
+    ]
+  },
+  {
+    "id": "f13",
+    "split": "fewshot",
+    "question": "What is the weapon profile of a Lascannon?",
+    "sql": "SELECT DISTINCT w.range, w.a, w.bsWs, w.s, w.ap, w.d FROM datasheets_wargear w WHERE w.name = 'Lascannon' ORDER BY w.bsWs",
+    "notes": "The same weapon appears on many datasheets; DISTINCT collapses identical profiles (BS can differ per unit).",
+    "expected": [
+      [
+        "48",
+        "1",
+        "3",
+        "12",
+        "-3",
+        "D6+1"
+      ],
+      [
+        "48",
+        "1",
+        "4",
+        "12",
+        "-3",
+        "D6+1"
+      ],
+      [
+        "48",
+        "1",
+        "5",
+        "12",
+        "-3",
+        "D6+1"
+      ]
+    ]
+  },
+  {
+    "id": "f14",
+    "split": "fewshot",
+    "question": "What abilities does the Warboss have?",
+    "sql": "SELECT COALESCE(NULLIF(da.name, ''), a.name) AS ability, da.type FROM datasheets d JOIN datasheets_abilities da ON da.DatasheetId = d.Id LEFT JOIN abilities a ON a.Id = da.abilityId WHERE d.name = 'Warboss' ORDER BY CAST(da.line AS INTEGER)",
+    "notes": "Core and faction abilities have an empty name on the card and only an abilityId; take the name from the abilities table.",
+    "expected": [
+      [
+        "Leader",
+        "Core"
+      ],
+      [
+        "Waaagh!",
+        "Faction"
+      ],
+      [
+        "Might is Right",
+        "Datasheet"
+      ],
+      [
+        "Da Biggest and da Best",
+        "Datasheet"
+      ]
+    ]
+  },
+  {
+    "id": "f15",
+    "split": "fewshot",
+    "question": "What is the unit composition of Boyz?",
+    "sql": "SELECT uc.description FROM datasheets d JOIN datasheets_unit_composition uc ON uc.DatasheetId = d.Id WHERE d.name = 'Boyz' ORDER BY CAST(uc.line AS INTEGER)",
+    "notes": "Composition is free text, one row per line on the card.",
+    "expected": [
+      [
+        "1 Boss Nob"
+      ],
+      [
+        "9-19 Boyz"
+      ]
+    ]
+  },
+  {
+    "id": "f16",
+    "split": "fewshot",
+    "question": "How many command points does Armour of Contempt cost?",
+    "sql": "SELECT DISTINCT s.name, s.cpCost FROM stratagems s WHERE s.name = 'ARMOUR OF CONTEMPT'",
+    "notes": "Stratagem names are stored in upper case, and the same stratagem appears once per detachment; DISTINCT collapses the copies.",
+    "expected": [
+      [
+        "ARMOUR OF CONTEMPT",
+        "1"
+      ]
+    ]
+  },
+  {
+    "id": "f17",
+    "split": "fewshot",
+    "question": "How many Tyranids units have an invulnerable save?",
+    "sql": "SELECT count(DISTINCT d.Id) AS n_units FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE f.name = 'Tyranids' AND dm.invSv NOT IN ('', '-')",
+    "notes": "invSv is '-' when there is none, otherwise a number without '+' (e.g. '4' means 4+).",
+    "expected": [
+      [
+        14
+      ]
+    ]
+  },
+  {
+    "id": "f18",
+    "split": "fewshot",
+    "question": "What is the movement of the C'tan Shard of the Nightbringer?",
+    "sql": "SELECT dm.name, dm.m FROM datasheets d JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE d.name LIKE 'C%tan Shard of the Nightbringer'",
+    "notes": "The apostrophe is mis-encoded in stored text, so match the name with LIKE and a % wildcard.",
+    "expected": [
+      [
+        "Câtan Shard of the Nightbringer",
+        "10\""
+      ]
+    ]
+  },
+  {
+    "id": "f19",
+    "split": "fewshot",
+    "question": "What is the fastest Aeldari unit?",
+    "sql": "WITH speeds AS (SELECT d.name, dm.m, CAST(REPLACE(dm.m, '\"', '') AS INTEGER) AS inches FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE f.name = 'Aeldari') SELECT name, m FROM speeds WHERE inches = (SELECT max(inches) FROM speeds) ORDER BY name",
+    "notes": "Movement is stored like '12\"'; strip the inch mark before CAST. Two units tie at 16\", so return every unit at the maximum.",
+    "expected": [
+      [
+        "Revenant Titan",
+        "16\""
+      ],
+      [
+        "Ynnari Reavers",
+        "16\""
+      ]
+    ]
+  },
+  {
+    "id": "f20",
+    "split": "fewshot",
+    "question": "When was the database last updated?",
+    "sql": "SELECT LastUpdate FROM last_update",
+    "notes": "Single-row metadata table.",
+    "expected": [
+      [
+        "2026-09-01 17:05:19"
+      ]
+    ]
+  },
+  {
+    "id": "e01",
+    "split": "eval",
+    "question": "How many datasheets does the Tyranids faction have?",
+    "sql": "SELECT count(*) AS n_datasheets FROM datasheets d JOIN factions f ON f.Id = d.factionId WHERE f.name = 'Tyranids' AND d.virtual = 'false'",
+    "notes": "Same pattern as f01 with a different faction.",
+    "expected": [
+      [
+        57
+      ]
+    ]
+  },
+  {
+    "id": "e02",
+    "split": "eval",
+    "question": "List all detachments of the Orks faction.",
+    "sql": "SELECT dt.name FROM detachments dt JOIN factions f ON f.Id = dt.factionId WHERE f.name = 'Orks' ORDER BY dt.name",
+    "notes": "Includes a mis-encoded name (Rollin’ Deff). Gold originally also returned dt.type, which the question does not ask for; dropped after the first eval run.",
+    "expected": [
+      [
+        "Blitz Brigade"
+      ],
+      [
+        "Bully Boyz"
+      ],
+      [
+        "Da Big Hunt"
+      ],
+      [
+        "Dread Mob"
+      ],
+      [
+        "Equatorial Hordes"
+      ],
+      [
+        "Freebooter Krew"
+      ],
+      [
+        "Green Tide"
+      ],
+      [
+        "Kaptin Killers"
+      ],
+      [
+        "Kult of Speed"
+      ],
+      [
+        "More Dakka!"
+      ],
+      [
+        "Ramship Raiders"
+      ],
+      [
+        "Rollinâ Deff"
+      ],
+      [
+        "Speedwaaagh!"
+      ],
+      [
+        "Taktikal Brigade"
+      ],
+      [
+        "War Horde"
+      ]
+    ]
+  },
+  {
+    "id": "e03",
+    "split": "eval",
+    "question": "What are the toughness, save and wounds of a Hive Tyrant?",
+    "sql": "SELECT dm.t, dm.sv, dm.w FROM datasheets d JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE d.name = 'Hive Tyrant'",
+    "notes": "Specific columns from the stat line.",
+    "expected": [
+      [
+        "10",
+        "2+",
+        "10"
+      ]
+    ]
+  },
+  {
+    "id": "e04",
+    "split": "eval",
+    "question": "How many points do Boyz cost?",
+    "sql": "SELECT DISTINCT (SELECT h.description FROM datasheets_models_cost h WHERE h.DatasheetId = c.DatasheetId AND h.cost = '' AND CAST(h.line AS INTEGER) < CAST(c.line AS INTEGER) ORDER BY CAST(h.line AS INTEGER) DESC LIMIT 1) AS tier, c.description, CAST(c.cost AS INTEGER) AS points FROM datasheets d JOIN datasheets_models_cost c ON c.DatasheetId = d.Id WHERE d.name = 'Boyz' AND c.cost != '' ORDER BY points",
+    "notes": "Tiered pricing: the 1st to 3rd unit and the 4th+ unit cost differently, so the tier header must be kept (pattern of f04).",
+    "expected": [
+      [
+        "YOUR 1ST TO 3RD UNITS COST",
+        "10 models",
+        75
+      ],
+      [
+        "YOUR 4TH + UNIT COSTS",
+        "10 models",
+        85
+      ],
+      [
+        "YOUR 1ST TO 3RD UNITS COST",
+        "20 models",
+        160
+      ],
+      [
+        "YOUR 4TH + UNIT COSTS",
+        "20 models",
+        170
+      ]
+    ]
+  },
+  {
+    "id": "e05",
+    "split": "eval",
+    "question": "How many Space Marines units have the Infantry keyword?",
+    "sql": "SELECT count(DISTINCT d.Id) AS n_units FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_keywords dk ON dk.DatasheetId = d.Id WHERE f.name = 'Space Marines' AND dk.keyword = 'Infantry'",
+    "notes": "Combines a faction filter with a keyword filter.",
+    "expected": [
+      [
+        157
+      ]
+    ]
+  },
+  {
+    "id": "e06",
+    "split": "eval",
+    "question": "Which characters can lead Boyz?",
+    "sql": "SELECT l.name FROM datasheets a JOIN datasheets_leader dl ON dl.attachedId = a.Id JOIN datasheets l ON l.Id = dl.LeaderId WHERE a.name = 'Boyz' ORDER BY l.name",
+    "notes": "Reverse direction of f07: filter on attachedId, return the leaders.",
+    "expected": [
+      [
+        "Bannernob"
+      ],
+      [
+        "Big Mek"
+      ],
+      [
+        "Big Mek With Kustom Force Field"
+      ],
+      [
+        "Big Mek With Shokk Attack Gun"
+      ],
+      [
+        "Bigboss"
+      ],
+      [
+        "Ghazghkull Thraka"
+      ],
+      [
+        "Mad Dok Grotsnik"
+      ],
+      [
+        "Mek"
+      ],
+      [
+        "Painboy"
+      ],
+      [
+        "Ufthak Blackhawk"
+      ],
+      [
+        "Warboss"
+      ],
+      [
+        "Weirdboy"
+      ]
+    ]
+  },
+  {
+    "id": "e07",
+    "split": "eval",
+    "question": "Which stratagems can Termagants use in the Fight phase?",
+    "sql": "SELECT DISTINCT s.name, s.cpCost, s.phase FROM datasheets d JOIN datasheets_stratagems ds ON ds.DatasheetId = d.Id JOIN stratagems s ON s.id = ds.stratagemId WHERE d.name = 'Termagants' AND s.phase LIKE '%Fight%' ORDER BY s.name",
+    "notes": "Same pattern as f06.",
+    "expected": [
+      [
+        "ADRENAL SURGE",
+        "2",
+        "Fight phase"
+      ],
+      [
+        "BIO-ACID SURGE",
+        "1",
+        "Fight phase"
+      ],
+      [
+        "COUNTER-OFFENSIVE",
+        "2",
+        "Fight phase"
+      ],
+      [
+        "COUNTEROFFENSIVE",
+        "2",
+        "Fight phase"
+      ],
+      [
+        "DEATH FRENZY",
+        "1",
+        "Fight phase"
+      ],
+      [
+        "INVISIBLE HUNTER",
+        "1",
+        "Fight phase"
+      ],
+      [
+        "OVERRUN",
+        "1",
+        "Fight phase"
+      ],
+      [
+        "RAPACIOUS HUNGER",
+        "1",
+        "Fight phase"
+      ],
+      [
+        "RAPID REGENERATION",
+        "1",
+        "Shooting or Fight phase"
+      ],
+      [
+        "RETREAT BELOW",
+        "1",
+        "Fight phase"
+      ],
+      [
+        "SECURE BIOMASS",
+        "1",
+        "Fight phase"
+      ],
+      [
+        "SWARMING MASSES",
+        "1",
+        "Shooting or Fight phase"
+      ],
+      [
+        "TEEMING MASSES",
+        "1",
+        "Shooting or Fight phase"
+      ]
+    ]
+  },
+  {
+    "id": "e08",
+    "split": "eval",
+    "question": "What melee weapons does a Hive Tyrant have?",
+    "sql": "SELECT w.name, w.a, w.bsWs, w.s, w.ap, w.d FROM datasheets d JOIN datasheets_wargear w ON w.DatasheetId = d.Id WHERE d.name = 'Hive Tyrant' AND w.type = 'Melee' ORDER BY CAST(w.line AS INTEGER), CAST(w.lineInWargear AS INTEGER)",
+    "notes": "Filter wargear by type.",
+    "expected": [
+      [
+        "Monstrous bonesword and lash whip",
+        "6",
+        "2",
+        "9",
+        "-2",
+        "3"
+      ],
+      [
+        "Monstrous scything talons",
+        "4",
+        "2",
+        "7",
+        "-2",
+        "2"
+      ]
+    ]
+  },
+  {
+    "id": "e09",
+    "split": "eval",
+    "question": "Which detachment abilities does the Gladius Task Force have?",
+    "sql": "SELECT da.name FROM detachment_abilities da JOIN detachments dt ON dt.Id = da.detachmentId WHERE dt.name = 'Gladius Task Force'",
+    "notes": "detachment_abilities joins detachments on detachmentId.",
+    "expected": [
+      [
+        "Combat Doctrines"
+      ]
+    ]
+  },
+  {
+    "id": "e10",
+    "split": "eval",
+    "question": "What is the most expensive enhancement in the Tyranids faction?",
+    "sql": "SELECT e.name, e.detachment, CAST(e.cost AS INTEGER) AS points FROM enhancements e JOIN factions f ON f.Id = e.FactionId WHERE f.name = 'Tyranids' AND CAST(e.cost AS INTEGER) = (SELECT max(CAST(e2.cost AS INTEGER)) FROM enhancements e2 WHERE e2.FactionId = f.Id) ORDER BY e.name",
+    "notes": "Same pattern as f10 (ties-safe max). The cheapest would be a poor question: many Tyranids enhancements cost 0.",
+    "expected": [
+      [
+        "Alien Cunning",
+        "Invasion Fleet",
+        30
+      ],
+      [
+        "Elevated Might",
+        "Warrior Bioform Onslaught",
+        30
+      ],
+      [
+        "Hunting Grounds",
+        "Vanguard Onslaught",
+        30
+      ],
+      [
+        "Naturalised Camouflage",
+        "Unending Swarm",
+        30
+      ],
+      [
+        "Psychostatic Disruption",
+        "Synaptic Nexus",
+        30
+      ],
+      [
+        "Synaptoprescience",
+        "Talons of the Norn Queen",
+        30
+      ]
+    ]
+  },
+  {
+    "id": "e11",
+    "split": "eval",
+    "question": "How many different Space Marines stratagems cost 2 command points?",
+    "sql": "SELECT count(DISTINCT s.name) AS n_stratagems FROM stratagems s JOIN factions f ON f.Id = s.FactionId WHERE f.name = 'Space Marines' AND s.cpCost = '2'",
+    "notes": "cpCost is TEXT; compare to the string '2'. Count distinct names because stratagems repeat across detachments.",
+    "expected": [
+      [
+        16
+      ]
+    ]
+  },
+  {
+    "id": "e12",
+    "split": "eval",
+    "question": "How many units can be equipped with a Lascannon?",
+    "sql": "SELECT count(DISTINCT d.Id) AS n_units FROM datasheets d JOIN datasheets_wargear w ON w.DatasheetId = d.Id WHERE w.name IN ('Lascannon', 'Lascannons') AND d.virtual = 'false'",
+    "notes": "Count distinct datasheets, not wargear rows. Kratos lists the same weapon as 'Lascannons' with an identical profile, and 3 wargear rows point at datasheet ids that do not exist; the original gold (132) missed both and the first eval run's answer (134) was right.",
+    "expected": [
+      [
+        134
+      ]
+    ]
+  },
+  {
+    "id": "e13",
+    "split": "eval",
+    "question": "What is the invulnerable save of the C'tan Shard of the Deceiver?",
+    "sql": "SELECT dm.name, dm.invSv FROM datasheets d JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE d.name LIKE 'C%tan Shard of the Deceiver'",
+    "notes": "Mis-encoded apostrophe again; invSv '4' means a 4+ invulnerable save.",
+    "expected": [
+      [
+        "Câtan Shard of the Deceiver",
+        "4"
+      ]
+    ]
+  },
+  {
+    "id": "e14",
+    "split": "eval",
+    "question": "Which five factions have the most stratagems?",
+    "sql": "SELECT f.name, count(*) AS n_stratagems FROM stratagems s JOIN factions f ON f.Id = s.FactionId GROUP BY f.name ORDER BY n_stratagems DESC LIMIT 5",
+    "notes": "Same aggregation pattern as f12 on another table; core stratagems (empty FactionId) drop out of the join.",
+    "expected": [
+      [
+        "Space Marines",
+        279
+      ],
+      [
+        "Chaos Space Marines",
+        105
+      ],
+      [
+        "Aeldari",
+        100
+      ],
+      [
+        "Necrons",
+        79
+      ],
+      [
+        "Orks",
+        74
+      ]
+    ]
+  }
+]
