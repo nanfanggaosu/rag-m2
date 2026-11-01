@@ -10,6 +10,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import sys
 import time
 from collections.abc import Callable
@@ -29,6 +30,9 @@ CACHE_DIR = PROJECT_ROOT / "rag" / "data" / "cache" / "llm"
 DEFAULT_MODEL = "gemini-3.5-flash"
 TIMEOUT_MS = 60_000
 RETRYABLE_CODES = frozenset({429, 500, 502, 503, 504})
+# A longer wait than this is a used-up daily quota, not a per-minute limit: fail fast.
+MAX_RETRY_WAIT_S = 120.0
+_RETRY_IN = re.compile(r"retry in (?:(\d+)h)?(?:(\d+)m)?([\d.]+)s")
 
 load_dotenv(PROJECT_ROOT / ".env")
 
@@ -47,6 +51,13 @@ class LlmCall:
     thinking_tokens: int
 
 
+def _server_retry_delay(message: str | None) -> float | None:
+    m = _RETRY_IN.search(message or "")
+    if not m:
+        return None
+    return int(m[1] or 0) * 3600 + int(m[2] or 0) * 60 + float(m[3]) + 1.0
+
+
 def _api_key() -> str:
     key = os.environ.get("GOOGLE_API_KEY")
     if not key:
@@ -63,6 +74,7 @@ class GeminiLlm:
         use_cache: bool = True,
         cache_dir: Path = CACHE_DIR,
         max_retries: int = 3,
+        min_interval_s: float | None = None,
         client: Any = None,
         sleep: Callable[[float], None] = time.sleep,
     ) -> None:
@@ -71,6 +83,10 @@ class GeminiLlm:
         self.use_cache = use_cache
         self.cache_dir = cache_dir
         self.max_retries = max_retries
+        if min_interval_s is None:
+            min_interval_s = float(os.environ.get("GEMINI_MIN_INTERVAL_S") or 0)
+        self.min_interval_s = min_interval_s
+        self._next_call_at = 0.0
         self.calls: list[LlmCall] = []
         self._client = client or genai.Client(
             api_key=_api_key(), http_options=types.HttpOptions(timeout=TIMEOUT_MS)
@@ -139,6 +155,8 @@ class GeminiLlm:
 
     def _call_with_retry(self, prompt: str, config: types.GenerateContentConfig) -> Any:
         for attempt in range(self.max_retries + 1):
+            self._wait_for_turn()
+            delay = 2.0 * 2**attempt
             try:
                 return self._client.models.generate_content(
                     model=self.model, contents=prompt, config=config
@@ -146,11 +164,20 @@ class GeminiLlm:
             except errors.APIError as e:
                 if e.code not in RETRYABLE_CODES or attempt == self.max_retries:
                     raise LlmError(f"Gemini API error {e.code}: {e.message}") from e
+                delay = _server_retry_delay(e.message) or delay
+                if delay > MAX_RETRY_WAIT_S:
+                    raise LlmError(f"Gemini API error {e.code}: {e.message}") from e
             except httpx.TransportError as e:
                 if attempt == self.max_retries:
                     raise LlmError(f"network error talking to Gemini: {e}") from e
-            self._sleep(2.0 * 2**attempt)
+            self._sleep(delay)
         raise AssertionError("unreachable")
+
+    def _wait_for_turn(self) -> None:
+        wait = self._next_call_at - time.monotonic()
+        if wait > 0:
+            self._sleep(wait)
+        self._next_call_at = time.monotonic() + self.min_interval_s
 
 
 def main() -> None:

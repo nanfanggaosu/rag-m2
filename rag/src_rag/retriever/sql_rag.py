@@ -42,7 +42,8 @@ RULES
   'YOUR 1ST TO 3RD UNITS COST', ...). Each price belongs to the nearest header above it by line.
 - Exclude datasheets.virtual = 'true' when counting or listing datasheets.
 - Return only the columns needed to answer, using names rather than ids.
-- Add LIMIT {max_rows} unless the query already returns few rows."""
+- Do not add LIMIT unless the question asks for a fixed number of results: at most {max_rows}
+  rows are returned and the true total is reported separately."""
 
 OUTPUT_SCHEMA = {
     "type": "object",
@@ -88,9 +89,19 @@ class SqlRag:
         t0 = time.perf_counter()
         attempts: list[Attempt] = []
         for _ in range(self.max_attempts):
-            reply = self.llm.complete_json(
-                build_prompt(question, max_rows=max_rows, feedback=attempts), OUTPUT_SCHEMA
-            )
+            try:
+                reply = self.llm.complete_json(
+                    build_prompt(question, max_rows=max_rows, feedback=attempts), OUTPUT_SCHEMA
+                )
+            except Exception as e:
+                self.last_attempts = attempts
+                return SqlRagResult(
+                    sql=attempts[-1].sql if attempts else "",
+                    rows=[],
+                    columns=[],
+                    elapsed_ms=(time.perf_counter() - t0) * 1000,
+                    error=f"LLM call failed: {e}",
+                )
             sql = str(reply.get("sql", "")).strip()
             result = run_sql(sql, max_rows=max_rows)
             attempts.append(Attempt(sql, str(reply.get("reasoning", "")), result))
@@ -105,6 +116,7 @@ class SqlRag:
             columns=final.columns,
             elapsed_ms=(time.perf_counter() - t0) * 1000,
             error=final.error,
+            total_rows=final.total_rows,
         )
 
 

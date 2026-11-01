@@ -8,6 +8,7 @@ query.
 """
 from __future__ import annotations
 
+import json
 from typing import Any
 
 from rag.src_rag.chatbot.router_examples import EXAMPLES
@@ -18,6 +19,8 @@ _SCHEMA: dict[str, Any] = {
     "properties": {
         "source": {"type": "string", "enum": ["pdf", "sql", "both"]},
         "rationale": {"type": "string"},
+        "pdf_question": {"type": "string"},
+        "sql_question": {"type": "string"},
     },
     "required": ["source", "rationale"],
 }
@@ -29,7 +32,8 @@ _SYSTEM = (
     "- sql: faction/unit/datasheet/stratagem/enhancement lookups by name, "
     "counts, points costs (the SQLite datasheets DB).\n"
     "- both: the question needs a rule explanation AND a specific "
-    "unit/data lookup.\n"
+    "unit/data lookup. Then also give pdf_question (the rule part alone) and "
+    "sql_question (the data part alone), each understandable on its own.\n"
     "Return JSON only."
 )
 
@@ -38,9 +42,10 @@ def _build_prompt(question: str) -> str:
     lines = [_SYSTEM, "", "Examples:"]
     for ex in EXAMPLES:
         lines.append(f"Q: {ex.question}")
-        lines.append(
-            f'A: {{"source": "{ex.source}", "rationale": "{ex.rationale}"}}'
-        )
+        reply = {"source": ex.source, "rationale": ex.rationale}
+        if ex.source == "both":
+            reply |= {"pdf_question": ex.pdf_question, "sql_question": ex.sql_question}
+        lines.append(f"A: {json.dumps(reply)}")
     lines.append("")
     lines.append(f"Q: {question}")
     lines.append("A:")
@@ -61,4 +66,11 @@ def route(question: str, llm: Llm) -> RouterDecision:
             source="pdf",
             rationale=f"invalid source {source!r} from LLM, defaulting to pdf",
         )
-    return RouterDecision(source=source, rationale=resp.get("rationale") or "")
+    if source != "both":
+        return RouterDecision(source=source, rationale=resp.get("rationale") or "")
+    return RouterDecision(
+        source=source,
+        rationale=resp.get("rationale") or "",
+        pdf_question=resp.get("pdf_question") or None,
+        sql_question=resp.get("sql_question") or None,
+    )

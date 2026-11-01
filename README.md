@@ -6,26 +6,34 @@ A two-source Retrieval-Augmented-Generation system for the course mini-project.
 - **SQL source:** `rag/data/raw/wahadb.sqlite` (21 tables of Warhammer 40k rules/datasheets)
 - **Router agent** picks which source to query per question.
 
-## Architecture (phase 1 draft)
+## Architecture
 
 ```
-                       ┌──────────────┐
-                 ┌────▶│  PDF-RAG     │──▶ chunks + page + section
-  question ─▶ Router   │  (owner: A)  │
-                 └────▶│  SQL-RAG     │──▶ SQL + rows
-                       │  (owner: B)  │
-                       └──────────────┘
-                              │
-                              ▼
-                        final LLM call
-                              │
-                              ▼
-                            answer
+Offline
+  PDF -> docling -> section-aware chunks (261) -> bge-small embeddings -> ChromaDB
+  SQLite + data dictionary -> schema text, join graph, value index; few-shot examples
+
+Online
+                      question
+                         │
+                         ▼
+                    LLM router ──── on LLM failure: PDF
+           ┌─────────────┼─────────────┐
+          pdf    both (splits question) sql
+           │                           │
+           ▼                           ▼
+     PDF retriever              text-to-SQL agent
+     top-5 chunks,              prompt -> LLM -> read-only run
+     page + section             -> retry on error or no rows (3 max)
+           │                           │
+           └─────────────┬─────────────┘
+                         ▼
+                 LLM final answer
+              (cites pages / SQL query)
 ```
 
-Everything upstream of the router (parsing, chunking, indexing) and everything
-inside each RAG lives in its owner's branch. The two paths meet only at the
-contract in [`rag/src_rag/interfaces.py`](rag/src_rag/interfaces.py).
+The two paths meet only at the contract in
+[`rag/src_rag/interfaces.py`](rag/src_rag/interfaces.py).
 
 ## Directory layout
 
@@ -40,10 +48,10 @@ rag/
   src_rag/
     parser/      # docling driver (A)
     chunker/     # text + table/image linking (A)
-    retriever/   # pdf.py (A), sql.py (B), stubs.py
+    retriever/   # pdf.py (A), sql*.py (B), stubs.py
     llm/         # shared Google-AI-Studio wrapper
     chatbot/     # router.py + app.py (chat UI)
-    evaluation/  # test-set + LLM-as-judge (joint)
+    evaluation/  # pdf_eval, sql_eval, e2e_eval (RAGAS) and question sets (joint)
     interfaces.py  # the contract — change only by consensus
 tests/            # mirrors src_rag/
 ```
@@ -56,8 +64,8 @@ side writes against:
 | Function | Owner | Returns |
 |---|---|---|
 | `PdfRag(question, k=5)` | A | `PdfRagResult` — list of `PdfChunk(text, page, section, score)` |
-| `SqlRag(question, max_rows=50)` | B | `SqlRagResult` — `sql`, `rows`, `columns`, optional `error` |
-| `Router(question)` | joint | `RouterDecision(source, rationale)` |
+| `SqlRag(question, max_rows=50)` | B | `SqlRagResult` — `sql`, `rows`, `columns`, optional `error`, `total_rows` |
+| `route(question, llm)` | joint | `RouterDecision(source, rationale)`; for `both`, also `pdf_question`, `sql_question` |
 
 Both sides have stub implementations in `rag/src_rag/retriever/stubs.py` so the
 router and chat loop run end-to-end before either side is real.
@@ -66,7 +74,7 @@ router and chat loop run end-to-end before either side is real.
 
 ```bash
 uv sync          # install everything from uv.lock
-uv run pytest -q # should print "3 passed"
+uv run pytest -q
 ```
 
 Teacher-provided data (PDF, SQLite, data dictionary) is committed under
@@ -84,8 +92,10 @@ Teacher-provided data (PDF, SQLite, data dictionary) is committed under
 | `make parse` | Run docling on `rag/data/raw/*.pdf` |
 | `make chunk` | Chunk the parsed JSON into `rag/data/chunks.jsonl` |
 | `make index` | Embed chunks into the Chroma vector DB |
-| `make chat`  | Launch the chat loop (real PDF retriever + stub SQL) |
-| `make eval`  | Run the PDF-side evaluation set |
+| `make chat`  | Launch the chat loop |
+| `make eval`  | Run the PDF retrieval evaluation (no LLM calls) |
+| `make eval-sql` | Run the SQL execution-accuracy evaluation |
+| `make eval-e2e` | Run the end-to-end RAGAS evaluation, written to `rag/data/eval_results/` |
 | `make test`  | `uv run pytest` |
 
 ## Division of work
@@ -102,7 +112,14 @@ Teacher-provided data (PDF, SQLite, data dictionary) is committed under
 
 - **Package manager:** `uv` (2026-10-29). Faster than pip; `uv.lock` makes the
   partner's env reproducible.
-- **Vector DB:** TBD — likely ChromaDB for simplicity.
+- **Vector DB:** ChromaDB, for simplicity.
+- **RAGAS install:** `pyproject.toml` drops `scikit-network` (no Windows wheel on Python
+  3.14, only used for test-set generation) and keeps `langchain-community<0.4` (ragas 0.4
+  imports a module removed in 0.4).
+- **Model for evaluation:** `gemini-3.1-flash-lite` (free tier: 15 requests per minute, 500
+  per day), because `gemini-3.5-flash` allows only 5 per minute and about 20 per day, while one
+  end-to-end run needs about 410 calls. `gemini-3.5-flash` is currently served by
+  `gemini-3.6-flash`. Results and analysis are in `rag/data/eval_results/`.
 - **Embedding model:** `BAAI/bge-small-en-v1.5` (2026-10-29). 512-token context,
   384-dim, strong on the MTEB leaderboard among small open-source models. All 261
   chunks of `Core Rules.pdf` fit (max 374 tokens), so no truncation and no need
@@ -165,5 +182,5 @@ Teacher-provided data (PDF, SQLite, data dictionary) is committed under
   `k=20` + re-rank to 5 once we have an LLM reranker wired.
 - Does the final answer always cite its source (page / SQL query)? Likely yes
   — important for the UI.
-- Grow the PDF eval set past 10 questions and start tracking per-category
-  failures (fixed-term vs. descriptive, single-section vs. multi-section).
+- Track PDF eval failures per category (fixed-term vs. descriptive, single-section
+  vs. multi-section).

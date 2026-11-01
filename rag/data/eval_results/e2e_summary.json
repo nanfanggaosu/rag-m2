@@ -1,0 +1,123 @@
+{
+  "model": "gemini-3.1-flash-lite",
+  "total_questions": 36,
+  "incomplete": [],
+  "overall": {
+    "questions": 36,
+    "router_accuracy": 0.9722222222222222,
+    "pdf_section_hit": 1.0,
+    "pdf_page_hit": 1.0,
+    "sql_exact": 0.7727272727272727,
+    "sql_relaxed": 0.8636363636363636,
+    "sql_errors": 0,
+    "ragas": {
+      "faithfulness": 0.8955314009661836,
+      "answer_relevancy": 0.8815141625796005,
+      "llm_context_precision_with_reference": 0.6226851851254629,
+      "context_recall": 0.9513888888888888,
+      "answer_correctness": 0.770972536808215
+    },
+    "ragas_missing": {
+      "faithfulness": 13,
+      "answer_relevancy": 13,
+      "llm_context_precision_with_reference": 0,
+      "context_recall": 0,
+      "answer_correctness": 13
+    }
+  },
+  "by_source": {
+    "pdf": {
+      "questions": 14,
+      "router_accuracy": 1.0,
+      "pdf_section_hit": 1.0,
+      "pdf_page_hit": 1.0,
+      "sql_exact": null,
+      "sql_relaxed": null,
+      "sql_errors": 0,
+      "ragas": {
+        "faithfulness": 0.9345238095238095,
+        "answer_relevancy": 0.8585090887143813,
+        "llm_context_precision_with_reference": 0.6607142856547619,
+        "context_recall": 0.9821428571428571,
+        "answer_correctness": 0.7309512164863187
+      },
+      "ragas_missing": {
+        "faithfulness": 0,
+        "answer_relevancy": 0,
+        "llm_context_precision_with_reference": 0,
+        "context_recall": 0,
+        "answer_correctness": 0
+      }
+    },
+    "sql": {
+      "questions": 14,
+      "router_accuracy": 0.9285714285714286,
+      "pdf_section_hit": null,
+      "pdf_page_hit": null,
+      "sql_exact": 0.7142857142857143,
+      "sql_relaxed": 0.8571428571428571,
+      "sql_errors": 0,
+      "ragas": {
+        "faithfulness": 0.8348765432098766,
+        "answer_relevancy": 0.917299833036608,
+        "llm_context_precision_with_reference": 0.9285714284785714,
+        "context_recall": 0.9285714285714286,
+        "answer_correctness": 0.8332279239756093
+      },
+      "ragas_missing": {
+        "faithfulness": 5,
+        "answer_relevancy": 5,
+        "llm_context_precision_with_reference": 0,
+        "context_recall": 0,
+        "answer_correctness": 5
+      }
+    },
+    "both": {
+      "questions": 8,
+      "router_accuracy": 1.0,
+      "pdf_section_hit": 1.0,
+      "pdf_page_hit": 1.0,
+      "sql_exact": 0.875,
+      "sql_relaxed": 0.875,
+      "sql_errors": 0,
+      "ragas": {
+        "faithfulness": null,
+        "answer_relevancy": null,
+        "llm_context_precision_with_reference": 0.02083333333125,
+        "context_recall": 0.9375,
+        "answer_correctness": null
+      },
+      "ragas_missing": {
+        "faithfulness": 8,
+        "answer_relevancy": 8,
+        "llm_context_precision_with_reference": 0,
+        "context_recall": 0,
+        "answer_correctness": 8
+      }
+    }
+  },
+  "router_confusion": {
+    "pdf": {
+      "pdf": 14,
+      "sql": 0,
+      "both": 0
+    },
+    "sql": {
+      "pdf": 0,
+      "sql": 13,
+      "both": 1
+    },
+    "both": {
+      "pdf": 0,
+      "sql": 0,
+      "both": 8
+    }
+  },
+  "router_mistakes": [
+    {
+      "id": "s-e07",
+      "expected": "sql",
+      "routed": "both"
+    }
+  ]
+}

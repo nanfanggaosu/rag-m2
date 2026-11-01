@@ -7,6 +7,7 @@ dependencies = [
     "docling>=2.145.0",
     "google-genai>=2.34.0",
     "python-dotenv>=1.2.4",
+    "ragas>=0.4.3",
     "rapidfuzz>=3.14.6",
     "sentence-transformers>=6.2.0",
 ]
@@ -15,3 +16,10 @@ dependencies = [
 dev = [
     "pytest>=9.2.0",
 ]
+
+[tool.uv]
+# ragas only uses scikit-network for test-set generation, which we don't run, and it has
+# no Python 3.14 wheel on Windows, so installing it would need a C++ toolchain.
+override-dependencies = ["scikit-network; sys_platform == 'never'"]
+# ragas 0.4 imports langchain_community.chat_models.vertexai, which 0.4 removed.
+constraint-dependencies = ["langchain-community<0.4"]

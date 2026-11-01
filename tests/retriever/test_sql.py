@@ -17,6 +17,11 @@ def test_cte_query_is_allowed():
     assert out.rows == [{"n": 25}]
 
 
+def test_total_rows_counts_past_the_cap():
+    out = run_sql("SELECT name FROM datasheets", max_rows=7)
+    assert len(out.rows) == 7 and out.total_rows == 1680
+
+
 def test_rows_are_capped_at_max_rows():
     out = run_sql("SELECT DatasheetId FROM datasheets_stratagems", max_rows=7)
     assert out.error is None
