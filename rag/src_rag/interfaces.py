@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 from typing import Any, Literal, Protocol
 
 
-Source = Literal["pdf", "sql"]
+Source = Literal["pdf", "sql", "both"]
 
 
 @dataclass(frozen=True)
