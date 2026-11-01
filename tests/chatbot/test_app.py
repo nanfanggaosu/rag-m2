@@ -1,7 +1,7 @@
 from dataclasses import replace
 
-from rag.src_rag.chatbot.app import _format_sql, answer
-from rag.src_rag.interfaces import SqlRagResult
+from rag.src_rag.chatbot.app import Turn, _format_sql, answer
+from rag.src_rag.interfaces import FinalAnswer, RouterDecision, SqlRagResult
 from rag.src_rag.llm.fake import FakeLlm
 from rag.src_rag.retriever.stubs import stub_pdf_rag, stub_sql_rag
 
@@ -160,3 +160,100 @@ def test_format_sql_says_nothing_when_complete():
 def test_format_sql_repairs_mis_encoded_text():
     text = _format_sql(_result(rows=[{"name": "Rollin\xe2\x80\x99 Deff"}]))
     assert "Rollin\u2019 Deff" in text
+
+
+def _prior_turn(question: str, text: str, source: str = "pdf") -> Turn:
+    return Turn(
+        question=question,
+        answer=FinalAnswer(
+            text=text,
+            source=source,
+            decision=RouterDecision(source=source, rationale="prior"),
+        ),
+    )
+
+
+def test_history_triggers_contextualize_then_router_then_synth():
+    # Three calls when history is non-empty: contextualize (complete), route
+    # (complete_json), synthesize (complete).
+    llm = FakeLlm([
+        "What are the stratagems available to Orks?",
+        {"source": "sql", "rationale": "faction stratagems"},
+        "Orks have N stratagems: ...",
+    ])
+    history = [_prior_turn("Tell me about Orks.", "Orks are a faction ...", "sql")]
+    out = answer(
+        "what are their stratagems?",
+        history=history,
+        pdf_rag=stub_pdf_rag,
+        sql_rag=stub_sql_rag,
+        llm=llm,
+    )
+    assert len(llm.prompts) == 3
+    assert "Follow-up: what are their stratagems?" in llm.prompts[0]
+    assert "Tell me about Orks." in llm.prompts[0]
+    router_prompt = llm.prompts[1]
+    assert "What are the stratagems available to Orks?" in router_prompt
+    synth_prompt = llm.prompts[2]
+    assert "Prior conversation:" in synth_prompt
+    assert "Standalone form of the question:" in synth_prompt
+    assert out.source == "sql"
+    assert out.text == "Orks have N stratagems: ..."
+
+
+def test_no_history_skips_contextualize():
+    # Still exactly two calls: router + synth. No history \u2192 no rewrite.
+    llm = FakeLlm([
+        {"source": "pdf", "rationale": "rule"},
+        "answer",
+    ])
+    answer(
+        "How does deep strike work?",
+        pdf_rag=stub_pdf_rag,
+        sql_rag=stub_sql_rag,
+        llm=llm,
+    )
+    assert len(llm.prompts) == 2
+    assert "Prior conversation:" not in llm.prompts[1]
+
+
+def test_contextualize_error_falls_back_to_raw_question():
+    class FailsFirstThenWorks:
+        def __init__(self):
+            self.n = 0
+
+        def complete(self, prompt):
+            self.n += 1
+            if self.n == 1:
+                raise RuntimeError("contextualize boom")
+            return "final"
+
+        def complete_json(self, prompt, schema):
+            return {"source": "pdf", "rationale": "rule"}
+
+    history = [_prior_turn("earlier q", "earlier a")]
+    out = answer(
+        "what about Orks?",
+        history=history,
+        pdf_rag=stub_pdf_rag,
+        sql_rag=stub_sql_rag,
+        llm=FailsFirstThenWorks(),
+    )
+    assert out.text == "final"
+
+
+def test_contextualized_question_feeds_retrievers():
+    seen = {}
+
+    def pdf(question, *, k=5):
+        seen["pdf"] = question
+        return stub_pdf_rag(question, k=k)
+
+    llm = FakeLlm([
+        "Deep strike rules",
+        {"source": "pdf", "rationale": "rule"},
+        "answer",
+    ])
+    history = [_prior_turn("Explain reserves.", "Reserves are ...")]
+    answer("and deep strike?", history=history, pdf_rag=pdf, sql_rag=stub_sql_rag, llm=llm)
+    assert seen["pdf"] == "Deep strike rules"
