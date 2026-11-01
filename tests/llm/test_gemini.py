@@ -86,6 +86,37 @@ def test_rate_limit_is_retried_with_backoff(make_llm):
     assert sleeps == [2.0, 4.0]
 
 
+def _quota_error(wait):
+    return errors.APIError(429, {"error": {"code": 429, "message": f"Please retry in {wait}.", "status": "X"}})
+
+
+def test_rate_limit_waits_as_long_as_the_server_asks(make_llm):
+    llm, _, sleeps = make_llm(_quota_error("41.5s"), _response("ok"))
+    assert llm.complete("hi") == "ok"
+    assert sleeps == [42.5]
+
+
+def test_used_up_daily_quota_fails_without_waiting(make_llm):
+    llm, client, sleeps = make_llm(_quota_error("16h30m15.8s"))
+    with pytest.raises(LlmError, match="429"):
+        llm.complete("hi")
+    assert sleeps == [] and len(client.requests) == 1
+
+
+def test_min_interval_spaces_out_real_calls(make_llm):
+    llm, _, sleeps = make_llm(_response("a"), _response("b"), min_interval_s=12.0)
+    llm.complete("one")
+    llm.complete("two")
+    assert len(sleeps) == 1 and 11.0 < sleeps[0] <= 12.0
+
+
+def test_min_interval_skips_cached_calls(make_llm):
+    llm, _, sleeps = make_llm(_response("a"), min_interval_s=12.0)
+    llm.complete("one")
+    llm.complete("one")
+    assert sleeps == []
+
+
 def test_network_error_is_retried(make_llm):
     llm, _, sleeps = make_llm(httpx.ConnectError("down"), _response("ok"))
     assert llm.complete("hi") == "ok"

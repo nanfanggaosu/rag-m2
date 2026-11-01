@@ -1,4 +1,4 @@
-.PHONY: install sync parse index chat eval test clean
+.PHONY: install sync parse chunk index chat eval eval-sql eval-e2e test clean
 
 install:
 	uv sync
@@ -20,6 +20,12 @@ chat:
 
 eval:
 	uv run python -m rag.src_rag.evaluation.pdf_eval --verbose
+
+eval-sql:
+	uv run python -m rag.src_rag.evaluation.sql_eval
+
+eval-e2e:
+	uv run python -m rag.src_rag.evaluation.e2e_eval --model gemini-3.1-flash-lite
 
 test:
 	uv run pytest -q

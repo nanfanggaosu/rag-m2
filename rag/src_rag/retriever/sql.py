@@ -5,6 +5,7 @@ import re
 import sqlite3
 import time
 from contextlib import closing
+from itertools import islice
 from pathlib import Path
 
 from rag.src_rag.interfaces import SqlRagResult
@@ -17,6 +18,8 @@ _READ_ONLY_PREFIX = re.compile(r"^\s*(select|with)\b", re.IGNORECASE)
 # A single function call like randomblob(1e9) is one VM step, so the timeout can't stop it;
 # capping value size can.
 MAX_VALUE_BYTES = 1_000_000
+
+MAX_COUNTED_ROWS = 100_000
 
 # Enforced by SQLite itself at prepare time, so keyword tricks in string literals or
 # comments can't smuggle a write, PRAGMA or ATTACH past a regex check.
@@ -67,7 +70,8 @@ def run_sql(
             cur = conn.execute(sql)
             columns = [d[0] for d in cur.description or []]
             rows = [dict(zip(columns, r)) for r in cur.fetchmany(max_rows)]
+            total_rows = len(rows) + sum(1 for _ in islice(cur, MAX_COUNTED_ROWS))
     except (sqlite3.Error, UnsafeSqlError) as e:
         return result(rows=[], columns=[], error=f"{type(e).__name__}: {e}")
 
-    return result(rows=rows, columns=columns)
+    return result(rows=rows, columns=columns, total_rows=total_rows)

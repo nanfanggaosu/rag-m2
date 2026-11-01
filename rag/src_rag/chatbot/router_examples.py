@@ -18,6 +18,8 @@ class RouterExample:
     question: str
     source: Literal["pdf", "sql", "both"]
     rationale: str
+    pdf_question: str | None = None
+    sql_question: str | None = None
 
 
 EXAMPLES: list[RouterExample] = [
@@ -72,13 +74,19 @@ EXAMPLES: list[RouterExample] = [
     RouterExample(
         "What is a Lictor's move characteristic and how does the move phase work?", "both",
         "Needs the Lictor's Move stat (SQL) and the Movement Phase rules (PDF).",
+        "How does the Movement phase work?",
+        "What is the move characteristic of a Lictor?",
     ),
     RouterExample(
         "How does the Fly keyword work and which Space Marines units have it?", "both",
         "Needs the Fly rule (PDF) and a unit list filtered by keyword (SQL).",
+        "How does the Fly keyword work?",
+        "Which Space Marines units have the Fly keyword?",
     ),
     RouterExample(
         "What is deep strike and what is the range of a Lictor's deep strike ability?", "both",
         "Needs the Deep Strike rule (PDF) and the Lictor's specific ability data (SQL).",
+        "What is deep strike?",
+        "What does the deep strike ability of a Lictor say?",
     ),
 ]

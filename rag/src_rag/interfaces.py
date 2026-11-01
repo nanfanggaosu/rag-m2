@@ -42,6 +42,7 @@ class SqlRagResult:
     columns: list[str]
     elapsed_ms: float | None = None
     error: str | None = None
+    total_rows: int | None = None
 
 
 @dataclass(frozen=True)
@@ -50,6 +51,8 @@ class RouterDecision:
 
     source: Source
     rationale: str
+    pdf_question: str | None = None
+    sql_question: str | None = None
 
 
 @dataclass(frozen=True)

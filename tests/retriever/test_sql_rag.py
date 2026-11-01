@@ -73,4 +73,35 @@ def test_max_rows_is_respected():
     llm = FakeLlm([_reply("SELECT name FROM datasheets")])
     out = SqlRag(llm)("List datasheets", max_rows=5)
     assert len(out.rows) == 5
-    assert "LIMIT 5" in llm.prompts[0]
+    assert "at most 5" in llm.prompts[0]
+
+
+def test_total_rows_reports_what_the_cap_hid():
+    llm = FakeLlm([_reply("SELECT name FROM datasheets")])
+    out = SqlRag(llm)("List datasheets", max_rows=5)
+    assert out.total_rows == 1680
+
+
+def test_llm_failure_comes_back_in_error():
+    class FailingLlm:
+        def complete_json(self, prompt, schema):
+            raise RuntimeError("429 quota")
+
+    out = SqlRag(FailingLlm())("Which faction are Boyz from?")
+    assert out.rows == [] and out.sql == ""
+    assert "LLM call failed: 429 quota" in out.error
+
+
+def test_llm_failure_on_retry_keeps_the_last_query():
+    class FailsSecondTime:
+        calls = 0
+
+        def complete_json(self, prompt, schema):
+            self.calls += 1
+            if self.calls > 1:
+                raise RuntimeError("429 quota")
+            return _reply("SELECT nme FROM factions")
+
+    out = SqlRag(FailsSecondTime())("Which faction are Boyz from?")
+    assert out.sql == "SELECT nme FROM factions"
+    assert "LLM call failed" in out.error
