@@ -1,337 +1,130 @@
-# rag-m2 — RAG mini-project
+# Multi-Source RAG Chatbot_Warhammer 40K
 
-A two-source Retrieval-Augmented-Generation system for the course mini-project.
+A chatbot that answers Warhammer 40,000 questions from two sources: the Core Rules PDF, searched
+with embeddings, and a SQLite database of unit datasheets, queried through text-to-SQL. An LLM
+router picks the source on each turn, or uses both. Answers cite their source, and the chat
+supports follow-up questions.
 
-- **PDF source:** Warhammer 40k Core Rules (`rag/data/raw/Core Rules.pdf`)
-- **SQL source:** `rag/data/raw/wahadb.sqlite` (21 tables of Warhammer 40k rules/datasheets)
-- **Router agent** picks which source to query per question.
+Built for the RAG course mini-project by Yawen Zhang and Ruxin Xie.
+
+## How it works
+
+```text
+                     question (+ earlier turns)
+                                |
+                                v
+                     rewrite follow-up questions
+                                |
+                                v
+                     LLM router: pdf, sql or both
+                      /                       \
+                     v                         v
+              PDF retriever             Text-to-SQL agent
+          embeddings + ChromaDB      LLM writes SQL, runs read-only,
+             top-5 passages             retries if it finds nothing
+                     \                         /
+                      v                       v
+               LLM answer, citing pages or the SQL query
+```
+
+- **Rulebook:** parsed with docling and split by section into 261 chunks, then embedded locally with
+  `bge-small-en-v1.5` and stored in ChromaDB.
+- **Database:** the LLM writes SQL using the schema, the names mentioned in the question, and the most
+  similar worked examples. Queries run on a read-only connection.
+- **Router:** an LLM chooses the source. A question needing both is split into two sub-questions.
+- **Chat:** remembers recent turns, shows the sources behind an answer, and can translate it.
+- **Evaluation:** covers retrieval, SQL accuracy, and the whole system with RAGAS.
+
+The [technical documentation](TECHNICAL.md) explains each choice and the experiments behind them.
 
 ## Quick start
 
+Requires [uv](https://docs.astral.sh/uv/) and a [Google AI Studio](https://aistudio.google.com/) API
+key. The rulebook, database and parsed output are already in the repository.
+
 ```bash
-uv sync                                       # installs everything from uv.lock
-cp .env.example .env && $EDITOR .env          # paste GOOGLE_API_KEY
-make test                                     # 172 passed, 1 skipped (with the index built)
-make index                                    # chunk + embed the rulebook (first run downloads the model)
-make sanity                                   # the 4 teacher sanity questions (Lecture 1 PDF p. 42)
-make demo                                     # 4 scripted turns across pdf / sql / both / follow-up
-make chat                                     # multi-turn CLI with /zh /fr /en translation
-make eval-e2e                                 # 40-question RAGAS run (results checked in)
+uv sync                          # install dependencies
+cp .env.example .env             # then set GOOGLE_API_KEY in .env
+make index                       # build the vector index; the first run downloads the model
+make chat                        # start chatting
 ```
 
-### Grading rubric → where to find the evidence
+Example questions:
 
-The grading breakdown is 8 points across five areas (Lecture 1 PDF, p. 6). The table points
-each one at the files that back it up.
-
-| Rubric item | Where in the repo |
-|---|---|
-| **RAG Setup** | [`parser/`](rag/src_rag/parser/) (docling) → [`chunker/`](rag/src_rag/chunker/) (section-aware) → [`retriever/pdf.py`](rag/src_rag/retriever/pdf.py) (Chroma + bge-small, query prefix, section-prepended) + [`retriever/sql*.py`](rag/src_rag/retriever/) (text-to-SQL, data dictionary, few-shot, read-only connection) + [`chatbot/router.py`](rag/src_rag/chatbot/router.py) + [`chatbot/app.py`](rag/src_rag/chatbot/app.py) |
-| **Evaluation and monitoring** | [`evaluation/pdf_eval.py`](rag/src_rag/evaluation/pdf_eval.py) (Hit@5, MRR) + [`evaluation/sql_eval.py`](rag/src_rag/evaluation/sql_eval.py) (exact / relaxed) + [`evaluation/e2e_eval.py`](rag/src_rag/evaluation/e2e_eval.py) (RAGAS over 36 mixed questions) + [`e2e_report.md`](rag/data/eval_results/e2e_report.md) + [`e2e_analysis.md`](rag/data/eval_results/e2e_analysis.md); `GeminiLlm` records per-call usage via `llm.usage()` |
-| **Advanced RAG** | LLM-driven router with JSON-enum output (Lecture 3 routing / Lecture 4 agentic); `both` routing *splits* the question into a `pdf_question` + `sql_question` (query decomposition); multi-turn follow-ups are *contextualized* into standalone questions before routing (query rewriting). All in [`chatbot/`](rag/src_rag/chatbot/). |
-| **Interface** | `make chat` multi-turn CLI with `/help` `/history` `/last` `/sources` (links the answer back to its PDF page / SQL — the UI point from Lecture 1), `/zh` `/fr` `/en` translation (nice-to-have from Lecture 1 PPT), `/reset`, `/quit`. See [`chatbot/app.py`](rag/src_rag/chatbot/app.py). |
-| **Code quality** | 163 unit tests mirroring the source layout under [`tests/`](tests/); a single contract in [`interfaces.py`](rag/src_rag/interfaces.py) that both sides build against; `uv` + `Makefile` for one-command runs; read-only SQL connection; `.env` for secrets. |
-
-All teacher-provided data (PDF, SQLite, data dictionary) is committed under
-`rag/data/raw/`, so `git clone` + `uv sync` is enough to start. The LLM is
-Google AI Studio (Gemini); get a free key at <https://aistudio.google.com/>.
-Everything LLM-touching (`make chat`, `make demo`, `make eval-e2e`) needs
-`GOOGLE_API_KEY`; `make test` and `make eval` don't.
-
-## Architecture
-
-```
-Offline
-  PDF -> docling -> section-aware chunks (261) -> bge-small embeddings -> ChromaDB
-  SQLite + data dictionary -> schema text, join graph, value index; few-shot examples
-
-Online (one chat turn)
-                     user question + prior turns
-                                 │
-                                 ▼
-            ┌────────── contextualize (LLM) ──────────┐
-            │  rewrites a follow-up ("what about     │
-            │  Orks?") into a standalone question    │
-            └─────────────────┬───────────────────────┘
-                              ▼
-                        LLM router (JSON)
-                   schema={source: pdf|sql|both,
-                           rationale, pdf_question?,
-                           sql_question?}
-                   on error → defaults to pdf
-                              │
-       ┌──────────────────────┼─────────────────────────┐
-       ▼                  both: router splits           ▼
-    pdf path          into pdf_question + sql_question  sql path
-       │                      │          │                │
-       │                      ▼          ▼                │
-       ▼              pdf retriever   text-to-SQL agent   ▼
-  Chroma + bge-small     (top-5          prompt + schema      SQLite (ro)
-  query prefix +         chunks,         context + few-shot   JOIN graph
-  section-prepended      cites page      + value index        + fix-encoding
-  k=5                    + section)      retry ≤3 on error    on text columns
-       │                      │          │                │
-       └──────────────────────┼──────────┼────────────────┘
-                              ▼          ▼
-                       LLM answer synthesizer
-                 (per-source system prompt; cites PDF
-                  pages, ends SQL answers with "Source:";
-                  on LLM failure returns raw-dump fallback)
-                              │
-                              ▼
-                   FinalAnswer(text, source,
-                               pdf?, sql?, decision)
-                              │
-                              ▼
-                      added to chat history
+```text
+What is the rule for grenades?
+What is the toughness of a space marine?
+What does Stealth do, and which Tyranids units have it?
 ```
 
-The two paths meet only at the contract in
-[`rag/src_rag/interfaces.py`](rag/src_rag/interfaces.py). The router returns a
-`RouterDecision`, the retrievers return `PdfRagResult` and `SqlRagResult`, the
-synthesizer wraps everything in `FinalAnswer` — none of these types reference each
-other's internals, so each side can evolve independently.
+Type `/help` in the chat for commands: `/sources` shows what an answer was based on, and `/zh`,
+`/fr` and `/en` translate the last answer.
 
-### Why these choices
+On a free API key, the default model allows only about 5 requests per minute and 20 per day, and
+one question takes 2 to 3 calls. Add `GEMINI_MIN_INTERVAL_S=12` to `.env` to stay within the
+per-minute limit, or use a model with a larger quota, such as `GEMINI_MODEL=gemini-3.1-flash-lite`.
 
-- **One LLM wrapper, one cache.** `GeminiLlm` is threaded through the router, SQL
-  agent and synthesizer, so retries, per-minute pacing and SHA-keyed caching
-  apply once per prompt across the whole system. See
-  [`rag/src_rag/llm/gemini.py`](rag/src_rag/llm/gemini.py).
-- **Router returns JSON, enum-restricted.** `complete_json(prompt, schema)` with
-  `source ∈ {pdf, sql, both}`. Few-shot examples live in
-  [`router_examples.py`](rag/src_rag/chatbot/router_examples.py) (6 pdf + 6 sql
-  + 3 both), separate from the prompt string.
-- **"both" is split, not duplicated.** When the router returns `both`, it also
-  returns `pdf_question` and `sql_question` — each retriever runs its own
-  focused sub-query, which raises exact-match on the SQL side without
-  overloading the PDF retriever with data-shaped text.
-- **Soft failure, loud when it matters.** The router falls back to `pdf` on any
-  LLM error; the SQL path packs its own LLM failures into `SqlRagResult.error`
-  instead of crashing the turn; the synthesizer has a raw-dump fallback. The
-  PDF indexer fails loud if the Chroma collection is empty — that's a setup
-  bug, not a per-turn hiccup.
-- **Read-only SQL.** `sqlite3.connect(..., mode=ro, uri=True)`; never writable
-  from LLM-reachable code paths.
-- **Multi-turn context.** `app.answer()` accepts `history: list[Turn]` and uses
-  the LLM to turn follow-ups into standalone questions before the router sees
-  them. The last 3 turns go into the synthesizer prompt so the answer tone
-  continues the conversation. See
-  [`rag/src_rag/chatbot/app.py`](rag/src_rag/chatbot/app.py).
+If `make` is not available, each target below is one `uv run` command, listed in the
+[`Makefile`](Makefile).
 
-## Directory layout
+## Commands
 
-```
-rag/
-  data/
-    raw/
-      Core Rules.pdf                 # PDF corpus (teacher-provided)
-      wahadb.sqlite                  # SQLite DB (teacher-provided, read-only in code)
-      SQL_AGENT_DATA_DICTIONARY.md   # table/column docs (teacher-provided)
-    parsed/                          # docling output: Core Rules.{md,json,txt}
-  src_rag/
-    parser/      # docling driver (A)
-    chunker/     # text + table/image linking (A)
-    retriever/   # pdf.py (A), sql*.py (B), stubs.py
-    llm/         # shared Google-AI-Studio wrapper
-    chatbot/     # router.py + app.py (multi-turn chat, /zh translation) + demo.py + sanity.py (joint)
-    evaluation/  # pdf_eval, sql_eval, e2e_eval (RAGAS) and question sets (joint)
-    interfaces.py  # the contract — change only by consensus
-tests/            # mirrors src_rag/
-```
-
-## Interface contract (summary)
-
-See [`rag/src_rag/interfaces.py`](rag/src_rag/interfaces.py). The three functions each
-side writes against:
-
-| Function | Owner | Returns |
+| Command | What it does | Needs API key |
 |---|---|---|
-| `PdfRag(question, k=5)` | A | `PdfRagResult` — list of `PdfChunk(text, page, section, score)` |
-| `SqlRag(question, max_rows=50)` | B | `SqlRagResult` — `sql`, `rows`, `columns`, optional `error`, `total_rows` |
-| `route(question, llm)` | joint | `RouterDecision(source, rationale)`; for `both`, also `pdf_question`, `sql_question` |
+| `make chat` | Multi-turn chat | Yes |
+| `make sanity` | Asks the four questions listed in the course | Yes |
+| `make demo` | Scripted run across every path ([example output](DEMO.md)) | Yes |
+| `make test` | Unit tests | No |
+| `make index` | Chunk the parsed rulebook and build the vector index | No |
+| `make parse` | Re-parse the PDF; slow, and the output is already committed | No |
+| `make eval` | PDF retrieval evaluation | No |
+| `make eval-sql` | SQL accuracy evaluation | Yes |
+| `make eval-e2e` | Full evaluation with RAGAS; up to about 530 API calls | Yes |
 
-Both sides have stub implementations in `rag/src_rag/retriever/stubs.py` so the
-router and chat loop run end-to-end before either side is real.
+## Results
 
-## Setup
+Latest end-to-end run on 40 questions, with `gemini-3.5-flash` answering and
+`gemini-3.1-flash-lite` judging:
 
-```bash
-uv sync          # install everything from uv.lock
-uv run pytest -q
-```
-
-Teacher-provided data (PDF, SQLite, data dictionary) is committed under
-`rag/data/raw/`, so `git clone` + `uv sync` is enough to start.
-
-Then copy `.env.example` to `.env` and set `GOOGLE_API_KEY` (Google AI Studio).
-
-## Chat
-
-```bash
-make chat
-```
-
-Multi-turn CLI. One LLM is shared across router, SQL agent and synthesizer, so
-each turn is cheap when the prompt-hash cache hits. In-chat commands:
-
-| Command | What it does |
+| Metric | Score |
 |---|---|
-| `/help` | list all commands |
-| `/reset` | clear conversation history |
-| `/history` | show prior turns |
-| `/last` / `/sources` | show which chunks or SQL were used in the last answer |
-| `/zh` `/fr` `/en` | translate the last answer (keeps `(p. XX)` citations) |
-| `/quit` | leave (ctrl-D / ctrl-C also work) |
+| Router accuracy | 40/40 |
+| PDF section hit@5 | 25/25 |
+| SQL relaxed match / exact match | 22/22 / 14/22 |
+| RAGAS faithfulness | 0.963 |
+| RAGAS answer relevancy | 0.917 |
+| RAGAS answer correctness | 0.797 |
+| RAGAS context recall | 0.985 |
 
-Two scripted runs are checked in so a reviewer can see the system behave without typing:
+The set is small and these scores are probably optimistic. See
+[how to read them](TECHNICAL.md#11-results) and the
+[known limitations](TECHNICAL.md#12-known-limitations).
 
-- `make demo` → four hand-picked turns across pdf, sql, both, and a multi-turn follow-up; transcript in [`DEMO.md`](DEMO.md).
-- `make sanity` → the four questions the grader explicitly listed in Lecture 1 PDF p. 42
-  (grenades, stratagem, score points, Space Marine toughness); transcript at the bottom of
-  [`DEMO.md`](DEMO.md).
+## Repository layout
 
-## Evaluation
+```text
+TECHNICAL.md        Design, choices and their reasons, results, limitations
+rag/data/raw/            Rulebook, SQLite database, data dictionary
+rag/data/parsed/         Parsed rulebook
+rag/data/eval_results/   Evaluation reports and analysis
+rag/src_rag/             Source: parser, chunker, retriever, llm, chatbot, evaluation
+tests/                   Unit tests, mirroring the source layout
+```
 
-Three layered evaluations, each `make`-able:
+## Grading criteria
 
-| Target | Scope | What it measures |
-|---|---|---|
-| `make eval` | PDF retriever alone, no LLM | Hit@5 and MRR against 20 hand-labelled questions in [`questions_pdf.jsonl`](rag/src_rag/evaluation/questions_pdf.jsonl) |
-| `make eval-sql` | SQL agent alone | Execution accuracy (exact / relaxed) against gold queries |
-| `make eval-e2e` | Router + both retrievers + answer, RAGAS judge | Router accuracy, retrieval hit@5, SQL match, faithfulness, answer relevancy / correctness, context precision / recall |
-
-Headline from the latest end-to-end run (36 mixed questions,
-`gemini-3.1-flash-lite`, before the SQL changes under *SQL path choices* below; full report at [`rag/data/eval_results/e2e_report.md`](rag/data/eval_results/e2e_report.md)):
-
-| Metric | Overall | pdf (14) | sql (14) | both (8) |
-|---|---|---|---|---|
-| Router accuracy | 35/36 (0.972) | 14/14 | 13/14 | 8/8 |
-| PDF section hit@5 | 22/22 (1.000) | 14/14 | — | 8/8 |
-| SQL exact / relaxed match | 17/22 / 19/22 | — | 10/14 / 12/14 | 7/8 / 7/8 |
-| RAGAS faithfulness | 0.900 | 0.935 | 0.858 | 0.914 |
-| RAGAS answer_relevancy | 0.913 | 0.859 | 0.939 | 0.964 |
-| RAGAS answer_correctness | 0.783 | 0.731 | 0.864 | 0.729 |
-| RAGAS context_recall | 0.951 | 0.982 | 0.929 | 0.938 |
-
-Three cases to read the failures from, discussed in
-[`e2e_analysis.md`](rag/data/eval_results/e2e_analysis.md): a `both`-routed SQL query that
-dropped a Fight-phase filter; a `Stealth` ability missed because the few-shot patterns don't
-cover "units with ability X"; a parsing bug on the wound-roll table (dice images → "+").
-The 0.021 context-precision figure on `both` is a measurement artefact — RAGAS judges each
-chunk against the full answer, so one chunk never looks fully useful for a two-part answer.
-Section hit@5 is still 8/8.
+| Criterion | Where to look |
+|---|---|
+| RAG setup | [Architecture](TECHNICAL.md#2-architecture), [PDF path](TECHNICAL.md#5-pdf-path), [SQL path](TECHNICAL.md#6-sql-path), [router](TECHNICAL.md#7-router) |
+| Evaluation and monitoring | [Evaluation](TECHNICAL.md#10-evaluation), [results](TECHNICAL.md#11-results) |
+| Advanced RAG | [SQL experiments](TECHNICAL.md#experiments): hybrid few-shot retrieval. [Router](TECHNICAL.md#7-router): query decomposition. [Conversation](TECHNICAL.md#8-answer-generation-and-conversation): follow-up rewriting |
+| Interface | `make chat`, with [source inspection and translation](TECHNICAL.md#8-answer-generation-and-conversation) |
+| Code quality | [`tests/`](tests/), [`interfaces.py`](rag/src_rag/interfaces.py), [code organisation](TECHNICAL.md#4-code-organisation) |
 
 ## Team
 
-- **A — Yawen Zhang** ([@nanfanggaosu](https://github.com/nanfanggaosu))
-- **B — Ruxin Xie** ([@xieruxin922](https://github.com/xieruxin922))
-
-## Make targets
-
-| Command | What it does |
+| Member | Work |
 |---|---|
-| `make parse` | Run docling on `rag/data/raw/*.pdf` |
-| `make chunk` | Chunk the parsed JSON into `rag/data/chunks.jsonl` |
-| `make index` | Chunk, then embed into the Chroma vector DB |
-| `make chat`  | Launch the multi-turn chat loop (CLI) |
-| `make demo`  | Run the scripted 4-step demo (pdf / sql / both / follow-up) |
-| `make sanity` | Run the four teacher sanity questions (Lecture 1 PDF p. 42) |
-| `make eval`  | Run the PDF retrieval evaluation (no LLM calls) |
-| `make eval-sql` | Run the SQL execution-accuracy evaluation |
-| `make eval-e2e` | Run the end-to-end RAGAS evaluation, written to `rag/data/eval_results/` |
-| `make test`  | `uv run pytest` |
-
-## Division of work
-
-| Area | Owner | Notes |
-|---|---|---|
-| Scaffold, interface, router, chat shell, docs | **joint** | this phase |
-| `parser/`, `chunker/`, `retriever/pdf.py`, vector DB, embeddings | **A** | PDF path |
-| `retriever/sql.py` (text-to-SQL), data dictionary prompting, read-only connection | **B** | SQL path |
-| `llm/` (Google AI Studio wrapper) | **joint** | both sides need it |
-| `evaluation/` | **joint** | A writes rules questions, B writes data questions |
-
-## Decisions log
-
-- **Package manager:** `uv` (2026-10-29). Faster than pip; `uv.lock` makes the
-  partner's env reproducible.
-- **Vector DB:** ChromaDB, for simplicity.
-- **RAGAS install:** `pyproject.toml` drops `scikit-network` (no Windows wheel on Python
-  3.14, only used for test-set generation) and keeps `langchain-community<0.4` (ragas 0.4
-  imports a module removed in 0.4).
-- **Model:** the chatbot defaults to `gemini-3.5-flash`, currently served by `gemini-3.6-flash`.
-  Its free tier allows about 5 requests per minute and 20 per day, and one question takes 2 or 3
-  calls, so set `GEMINI_MIN_INTERVAL_S=12` on a free key. RAGAS judges with the cheaper
-  `gemini-3.1-flash-lite`, because one end-to-end run needs well over 400 calls. A stronger judge
-  would be better; this is a known limitation.
-- **SQL path choices:** the full schema stays in the prompt, because with 21 tables pruning
-  halved the prompt without improving accuracy. Few-shot selection is hybrid (fuzzy match plus
-  embeddings, merged by reciprocal rank fusion) with 5 examples, because fuzzy match alone fell
-  further on informal wording and 5 examples cover far more of the needed tables than 3 for
-  about 3% more prompt. A lone 0 is retried like an empty result, because a count over the wrong
-  table still returns one row.
-- **Embedding model:** `BAAI/bge-small-en-v1.5` (2026-10-29). 512-token context,
-  384-dim, strong on the MTEB leaderboard among small open-source models. All 261
-  chunks of `Core Rules.pdf` fit (max 374 tokens), so no truncation and no need
-  to split long elements by sentence.
-- **Query prefix:** apply the model card's recommended prefix
-  `"Represent this sentence for searching relevant passages: "` to the query
-  only (passages take no prefix). Sanity-check (same 2 hard questions, top-3
-  retrieval, bge-small cosine):
-
-  | Question | Before prefix | After prefix |
-  |---|---|---|
-  | "How does deep strike work?" | p49 EXAMPLE BATTLEFIELDS (0.665), p33 FIGHT (0.659), p32 FIGHT PHASE (0.659) — all wrong | p49 EXAMPLE BATTLEFIELDS (0.639), p32 FIGHT PHASE (0.632), p32 FIGHTS FIRST (0.626) — still all wrong |
-  | "When do I determine the attacker and defender?" | p57 / p59 DECLARE BATTLE FORMATIONS (0.720), p33 MAKE MELEE ATTACKS (0.703) | p57 / p59 DECLARE BATTLE FORMATIONS (0.704), p33 MAKE MELEE ATTACKS (0.685) |
-
-  Prefix alone did not fix either case — scores shifted but rankings did not.
-  Kept anyway per the model card; the next improvement (section prepending)
-  targets the actual failure mode.
-- **Section prepending at index time:** embed `"{section}\n{text}"` instead of
-  just `text`. Sections like `DEEP STRIKE` or `DETERMINE ATTACKER AND DEFENDER`
-  are topical signals that body sentences alone don't carry. Max token count
-  rises from 374 → 390, still well under 512. Same sanity, same 2 questions,
-  top-3 retrieval:
-
-  | Question | After prefix only | After prefix + section prepended |
-  |---|---|---|
-  | "How does deep strike work?" | p49 EXAMPLE BATTLEFIELDS (0.639), p32 FIGHT PHASE (0.632), p32 FIGHTS FIRST (0.626) — all wrong | **p39 DEEP STRIKE (0.696)** ✓, p33 FIGHT (0.631), p32 FIGHT PHASE (0.626) |
-  | "When do I determine the attacker and defender?" | p57 / p59 DECLARE BATTLE FORMATIONS (0.704), p33 MAKE MELEE ATTACKS (0.685) | **p57 / p59 DETERMINE ATTACKER AND DEFENDER (0.779)** ✓, p60 DETERMINE VICTOR (0.708) |
-
-  Top-1 is now correct on both. Rebuild the index with `make index` after any
-  chunker change.
-- **PDF eval set (phase-1 baseline, 2026-11-01):** 20 hand-labelled questions in
-  `rag/src_rag/evaluation/questions_pdf.jsonl`, each with expected page(s) and
-  section(s). Current baseline on `chroma+bge-small` + query prefix + section
-  prepended, k=5:
-
-  | Metric | Score |
-  |---|---|
-  | Hit@5 (section) | 100% |
-  | Hit@5 (page)    | 100% |
-  | MRR@5 (section) | 0.938 |
-
-  Only misses (rank > 1):
-  - `saving-throw` (rank 4): "What happens on a save roll?" — the token "roll"
-    pulls top-3 to `COMMAND RE-ROLL` / `ROLL-OFFS` / `RE-ROLLS` instead of
-    `4. SAVING THROW` (p22). Classic dense-only term-matching failure.
-  - `battle-shock` (rank 2): top-1 is `INSANE BRAVERY` (p42, which discusses
-    battle-shock mechanics) rather than the main `2. BATTLE-SHOCK` entry (p11).
-    Topic is correct, section label isn't.
-
-  Candidate fix if these recur: BM25 + RRF hybrid (lecture 3). Not doing it
-  yet — need more labelled failures first. Run `make eval` to reproduce.
-- **LLM provider:** Google AI Studio (per teacher's grading convention).
-- **SQL connection:** must be opened with `mode=ro`. Never writable from
-  LLM-reachable code paths.
-- **Out of scope:** ColBERT / late interaction (teacher said so in lecture 3).
-
-## Open questions
-
-- How many chunks `k` for the first retrieval pass? Current default `k=5`; try
-  `k=20` + re-rank to 5 once we have an LLM reranker wired.
-- Does the final answer always cite its source (page / SQL query)? Likely yes
-  — important for the UI.
-- Track PDF eval failures per category (fixed-term vs. descriptive, single-section
-  vs. multi-section).
+| Yawen Zhang ([@nanfanggaosu](https://github.com/nanfanggaosu)) | PDF path: parser, chunker, PDF retriever and its evaluation. Router, answer generation and the chat: conversation, commands, translation, demo and sanity runs. |
+| Ruxin Xie ([@xieruxin922](https://github.com/xieruxin922)) | SQL path: text-to-SQL agent, schema and value indexes, few-shot examples, safe execution and its evaluation. Shared Gemini wrapper. End-to-end RAGAS evaluation and the SQL experiments. |
+| Both | Shared interfaces between modules, and documentation. |

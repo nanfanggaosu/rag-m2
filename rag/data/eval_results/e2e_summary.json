@@ -1,21 +1,22 @@
 {
-  "model": "gemini-3.1-flash-lite",
-  "total_questions": 36,
+  "model": "gemini-3.5-flash",
+  "judge_model": "gemini-3.1-flash-lite",
+  "total_questions": 40,
   "incomplete": [],
   "overall": {
-    "questions": 36,
-    "router_accuracy": 0.9722222222222222,
+    "questions": 40,
+    "router_accuracy": 1.0,
     "pdf_section_hit": 1.0,
     "pdf_page_hit": 1.0,
-    "sql_exact": 0.7727272727272727,
-    "sql_relaxed": 0.8636363636363636,
+    "sql_exact": 0.6363636363636364,
+    "sql_relaxed": 1.0,
     "sql_errors": 0,
     "ragas": {
-      "faithfulness": 0.9002174523007856,
-      "answer_relevancy": 0.913298228864872,
-      "llm_context_precision_with_reference": 0.6226851851254629,
-      "context_recall": 0.9513888888888888,
-      "answer_correctness": 0.782521061110537
+      "faithfulness": 0.9633009132680185,
+      "answer_relevancy": 0.9172673951917384,
+      "llm_context_precision_with_reference": 0.6624999999360417,
+      "context_recall": 0.9854166666666666,
+      "answer_correctness": 0.7970007734497192
     },
     "ragas_missing": {
       "faithfulness": 0,
@@ -27,7 +28,7 @@
   },
   "by_source": {
     "pdf": {
-      "questions": 14,
+      "questions": 17,
       "router_accuracy": 1.0,
       "pdf_section_hit": 1.0,
       "pdf_page_hit": 1.0,
@@ -35,11 +36,11 @@
       "sql_relaxed": null,
       "sql_errors": 0,
       "ragas": {
-        "faithfulness": 0.9345238095238095,
-        "answer_relevancy": 0.8585090887143813,
-        "llm_context_precision_with_reference": 0.6607142856547619,
-        "context_recall": 0.9821428571428571,
-        "answer_correctness": 0.7309512164863187
+        "faithfulness": 0.9769607843137256,
+        "answer_relevancy": 0.8736860184997886,
+        "llm_context_precision_with_reference": 0.6764705881730392,
+        "context_recall": 0.965686274509804,
+        "answer_correctness": 0.7213990430875128
       },
       "ragas_missing": {
         "faithfulness": 0,
@@ -50,19 +51,19 @@
       }
     },
     "sql": {
-      "questions": 14,
-      "router_accuracy": 0.9285714285714286,
+      "questions": 15,
+      "router_accuracy": 1.0,
       "pdf_section_hit": null,
       "pdf_page_hit": null,
-      "sql_exact": 0.7142857142857143,
-      "sql_relaxed": 0.8571428571428571,
+      "sql_exact": 0.5,
+      "sql_relaxed": 1.0,
       "sql_errors": 0,
       "ragas": {
-        "faithfulness": 0.8581349206349207,
-        "answer_relevancy": 0.9393478495286657,
-        "llm_context_precision_with_reference": 0.9285714284785714,
-        "context_recall": 0.9285714285714286,
-        "answer_correctness": 0.8644201408749633
+        "faithfulness": 0.9391630591630592,
+        "answer_relevancy": 0.9486095477861443,
+        "llm_context_precision_with_reference": 0.9999999999,
+        "context_recall": 1.0,
+        "answer_correctness": 0.874743993480627
       },
       "ragas_missing": {
         "faithfulness": 0,
@@ -78,14 +79,14 @@
       "pdf_section_hit": 1.0,
       "pdf_page_hit": 1.0,
       "sql_exact": 0.875,
-      "sql_relaxed": 0.875,
+      "sql_relaxed": 1.0,
       "sql_errors": 0,
       "ragas": {
-        "faithfulness": 0.9138257575757576,
-        "answer_relevancy": 0.9635923879665917,
-        "llm_context_precision_with_reference": 0.02083333333125,
-        "context_recall": 0.9375,
-        "answer_correctness": 0.7294448996151729
+        "faithfulness": 0.97953216374269,
+        "answer_relevancy": 0.9511112845476212,
+        "llm_context_precision_with_reference": 0.0,
+        "context_recall": 1.0,
+        "answer_correctness": 0.8118859129114556
       },
       "ragas_missing": {
         "faithfulness": 0,
@@ -98,14 +99,14 @@
   },
   "router_confusion": {
     "pdf": {
-      "pdf": 14,
+      "pdf": 17,
       "sql": 0,
       "both": 0
     },
     "sql": {
       "pdf": 0,
-      "sql": 13,
-      "both": 1
+      "sql": 15,
+      "both": 0
     },
     "both": {
       "pdf": 0,
@@ -113,11 +114,5 @@
       "both": 8
     }
   },
-  "router_mistakes": [
-    {
-      "id": "s-e07",
-      "expected": "sql",
-      "routed": "both"
-    }
-  ]
+  "router_mistakes": []
 }
