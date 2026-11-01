@@ -5,6 +5,7 @@ For each question: router -> retriever(s) -> synthesized answer, then score
   - retrieval: PDF section/page hit and SQL execution accuracy against gold results,
   - RAGAS: faithfulness, answer relevancy, context precision, context recall, answer correctness.
 
+    uv run python -m rag.src_rag.evaluation.e2e_eval
     uv run python -m rag.src_rag.evaluation.e2e_eval --model gemini-3.1-flash-lite --rpm 14
     uv run python -m rag.src_rag.evaluation.e2e_eval --skip-ragas
 

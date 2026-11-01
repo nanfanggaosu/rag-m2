@@ -182,7 +182,7 @@ Three layered evaluations, each `make`-able:
 | `make eval-e2e` | Router + both retrievers + answer, RAGAS judge | Router accuracy, retrieval hit@5, SQL match, faithfulness, answer relevancy / correctness, context precision / recall |
 
 Headline from the latest end-to-end run (36 mixed questions,
-`gemini-3.1-flash-lite`; full report at [`rag/data/eval_results/e2e_report.md`](rag/data/eval_results/e2e_report.md)):
+`gemini-3.1-flash-lite`, before the SQL changes under *SQL path choices* below; full report at [`rag/data/eval_results/e2e_report.md`](rag/data/eval_results/e2e_report.md)):
 
 | Metric | Overall | pdf (14) | sql (14) | both (8) |
 |---|---|---|---|---|
@@ -239,10 +239,16 @@ Section hit@5 is still 8/8.
 - **RAGAS install:** `pyproject.toml` drops `scikit-network` (no Windows wheel on Python
   3.14, only used for test-set generation) and keeps `langchain-community<0.4` (ragas 0.4
   imports a module removed in 0.4).
-- **Model for evaluation:** `gemini-3.1-flash-lite` (free tier: 15 requests per minute, 500
-  per day), because `gemini-3.5-flash` allows only 5 per minute and about 20 per day, while one
-  end-to-end run needs about 410 calls. `gemini-3.5-flash` is currently served by
-  `gemini-3.6-flash`. Results and analysis are in `rag/data/eval_results/`.
+- **Model:** chat and evaluation both default to `gemini-3.5-flash`, currently served by
+  `gemini-3.6-flash`. One end-to-end run needs about 410 calls, more than its free tier allows
+  (5 per minute, about 20 per day). The results in `rag/data/eval_results/` were produced with
+  `gemini-3.1-flash-lite` and have not been rerun on `gemini-3.5-flash`.
+- **SQL path choices:** the full schema stays in the prompt, because with 21 tables pruning
+  halved the prompt without improving accuracy. Few-shot selection is hybrid (fuzzy match plus
+  embeddings, merged by reciprocal rank fusion) with 5 examples, because fuzzy match alone fell
+  further on informal wording and 5 examples cover far more of the needed tables than 3 for
+  about 3% more prompt. A lone 0 is retried like an empty result, because a count over the wrong
+  table still returns one row.
 - **Embedding model:** `BAAI/bge-small-en-v1.5` (2026-10-29). 512-token context,
   384-dim, strong on the MTEB leaderboard among small open-source models. All 261
   chunks of `Core Rules.pdf` fit (max 374 tokens), so no truncation and no need

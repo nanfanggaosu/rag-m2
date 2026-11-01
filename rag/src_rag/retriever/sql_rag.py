@@ -21,7 +21,7 @@ from rag.src_rag.retriever.sql_schema import render_schema
 from rag.src_rag.retriever.sql_values import match_values, render_value_hints
 
 MAX_ATTEMPTS = 3
-N_EXAMPLES = 3
+N_EXAMPLES = 5
 
 RULES = """\
 You write SQLite queries for a Warhammer 40,000 rules database.
@@ -41,6 +41,11 @@ RULES
 - In datasheets_models_cost, rows with an empty cost are tier headers ('YOUR UNIT COSTS',
   'YOUR 1ST TO 3RD UNITS COST', ...). Each price belongs to the nearest header above it by line.
 - Exclude datasheets.virtual = 'true' when counting or listing datasheets.
+- Abilities such as Stealth, Deep Strike or Feel No Pain are in abilities, joined through
+  datasheets_abilities.abilityId, or named in datasheets_abilities.name when unique to one unit.
+  datasheets_keywords holds unit types such as Infantry or Fly: use it only for those.
+- Weapon abilities such as pistol, blast or hazardous are in datasheets_wargear.description
+  and the weapon's name may not contain the word: match lower(description) LIKE '%pistol%'.
 - Return only the columns needed to answer, using names rather than ids.
 - Do not add LIMIT unless the question asks for a fixed number of results: at most {max_rows}
   rows are returned and the true total is reported separately."""
@@ -70,10 +75,13 @@ def build_prompt(question: str, *, max_rows: int, feedback: list[Attempt] = ()) 
         render_examples(select_examples(question, k=N_EXAMPLES)),
     ]
     for a in feedback:
-        problem = a.result.error or "the query ran but returned no rows"
+        problem = a.result.error or (
+            "the query ran but returned 0" if a.result.rows else "the query ran but returned no rows"
+        )
         parts.append(
             f"PREVIOUS ATTEMPT\nSQL: {a.sql}\nPROBLEM: {problem}\n"
-            "Fix the query. If you are sure the correct answer is empty, return the same query."
+            "Fix the query. If it found nothing, check whether the data is in another table or "
+            "column. If you are sure the correct answer is empty or 0, return the same query."
         )
     parts.append(f"QUESTION: {question}")
     return "\n\n".join(p for p in parts if p)
@@ -89,10 +97,9 @@ class SqlRag:
         t0 = time.perf_counter()
         attempts: list[Attempt] = []
         for _ in range(self.max_attempts):
+            prompt = build_prompt(question, max_rows=max_rows, feedback=attempts)
             try:
-                reply = self.llm.complete_json(
-                    build_prompt(question, max_rows=max_rows, feedback=attempts), OUTPUT_SCHEMA
-                )
+                reply = self.llm.complete_json(prompt, OUTPUT_SCHEMA)
             except Exception as e:
                 self.last_attempts = attempts
                 return SqlRagResult(
@@ -105,7 +112,7 @@ class SqlRag:
             sql = str(reply.get("sql", "")).strip()
             result = run_sql(sql, max_rows=max_rows)
             attempts.append(Attempt(sql, str(reply.get("reasoning", "")), result))
-            if result.error is None and (result.rows or _repeats_previous(attempts)):
+            if result.error is None and (not _found_nothing(result) or _repeats_previous(attempts)):
                 break
         self.last_attempts = attempts
 
@@ -118,6 +125,15 @@ class SqlRag:
             error=final.error,
             total_rows=final.total_rows,
         )
+
+
+def _found_nothing(result: SqlRagResult) -> bool:
+    """No rows, or a lone 0: a count over the wrong table still returns one row."""
+    if not result.rows:
+        return True
+    if len(result.rows) > 1 or len(result.columns) > 1:
+        return False
+    return str(result.rows[0][result.columns[0]]) in ("0", "None")
 
 
 def _repeats_previous(attempts: list[Attempt]) -> bool:

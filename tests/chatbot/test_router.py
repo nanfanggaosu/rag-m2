@@ -63,6 +63,12 @@ def test_route_both_carries_the_split_questions():
     assert r.sql_question == "Which units have Fly?"
 
 
+def test_route_prompt_keeps_conditions_when_splitting():
+    captured = FakeLlm([{"source": "pdf", "rationale": "ok"}])
+    route("anything", captured)
+    assert "keeping every condition from the original question" in captured.prompts[0]
+
+
 def test_route_prompt_shows_split_questions_for_both():
     captured = FakeLlm([{"source": "pdf", "rationale": "ok"}])
     route("anything", captured)

@@ -30,10 +30,13 @@ _SYSTEM = (
     "- pdf: rules, mechanics, phases, keywords, abilities, actions "
     "(the Core Rules PDF).\n"
     "- sql: faction/unit/datasheet/stratagem/enhancement lookups by name, "
-    "counts, points costs (the SQLite datasheets DB).\n"
+    "counts, points costs (the SQLite datasheets DB), including lookups that only "
+    "mention a phase or rule as a filter.\n"
     "- both: the question needs a rule explanation AND a specific "
     "unit/data lookup. Then also give pdf_question (the rule part alone) and "
-    "sql_question (the data part alone), each understandable on its own.\n"
+    "sql_question (the data part alone), each understandable on its own and "
+    "keeping every condition from the original question (faction, unit, phase, "
+    "numbers) in the part it belongs to.\n"
     "Return JSON only."
 )
 

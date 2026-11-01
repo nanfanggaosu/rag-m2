@@ -4,6 +4,10 @@ Written by hand from `e2e_report.md`, `e2e_records.json` and the cached RAGAS ve
 
 **Status: complete.** All 36 questions have every score, with no LLM failures in the final run.
 
+**These results predate later changes** to the SQL path and router (hybrid few-shot selection,
+ability and weapon rules, retry on 0, condition-keeping splits), and to the gold answers of e07,
+e10 and e13. They used `gemini-3.1-flash-lite`. Rerun `make eval-e2e` to update them.
+
 ## Setup
 
 - 36 questions: 14 PDF, 14 SQL, 8 both. None appears in a router or SQL few-shot prompt, which

@@ -28,7 +28,7 @@ eval-sql:
 	uv run python -m rag.src_rag.evaluation.sql_eval
 
 eval-e2e:
-	uv run python -m rag.src_rag.evaluation.e2e_eval --model gemini-3.1-flash-lite
+	uv run python -m rag.src_rag.evaluation.e2e_eval
 
 test:
 	uv run pytest -q

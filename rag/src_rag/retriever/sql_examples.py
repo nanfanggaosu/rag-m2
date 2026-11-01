@@ -12,6 +12,7 @@ import json
 import sys
 from collections import Counter
 from dataclasses import dataclass
+from functools import cache
 from typing import Any, Literal
 
 from rapidfuzz import fuzz, process, utils
@@ -23,6 +24,7 @@ EXAMPLES_PATH = PROJECT_ROOT / "rag" / "data" / "sql_examples.json"
 EXPECTED_MAX_ROWS = 100
 
 Split = Literal["fewshot", "eval"]
+RRF_K = 60
 
 
 @dataclass(frozen=True)
@@ -92,14 +94,32 @@ def check_example(example: SqlExample) -> tuple[bool, SqlRagResult]:
     return ok, out
 
 
+@cache
+def _question_vectors(split: Split) -> list[list[float]]:
+    from rag.src_rag.retriever.pdf import embed_passages
+
+    return embed_passages([e.question for e in load_examples(split)])
+
+
 def select_examples(question: str, *, k: int = 3, split: Split = "fewshot") -> list[SqlExample]:
-    """Most lexically similar examples; a stand-in until embedding search lands."""
+    """Hybrid search: lexical similarity catches shared wording, embeddings catch informal
+    rewording ("price" for "points"). Rankings are merged by reciprocal rank fusion."""
+    from rag.src_rag.retriever.pdf import embed_query
+
     pool = load_examples(split)
-    hits = process.extract(
+    lexical = [idx for _, _, idx in process.extract(
         question, [e.question for e in pool], scorer=fuzz.token_sort_ratio,
-        processor=utils.default_process, limit=k,
-    )
-    return [pool[idx] for _, _, idx in hits]
+        processor=utils.default_process, limit=None,
+    )]
+    query = embed_query(question)
+    similarity = [sum(a * b for a, b in zip(query, v)) for v in _question_vectors(split)]
+    semantic = sorted(range(len(pool)), key=lambda i: -similarity[i])
+
+    scores = [0.0] * len(pool)
+    for ranking in (lexical, semantic):
+        for rank, idx in enumerate(ranking):
+            scores[idx] += 1 / (RRF_K + rank)
+    return [pool[idx] for idx in sorted(lexical, key=lambda i: -scores[i])[:k]]
 
 
 def render_examples(examples: list[SqlExample]) -> str:

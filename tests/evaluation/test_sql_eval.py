@@ -18,6 +18,7 @@ def test_wrong_and_broken_answers_are_scored():
     examples = load_examples("eval")[:2]
     llm = FakeLlm([
         {"reasoning": "", "sql": "SELECT 0 AS n_datasheets"},
+        {"reasoning": "", "sql": "SELECT 0 AS n_datasheets"},
         {"reasoning": "", "sql": "SELECT broken"},
         {"reasoning": "", "sql": "SELECT broken"},
         {"reasoning": "", "sql": "SELECT broken"},
