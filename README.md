@@ -133,7 +133,7 @@ Teacher-provided data (PDF, SQLite, data dictionary) is committed under
 
   Top-1 is now correct on both. Rebuild the index with `make index` after any
   chunker change.
-- **PDF eval set (phase-1 baseline, 2026-10-30):** 10 hand-labelled questions in
+- **PDF eval set (phase-1 baseline, 2026-11-01):** 20 hand-labelled questions in
   `rag/src_rag/evaluation/questions_pdf.jsonl`, each with expected page(s) and
   section(s). Current baseline on `chroma+bge-small` + query prefix + section
   prepended, k=5:
@@ -142,14 +142,18 @@ Teacher-provided data (PDF, SQLite, data dictionary) is committed under
   |---|---|
   | Hit@5 (section) | 100% |
   | Hit@5 (page)    | 100% |
-  | MRR@5 (section) | 0.925 |
+  | MRR@5 (section) | 0.938 |
 
-  Only miss: `saving-throw` ("What happens on a save roll?") lands at rank 4 —
-  the token "roll" pulls top-3 to `COMMAND RE-ROLL` / `ROLL-OFFS` / `RE-ROLLS`
-  instead of `4. SAVING THROW` (p22). Classic dense-only failure mode where a
-  fixed term matters more than semantic similarity. Candidate fix if it recurs:
-  BM25 + RRF hybrid (lecture 3). Not doing it yet — need more labelled failures
-  first. Run `make eval` to reproduce.
+  Only misses (rank > 1):
+  - `saving-throw` (rank 4): "What happens on a save roll?" — the token "roll"
+    pulls top-3 to `COMMAND RE-ROLL` / `ROLL-OFFS` / `RE-ROLLS` instead of
+    `4. SAVING THROW` (p22). Classic dense-only term-matching failure.
+  - `battle-shock` (rank 2): top-1 is `INSANE BRAVERY` (p42, which discusses
+    battle-shock mechanics) rather than the main `2. BATTLE-SHOCK` entry (p11).
+    Topic is correct, section label isn't.
+
+  Candidate fix if these recur: BM25 + RRF hybrid (lecture 3). Not doing it
+  yet — need more labelled failures first. Run `make eval` to reproduce.
 - **LLM provider:** Google AI Studio (per teacher's grading convention).
 - **SQL connection:** must be opened with `mode=ro`. Never writable from
   LLM-reachable code paths.
