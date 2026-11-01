@@ -1,4 +1,4 @@
-# rag-m2
+# Multi-Source RAG Chatbot_Warhammer 40K
 
 A chatbot that answers Warhammer 40,000 questions from two sources: the Core Rules PDF, searched
 with embeddings, and a SQLite database of unit datasheets, queried through text-to-SQL. An LLM

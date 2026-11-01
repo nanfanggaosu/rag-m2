@@ -257,7 +257,7 @@ def main() -> None:
 
     llm = GeminiLlm()
     history: list[Turn] = []
-    print("rag-m2 chat. Type /help for commands, /quit to leave.")
+    print("Multi-Source RAG Chatbot_Warhammer 40K. Type /help for commands, /quit to leave.")
     while True:
         try:
             q = input("> ").strip()
