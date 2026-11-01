@@ -36,6 +36,14 @@ def _model() -> SentenceTransformer:
     return SentenceTransformer(MODEL_NAME)
 
 
+def embed_passages(texts: list[str]) -> list[list[float]]:
+    return _model().encode(texts, normalize_embeddings=True, show_progress_bar=False).tolist()
+
+
+def embed_query(text: str) -> list[float]:
+    return embed_passages([_QUERY_PREFIX + text])[0]
+
+
 @lru_cache(maxsize=1)
 def _collection() -> chromadb.Collection:
     INDEX_DIR.mkdir(parents=True, exist_ok=True)

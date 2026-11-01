@@ -507,6 +507,36 @@
     ]
   },
   {
+    "id": "f21",
+    "split": "fewshot",
+    "question": "Which Chaos Space Marines units have the Infiltrators ability?",
+    "sql": "SELECT DISTINCT d.name FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_abilities da ON da.DatasheetId = d.Id JOIN abilities a ON a.Id = da.abilityId WHERE f.name = 'Chaos Space Marines' AND a.name = 'Infiltrators' AND d.virtual = 'false'",
+    "notes": "Abilities are not keywords: join abilities through datasheets_abilities, even when the question does not say 'ability'.",
+    "expected": [
+      [
+        "Red Corsairs Raiders"
+      ],
+      [
+        "Red Corsairs Reave-Captain"
+      ]
+    ]
+  },
+  {
+    "id": "f22",
+    "split": "fewshot",
+    "question": "Which Hellblaster Squad weapons are hazardous?",
+    "sql": "SELECT DISTINCT w.name FROM datasheets d JOIN datasheets_wargear w ON w.DatasheetId = d.Id WHERE d.name = 'Hellblaster Squad' AND lower(w.description) LIKE '%hazardous%'",
+    "notes": "Weapon abilities are in description, in mixed case; the weapon's name may not contain the word.",
+    "expected": [
+      [
+        "Plasma incinerator â supercharge"
+      ],
+      [
+        "Plasma pistol â supercharge"
+      ]
+    ]
+  },
+  {
     "id": "e01",
     "split": "eval",
     "question": "How many datasheets does the Tyranids faction have?",
@@ -676,73 +706,47 @@
     "id": "e07",
     "split": "eval",
     "question": "Which stratagems can Termagants use in the Fight phase?",
-    "sql": "SELECT DISTINCT s.name, s.cpCost, s.phase FROM datasheets d JOIN datasheets_stratagems ds ON ds.DatasheetId = d.Id JOIN stratagems s ON s.id = ds.stratagemId WHERE d.name = 'Termagants' AND s.phase LIKE '%Fight%' ORDER BY s.name",
-    "notes": "Same pattern as f06.",
+    "sql": "SELECT DISTINCT s.name FROM datasheets d JOIN datasheets_stratagems ds ON ds.DatasheetId = d.Id JOIN stratagems s ON s.id = ds.stratagemId WHERE d.name = 'Termagants' AND s.phase LIKE '%Fight%' ORDER BY s.name",
+    "notes": "Same pattern as f06. Gold originally also returned cpCost and phase, which the question does not ask for.",
     "expected": [
       [
-        "ADRENAL SURGE",
-        "2",
-        "Fight phase"
+        "ADRENAL SURGE"
       ],
       [
-        "BIO-ACID SURGE",
-        "1",
-        "Fight phase"
+        "BIO-ACID SURGE"
       ],
       [
-        "COUNTER-OFFENSIVE",
-        "2",
-        "Fight phase"
+        "COUNTER-OFFENSIVE"
       ],
       [
-        "COUNTEROFFENSIVE",
-        "2",
-        "Fight phase"
+        "COUNTEROFFENSIVE"
       ],
       [
-        "DEATH FRENZY",
-        "1",
-        "Fight phase"
+        "DEATH FRENZY"
       ],
       [
-        "INVISIBLE HUNTER",
-        "1",
-        "Fight phase"
+        "INVISIBLE HUNTER"
       ],
       [
-        "OVERRUN",
-        "1",
-        "Fight phase"
+        "OVERRUN"
       ],
       [
-        "RAPACIOUS HUNGER",
-        "1",
-        "Fight phase"
+        "RAPACIOUS HUNGER"
       ],
       [
-        "RAPID REGENERATION",
-        "1",
-        "Shooting or Fight phase"
+        "RAPID REGENERATION"
       ],
       [
-        "RETREAT BELOW",
-        "1",
-        "Fight phase"
+        "RETREAT BELOW"
       ],
       [
-        "SECURE BIOMASS",
-        "1",
-        "Fight phase"
+        "SECURE BIOMASS"
       ],
       [
-        "SWARMING MASSES",
-        "1",
-        "Shooting or Fight phase"
+        "SWARMING MASSES"
       ],
       [
-        "TEEMING MASSES",
-        "1",
-        "Shooting or Fight phase"
+        "TEEMING MASSES"
       ]
     ]
   },
@@ -787,38 +791,26 @@
     "id": "e10",
     "split": "eval",
     "question": "What is the most expensive enhancement in the Tyranids faction?",
-    "sql": "SELECT e.name, e.detachment, CAST(e.cost AS INTEGER) AS points FROM enhancements e JOIN factions f ON f.Id = e.FactionId WHERE f.name = 'Tyranids' AND CAST(e.cost AS INTEGER) = (SELECT max(CAST(e2.cost AS INTEGER)) FROM enhancements e2 WHERE e2.FactionId = f.Id) ORDER BY e.name",
-    "notes": "Same pattern as f10 (ties-safe max). The cheapest would be a poor question: many Tyranids enhancements cost 0.",
+    "sql": "SELECT e.name FROM enhancements e JOIN factions f ON f.Id = e.FactionId WHERE f.name = 'Tyranids' AND CAST(e.cost AS INTEGER) = (SELECT max(CAST(e2.cost AS INTEGER)) FROM enhancements e2 WHERE e2.FactionId = f.Id) ORDER BY e.name",
+    "notes": "Same pattern as f10 (ties-safe max). The cheapest would be a poor question: many Tyranids enhancements cost 0. Gold originally also returned detachment and points, which the question does not ask for.",
     "expected": [
       [
-        "Alien Cunning",
-        "Invasion Fleet",
-        30
+        "Alien Cunning"
       ],
       [
-        "Elevated Might",
-        "Warrior Bioform Onslaught",
-        30
+        "Elevated Might"
       ],
       [
-        "Hunting Grounds",
-        "Vanguard Onslaught",
-        30
+        "Hunting Grounds"
       ],
       [
-        "Naturalised Camouflage",
-        "Unending Swarm",
-        30
+        "Naturalised Camouflage"
       ],
       [
-        "Psychostatic Disruption",
-        "Synaptic Nexus",
-        30
+        "Psychostatic Disruption"
       ],
       [
-        "Synaptoprescience",
-        "Talons of the Norn Queen",
-        30
+        "Synaptoprescience"
       ]
     ]
   },
@@ -850,11 +842,10 @@
     "id": "e13",
     "split": "eval",
     "question": "What is the invulnerable save of the C'tan Shard of the Deceiver?",
-    "sql": "SELECT dm.name, dm.invSv FROM datasheets d JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE d.name LIKE 'C%tan Shard of the Deceiver'",
-    "notes": "Mis-encoded apostrophe again; invSv '4' means a 4+ invulnerable save.",
+    "sql": "SELECT dm.invSv FROM datasheets d JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE d.name LIKE 'C%tan Shard of the Deceiver'",
+    "notes": "Mis-encoded apostrophe again; invSv '4' means a 4+ invulnerable save. Gold originally also returned the model name, which the question does not ask for.",
     "expected": [
       [
-        "Câtan Shard of the Deceiver",
         "4"
       ]
     ]

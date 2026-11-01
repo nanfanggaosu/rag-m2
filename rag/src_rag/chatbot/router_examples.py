@@ -64,6 +64,10 @@ EXAMPLES: list[RouterExample] = [
         "A points-cost lookup from the datasheet-model table.",
     ),
     RouterExample(
+        "Which stratagems can the Warboss use in the Shooting phase?", "sql",
+        "A stratagem lookup for one unit; the phase is only a filter, no rule is asked for.",
+    ),
+    RouterExample(
         "How many units have the Fly keyword?", "sql",
         "A count query joining datasheets and keywords.",
     ),

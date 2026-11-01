@@ -11,11 +11,26 @@ A two-source Retrieval-Augmented-Generation system for the course mini-project.
 ```bash
 uv sync                                       # installs everything from uv.lock
 cp .env.example .env && $EDITOR .env          # paste GOOGLE_API_KEY
-make test                                     # 161 passed, 1 skipped
-make demo                                     # 4 scripted turns, see DEMO.md
-make chat                                     # multi-turn CLI
-make eval-e2e                                 # 36-question RAGAS run
+make test                                     # 172 passed, 1 skipped (with the index built)
+make index                                    # chunk + embed the rulebook (first run downloads the model)
+make sanity                                   # the 4 teacher sanity questions (Lecture 1 PDF p. 42)
+make demo                                     # 4 scripted turns across pdf / sql / both / follow-up
+make chat                                     # multi-turn CLI with /zh /fr /en translation
+make eval-e2e                                 # 40-question RAGAS run (results checked in)
 ```
+
+### Grading rubric → where to find the evidence
+
+The grading breakdown is 8 points across five areas (Lecture 1 PDF, p. 6). The table points
+each one at the files that back it up.
+
+| Rubric item | Where in the repo |
+|---|---|
+| **RAG Setup** | [`parser/`](rag/src_rag/parser/) (docling) → [`chunker/`](rag/src_rag/chunker/) (section-aware) → [`retriever/pdf.py`](rag/src_rag/retriever/pdf.py) (Chroma + bge-small, query prefix, section-prepended) + [`retriever/sql*.py`](rag/src_rag/retriever/) (text-to-SQL, data dictionary, few-shot, read-only connection) + [`chatbot/router.py`](rag/src_rag/chatbot/router.py) + [`chatbot/app.py`](rag/src_rag/chatbot/app.py) |
+| **Evaluation and monitoring** | [`evaluation/pdf_eval.py`](rag/src_rag/evaluation/pdf_eval.py) (Hit@5, MRR) + [`evaluation/sql_eval.py`](rag/src_rag/evaluation/sql_eval.py) (exact / relaxed) + [`evaluation/e2e_eval.py`](rag/src_rag/evaluation/e2e_eval.py) (RAGAS over 36 mixed questions) + [`e2e_report.md`](rag/data/eval_results/e2e_report.md) + [`e2e_analysis.md`](rag/data/eval_results/e2e_analysis.md); `GeminiLlm` records per-call usage via `llm.usage()` |
+| **Advanced RAG** | LLM-driven router with JSON-enum output (Lecture 3 routing / Lecture 4 agentic); `both` routing *splits* the question into a `pdf_question` + `sql_question` (query decomposition); multi-turn follow-ups are *contextualized* into standalone questions before routing (query rewriting). All in [`chatbot/`](rag/src_rag/chatbot/). |
+| **Interface** | `make chat` multi-turn CLI with `/help` `/history` `/last` `/sources` (links the answer back to its PDF page / SQL — the UI point from Lecture 1), `/zh` `/fr` `/en` translation (nice-to-have from Lecture 1 PPT), `/reset`, `/quit`. See [`chatbot/app.py`](rag/src_rag/chatbot/app.py). |
+| **Code quality** | 163 unit tests mirroring the source layout under [`tests/`](tests/); a single contract in [`interfaces.py`](rag/src_rag/interfaces.py) that both sides build against; `uv` + `Makefile` for one-command runs; read-only SQL connection; `.env` for secrets. |
 
 All teacher-provided data (PDF, SQLite, data dictionary) is committed under
 `rag/data/raw/`, so `git clone` + `uv sync` is enough to start. The LLM is
@@ -119,7 +134,7 @@ rag/
     chunker/     # text + table/image linking (A)
     retriever/   # pdf.py (A), sql*.py (B), stubs.py
     llm/         # shared Google-AI-Studio wrapper
-    chatbot/     # router.py (route) + app.py (multi-turn chat) + demo.py (joint)
+    chatbot/     # router.py + app.py (multi-turn chat, /zh translation) + demo.py + sanity.py (joint)
     evaluation/  # pdf_eval, sql_eval, e2e_eval (RAGAS) and question sets (joint)
     interfaces.py  # the contract — change only by consensus
 tests/            # mirrors src_rag/
@@ -166,10 +181,15 @@ each turn is cheap when the prompt-hash cache hits. In-chat commands:
 | `/reset` | clear conversation history |
 | `/history` | show prior turns |
 | `/last` / `/sources` | show which chunks or SQL were used in the last answer |
+| `/zh` `/fr` `/en` | translate the last answer (keeps `(p. XX)` citations) |
 | `/quit` | leave (ctrl-D / ctrl-C also work) |
 
-A short reference transcript of a mixed pdf / sql / both / follow-up run is in
-[`DEMO.md`](DEMO.md); reproduce with `make demo`.
+Two scripted runs are checked in so a reviewer can see the system behave without typing:
+
+- `make demo` → four hand-picked turns across pdf, sql, both, and a multi-turn follow-up; transcript in [`DEMO.md`](DEMO.md).
+- `make sanity` → the four questions the grader explicitly listed in Lecture 1 PDF p. 42
+  (grenades, stratagem, score points, Space Marine toughness); transcript at the bottom of
+  [`DEMO.md`](DEMO.md).
 
 ## Evaluation
 
@@ -182,7 +202,7 @@ Three layered evaluations, each `make`-able:
 | `make eval-e2e` | Router + both retrievers + answer, RAGAS judge | Router accuracy, retrieval hit@5, SQL match, faithfulness, answer relevancy / correctness, context precision / recall |
 
 Headline from the latest end-to-end run (36 mixed questions,
-`gemini-3.1-flash-lite`; full report at [`rag/data/eval_results/e2e_report.md`](rag/data/eval_results/e2e_report.md)):
+`gemini-3.1-flash-lite`, before the SQL changes under *SQL path choices* below; full report at [`rag/data/eval_results/e2e_report.md`](rag/data/eval_results/e2e_report.md)):
 
 | Metric | Overall | pdf (14) | sql (14) | both (8) |
 |---|---|---|---|---|
@@ -213,9 +233,10 @@ Section hit@5 is still 8/8.
 |---|---|
 | `make parse` | Run docling on `rag/data/raw/*.pdf` |
 | `make chunk` | Chunk the parsed JSON into `rag/data/chunks.jsonl` |
-| `make index` | Embed chunks into the Chroma vector DB |
+| `make index` | Chunk, then embed into the Chroma vector DB |
 | `make chat`  | Launch the multi-turn chat loop (CLI) |
 | `make demo`  | Run the scripted 4-step demo (pdf / sql / both / follow-up) |
+| `make sanity` | Run the four teacher sanity questions (Lecture 1 PDF p. 42) |
 | `make eval`  | Run the PDF retrieval evaluation (no LLM calls) |
 | `make eval-sql` | Run the SQL execution-accuracy evaluation |
 | `make eval-e2e` | Run the end-to-end RAGAS evaluation, written to `rag/data/eval_results/` |
@@ -239,10 +260,17 @@ Section hit@5 is still 8/8.
 - **RAGAS install:** `pyproject.toml` drops `scikit-network` (no Windows wheel on Python
   3.14, only used for test-set generation) and keeps `langchain-community<0.4` (ragas 0.4
   imports a module removed in 0.4).
-- **Model for evaluation:** `gemini-3.1-flash-lite` (free tier: 15 requests per minute, 500
-  per day), because `gemini-3.5-flash` allows only 5 per minute and about 20 per day, while one
-  end-to-end run needs about 410 calls. `gemini-3.5-flash` is currently served by
-  `gemini-3.6-flash`. Results and analysis are in `rag/data/eval_results/`.
+- **Model:** the chatbot defaults to `gemini-3.5-flash`, currently served by `gemini-3.6-flash`.
+  Its free tier allows about 5 requests per minute and 20 per day, and one question takes 2 or 3
+  calls, so set `GEMINI_MIN_INTERVAL_S=12` on a free key. RAGAS judges with the cheaper
+  `gemini-3.1-flash-lite`, because one end-to-end run needs well over 400 calls. A stronger judge
+  would be better; this is a known limitation.
+- **SQL path choices:** the full schema stays in the prompt, because with 21 tables pruning
+  halved the prompt without improving accuracy. Few-shot selection is hybrid (fuzzy match plus
+  embeddings, merged by reciprocal rank fusion) with 5 examples, because fuzzy match alone fell
+  further on informal wording and 5 examples cover far more of the needed tables than 3 for
+  about 3% more prompt. A lone 0 is retried like an empty result, because a count over the wrong
+  table still returns one row.
 - **Embedding model:** `BAAI/bge-small-en-v1.5` (2026-10-29). 512-token context,
   384-dim, strong on the MTEB leaderboard among small open-source models. All 261
   chunks of `Core Rules.pdf` fit (max 374 tokens), so no truncation and no need

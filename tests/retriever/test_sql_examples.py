@@ -22,7 +22,7 @@ def test_example_sql_reproduces_expected_result(example):
 def test_examples_are_well_formed():
     ids = [e.id for e in EXAMPLES]
     assert len(ids) == len(set(ids))
-    assert len(load_examples("fewshot")) == 20
+    assert len(load_examples("fewshot")) == 22
     assert len(load_examples("eval")) == 14
     assert all(e.expected for e in EXAMPLES)
 
@@ -57,6 +57,11 @@ def test_select_examples_finds_same_pattern():
     assert len(picked) == 3
     assert picked[0].id == "f04"
     assert all(e.split == "fewshot" for e in picked)
+
+
+def test_select_examples_finds_informal_wording():
+    picked = select_examples("whats the price of a boyz squad", k=5)
+    assert "f04" in [e.id for e in picked]
 
 
 def test_render_examples():

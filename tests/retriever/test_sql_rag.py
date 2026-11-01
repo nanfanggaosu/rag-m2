@@ -51,6 +51,36 @@ def test_empty_result_triggers_one_recheck():
     assert "returned no rows" in llm.prompts[1]
 
 
+def test_count_of_zero_triggers_one_recheck():
+    zero = "SELECT count(*) AS n FROM factions WHERE name = 'Nobody'"
+    llm = FakeLlm([_reply(zero), _reply(GOOD)])
+    out = SqlRag(llm)("How many factions are called Nobody?")
+    assert out.rows == [{"name": "Orks"}]
+    assert "returned 0" in llm.prompts[1]
+    assert "another table or column" in llm.prompts[1]
+
+
+def test_repeating_a_count_of_zero_is_accepted():
+    zero = "SELECT count(*) AS n FROM factions WHERE name = 'Nobody'"
+    llm = FakeLlm([_reply(zero), _reply(zero)])
+    rag = SqlRag(llm)
+    assert rag("How many factions are called Nobody?").rows == [{"n": 0}]
+    assert len(rag.last_attempts) == 2
+
+
+def test_nonzero_count_is_not_rechecked():
+    llm = FakeLlm([_reply("SELECT count(*) AS n FROM factions")])
+    rag = SqlRag(llm)
+    assert rag("How many factions?").error is None
+    assert len(rag.last_attempts) == 1
+
+
+def test_prompt_separates_abilities_keywords_and_weapon_abilities():
+    prompt = build_prompt("anything", max_rows=50)
+    assert "datasheets_abilities.abilityId" in prompt
+    assert "lower(description)" in prompt
+
+
 def test_repeating_an_empty_query_is_accepted():
     empty = "SELECT name FROM factions WHERE name = 'Nobody'"
     llm = FakeLlm([_reply(empty), _reply(empty)])

@@ -55,6 +55,19 @@ _CONTEXTUALIZE_SYSTEM = (
     "unchanged. Return the rewritten question only, no preface."
 )
 
+_TRANSLATE_SYSTEM = (
+    "Translate the following answer into {lang}. Keep all page citations like "
+    "'(p. 39)' and any SQL under a 'Source:' line unchanged. Return the "
+    "translated answer only, no preface."
+)
+
+# Lecture 1 PPT lists translation as a nice-to-have for the chat interface.
+LANGUAGES = {
+    "/zh": "Simplified Chinese",
+    "/fr": "French",
+    "/en": "English",
+}
+
 # Only the last few turns go into prompts, to keep tokens bounded.
 HISTORY_WINDOW = 3
 
@@ -202,10 +215,19 @@ Commands:
   /history     show prior turns in this session
   /last        show the full retrieval detail of the last answer
   /sources     same as /last — show which chunks / SQL were used
+  /zh /fr /en  translate the last answer (Chinese / French / English)
   /quit        leave the chat (ctrl-D or ctrl-C also work)
 
 Anything else is sent as a question. The router picks pdf, sql, or both.
 """
+
+
+def translate(text: str, lang: str, llm: Llm) -> str:
+    prompt = _TRANSLATE_SYSTEM.format(lang=lang) + "\n\n" + text
+    try:
+        return llm.complete(prompt).strip()
+    except Exception as e:
+        return f"(translation failed: {e})\n\n{text}"
 
 
 def _print_sources(turn: Turn) -> None:
@@ -265,6 +287,12 @@ def main() -> None:
                 print("[no answers yet]")
             else:
                 _print_sources(history[-1])
+            continue
+        if cmd in LANGUAGES:
+            if not history:
+                print("[no answer to translate yet]")
+            else:
+                print(translate(history[-1].answer.text, LANGUAGES[cmd], llm))
             continue
         try:
             result = answer(q, history=history, llm=llm)

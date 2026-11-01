@@ -5,7 +5,8 @@ For each question: router -> retriever(s) -> synthesized answer, then score
   - retrieval: PDF section/page hit and SQL execution accuracy against gold results,
   - RAGAS: faithfulness, answer relevancy, context precision, context recall, answer correctness.
 
-    uv run python -m rag.src_rag.evaluation.e2e_eval --model gemini-3.1-flash-lite --rpm 14
+    uv run python -m rag.src_rag.evaluation.e2e_eval
+    uv run python -m rag.src_rag.evaluation.e2e_eval --judge-rpm 60
     uv run python -m rag.src_rag.evaluation.e2e_eval --skip-ragas
 
 Every LLM call is cached on disk, so after a quota error rerunning the same command resumes
@@ -40,6 +41,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 QUESTIONS_PATH = Path(__file__).resolve().parent / "questions_e2e.jsonl"
 RESULTS_DIR = PROJECT_ROOT / "rag" / "data" / "eval_results"
 SOURCES = ("pdf", "sql", "both")
+# RAGAS makes about three calls for every chatbot call, so a cheaper, faster judge keeps a run practical.
+DEFAULT_JUDGE_MODEL = "gemini-3.1-flash-lite"
 _SOURCE_TRAILER = re.compile(r"\n\s*\W*Source:.*\Z", re.DOTALL)
 RAGAS_METRICS = (
     "faithfulness",
@@ -313,8 +316,10 @@ def main() -> None:
 
     sys.stdout.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", help="Gemini model for the chatbot and the RAGAS judge")
-    parser.add_argument("--rpm", type=float, default=14.0, help="requests per minute to stay under")
+    parser.add_argument("--model", help="Gemini model for the chatbot")
+    parser.add_argument("--judge-model", default=DEFAULT_JUDGE_MODEL, help="Gemini model for the RAGAS judge")
+    parser.add_argument("--rpm", type=float, default=14.0, help="chatbot requests per minute to stay under")
+    parser.add_argument("--judge-rpm", type=float, default=14.0, help="judge requests per minute to stay under")
     parser.add_argument("--skip-ragas", action="store_true")
     parser.add_argument("--limit", type=int, help="only run the first N of each source, as a smoke test")
     parser.add_argument("--out", type=Path, default=RESULTS_DIR)
@@ -340,8 +345,10 @@ def main() -> None:
             print(f"Stopping, rerun later to resume: {rec.failure[:300]}", flush=True)
             break
 
+    judge_base = GeminiLlm(args.judge_model, min_interval_s=60.0 / args.judge_rpm)
+    judge = TrackingLlm(judge_base)
     if not args.skip_ragas and not any(r.failure for r in records):
-        score_with_ragas(records, llm)
+        score_with_ragas(records, judge)
 
     summary = summarize(records)
     args.out.mkdir(parents=True, exist_ok=True)
@@ -349,14 +356,17 @@ def main() -> None:
         json.dumps([asdict(r) for r in records], ensure_ascii=False, indent=2), encoding="utf-8"
     )
     (args.out / "e2e_summary.json").write_text(
-        json.dumps({"model": base.model, **summary}, ensure_ascii=False, indent=2), encoding="utf-8"
+        json.dumps({"model": base.model, "judge_model": judge_base.model, **summary}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
     )
-    (args.out / "e2e_report.md").write_text(render_report(summary, records, base.model), encoding="utf-8")
+    (args.out / "e2e_report.md").write_text(
+        render_report(summary, records, f"{base.model}`, judge `{judge_base.model}"), encoding="utf-8"
+    )
     print(json.dumps(summary["overall"], indent=2))
     print("\n".join(_missing_score_warning(summary)))
-    if llm.failure:
-        print(f"Last LLM failure: {llm.failure[:300]}")
-    print(f"LLM usage {base.usage()}\nwrote {args.out}")
+    if judge.failure:
+        print(f"Last judge failure: {judge.failure[:300]}")
+    print(f"Chatbot usage {base.usage()}\nJudge usage {judge_base.usage()}\nwrote {args.out}")
 
 
 if __name__ == "__main__":

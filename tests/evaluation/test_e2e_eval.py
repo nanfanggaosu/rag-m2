@@ -26,8 +26,19 @@ def test_question_set_is_well_formed():
         assert q.reference and "GOLD_COUNT" not in q.reference
         if q.expected_source in ("pdf", "both"):
             assert q.expected_pages and q.expected_sections
-        if q.expected_source in ("sql", "both"):
+        # "A space marine" spans many datasheets, so this question has no single gold result.
+        if q.expected_source in ("sql", "both") and q.id != "t-toughness-space-marine":
             assert q.expected_rows
+
+
+def test_teachers_questions_are_in_the_set():
+    questions = {q.question for q in QUESTIONS}
+    assert {
+        "What is the rule for grenades?",
+        "How can I use a stratagem?",
+        "What are the different ways to score points?",
+        "What is the toughness of a space marine?",
+    } <= questions
 
 
 def test_questions_do_not_leak_from_any_prompt():
