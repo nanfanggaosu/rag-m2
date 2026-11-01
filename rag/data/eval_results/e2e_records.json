@@ -5,8 +5,8 @@
     "expected_source": "pdf",
     "reference": "A model that can Fly can move over other models when it makes a Charge move. If it starts or ends the Charge move on a terrain feature, the distance is measured through the air rather than along the path across the battlefield. It cannot end any move on top of another model.",
     "routed_source": "pdf",
-    "rationale": "The interaction between the Fly keyword and the Charge phase is a core rules mechanic defined in the rulebook.",
-    "answer": "When a model with the **Fly** keyword makes a Charge move, it follows these specific rules:\n\n*   **Movement over models:** A model that can Fly can be moved over other models as if they were not there (p. 30).\n*   **Movement over terrain:** If a model that can Fly starts or ends a Charge move on a terrain feature, you measure its path \"through the air\" (the diagonal distance) rather than measuring the path moved across the battlefield (p. 30).\n*   **Restrictions:** A model that can Fly cannot end any move on top of another model (p. 30).\n\nGeneral Charge move requirements (such as the need to end within Engagement Range of all targets, maintaining unit coherency, and not moving within Engagement Range of non-target units) still apply to models with Fly (p. 29). \n\nAdditionally, note that **Aircraft** units cannot declare a charge, and only units that can Fly are eligible to charge or make melee attacks against Aircraft (p. 54).",
+    "rationale": "Asks about core rule mechanics regarding how models with the FLY keyword perform a Charge move.",
+    "answer": "Based on the provided excerpts, flying models follow these rules when charging:\n\n* **Moving Over Models:** Models with **Fly** can move over other models as if they were not there when making a Charge move, but they cannot end any move on top of another model (p. 30).\n* **Measuring Terrain Distance:** When a model that can **Fly** starts or ends a Charge move on a terrain feature, you measure its path \"through the air\" (the diagonal distance) rather than measuring the path moved across the battlefield (p. 30).\n* **Targeting Aircraft:** Units that can **Fly** are the only units eligible to select an enemy **Aircraft** unit as a target of a charge (p. 54).\n* **Aircraft Restrictions:** If the flying model is an **Aircraft**, it cannot declare a charge (p. 54).\n\nOtherwise, flying models follow standard charge procedures: declaring eligible targets within 12\", making a 2D6 Charge roll, and needing to move within Engagement Range of all targets while maintaining Unit Coherency (p. 29).",
     "contexts": [
       "[p. 30, CHARGING WITH FLYING MODELS]\nWhen a model that can Fly starts or ends a Charge move on a terrain feature, instead of measuring the path it has moved across the battlefield, you instead measure its path 'through the air' . In addition, it can be moved over other models as if they were not there. A model that can Fly cannot end any move on top of another model.\n- ■ \u0007 Fly models can move over other models when they make a Charge move.\n- ■ \u0007 Fly models that start or end a Charge move on a terrain feature measure distance moved through the air when they make a Charge move.\n3\"\n2\"\n2½\"\nThe Von Ryan's Leaper declares a charge against the Eradicators, who are on top of a terrain feature 3\" in height. The horizontal distance between the two units when the charge is declared is 4 1/2\". To end a Charge move within Engagement Range, the Tyranids player would need a Charge roll of 7 or higher.\nThe Tyranid Prime is selected to declare a charge, and targets the Sternguard Veterans on top of the ruin. The Tyranids player rolls 10\" for the Charge roll, allowing the Tyranid Prime to move within Engagement Range of its target.\nNote that as the Tyranid Prime can Fly , it can move over the Terminators, and the distance moved is the diagonal distance through the air.",
       "[p. 30, CHARGING WITH FLYING MODELS]\n10\"",
@@ -36,11 +36,11 @@
     "sql_relaxed": null,
     "failure": null,
     "ragas": {
-      "faithfulness": 1.0,
-      "answer_relevancy": 0.8101095599512169,
+      "faithfulness": 0.9,
+      "answer_relevancy": 0.8525535410524084,
       "llm_context_precision_with_reference": 0.9999999999,
       "context_recall": 1.0,
-      "answer_correctness": 0.5130731752907526
+      "answer_correctness": 0.6587809739469807
     }
   },
   {
@@ -49,8 +49,8 @@
     "expected_source": "pdf",
     "reference": "It is done in the Determine Attacker and Defender step of setting up the battle: the players roll off, the winner is the Attacker and their opponent is the Defender.",
     "routed_source": "pdf",
-    "rationale": "Determining the attacker and defender is a procedural step defined in the core rules for setting up a battle.",
-    "answer": "Players determine the attacker and defender by rolling off; the winner of the roll-off is the Attacker, and their opponent is the Defender (p. 57, p. 59).",
+    "rationale": "Determining the attacker and defender is part of the pre-battle step described in the core rules sequence.",
+    "answer": "According to the excerpts, you determine the Attacker and Defender by having both players roll off: the winner of the roll-off becomes the Attacker, and their opponent is the Defender (p. 57, 59). \n\nHowever, the provided excerpts do not state the specific timing or order within the overall pre-battle sequence for *when* this step takes place relative to other setup steps.",
     "contexts": [
       "[p. 57, DETERMINE ATTACKER AND DEFENDER]\nPlayers roll off and the winner is the Attacker - their opponent is the Defender.",
       "[p. 59, DETERMINE ATTACKER AND DEFENDER]\nPlayers roll off and the winner is the Attacker - their opponent is the Defender.",
@@ -81,10 +81,10 @@
     "failure": null,
     "ragas": {
       "faithfulness": 1.0,
-      "answer_relevancy": 0.9238854338803792,
+      "answer_relevancy": 0.896899994817543,
       "llm_context_precision_with_reference": 0.99999999995,
       "context_recall": 1.0,
-      "answer_correctness": 0.7885946274007162
+      "answer_correctness": 0.6714139573605008
     }
   },
   {
@@ -93,8 +93,8 @@
     "expected_source": "pdf",
     "reference": "The player controlling the target rolls one D6 and modifies it by the attack's Armour Penetration. If the result is at least the model's Save the attack is saved and the sequence ends; otherwise the model suffers damage. An unmodified 1 always fails and a saving throw can never be improved by more than +1. An invulnerable save can be used instead and is not modified by AP.",
     "routed_source": "pdf",
-    "rationale": "The save roll is a core mechanic of the attack sequence defined in the rulebook.",
-    "answer": "When a saving throw is made, the player controlling the target unit rolls one D6 and modifies the result by the attack's Armour Penetration (AP) characteristic (p. 22).\n\nThe outcome of the saving throw is determined as follows:\n\n*   **Success:** If the result is greater than or equal to the model's Save (Sv) characteristic, the saving throw is successful and the attack sequence ends (p. 22).\n*   **Failure:** If the result is less than the model's Save characteristic, the saving throw fails and the model suffers damage (p. 22).\n*   **Automatic Failure:** An unmodified saving throw of 1 always fails (p. 22).\n\nAdditionally, a saving throw can never be improved by more than +1 (p. 22). If a player chooses to use a Command Re-roll, they may re-roll the saving throw, which must be done before any modifiers are applied (p. 9, p. 41).",
+    "rationale": "Asks for the core rule mechanics of resolving a save roll during attack resolution.",
+    "answer": "When making a saving throw:\n\n* **Making the Roll:** The player controlling the target unit rolls one D6 (p. 22). By default, this is an armour saving throw using the model's Save (Sv) characteristic, though some models can use an invulnerable save instead (p. 22).\n* **Applying Modifiers:** To make an armour saving throw, you modify the D6 result by the Armour Penetration (AP) characteristic of the attack (for example, subtracting 1 from the roll if the AP is -1) (p. 22). \n* **Determining the Result:** \n  * If the result is **greater than or equal to** the model's Save characteristic, the saving throw is successful and the attack sequence ends (p. 22).\n  * Otherwise, the saving throw fails and the model suffers damage (p. 22).\n* **Special Rules & Limits:**\n  * An unmodified saving throw of 1 always fails (p. 22).\n  * A saving throw can never be improved by more than +1 (p. 22).\n  * Just after making a saving throw, a player can use the Command Re-roll Stratagem for 1 CP to re-roll that saving throw (p. 41).",
     "contexts": [
       "[p. 41, COMMAND RE-ROLL]\nCORE - BATTLE TACTIC STRATAGEM\nA great commander can bend even the vagaries of fate and fortune to their will, the better to ensure victory.\nWHEN: In any phase, just after you have made a Hit roll, a Wound roll, a Damage roll, a saving throw, an Advance roll, a Charge roll, a Desperate Escape test, a Hazardous test, or just after you have rolled the dice to determine the number of attacks made with a weapon, for an attack, model or unit from your army.\nEFFECT: You re-roll that roll, test or saving throw.\n1CP\n1CP\nF\n1CP\n1CP",
       "[p. 9, ROLL-OFFS]\nSome rules instruct players to roll off. To do so, both players roll one D6, and whoever scores highest wins the roll-off. If there is a tie for the highest roll, roll off again. Neither player is allowed to re-roll or modify any of the D6 when making a roll-off.",
@@ -125,10 +125,10 @@
     "failure": null,
     "ragas": {
       "faithfulness": 1.0,
-      "answer_relevancy": 0.7405817891171459,
+      "answer_relevancy": 0.7100776052502124,
       "llm_context_precision_with_reference": 0.249999999975,
       "context_recall": 0.75,
-      "answer_correctness": 0.8231018568465371
+      "answer_correctness": 0.7977209651767894
     }
   },
   {
@@ -137,8 +137,8 @@
     "expected_source": "pdf",
     "reference": "A unit can embark if all its models end a Normal, Advance or Fall Back move within 3 inches of a friendly Transport, but it cannot embark and disembark in the same phase. A unit that starts your Movement phase embarked can disembark, wholly within 3 inches of the Transport and not within Engagement Range of enemies, unless the Transport Advanced or Fell Back. If it disembarks before the Transport moves it can act normally; if after the Transport made a Normal move it cannot move further or charge that turn. A unit that disembarked cannot Remain Stationary.",
     "routed_source": "pdf",
-    "rationale": "Embarking and disembarking are core rules regarding transport mechanics found in the rulebook.",
-    "answer": "To embark or disembark from a Transport, follow these rules:\n\n### Embarking\nA unit can embark within a friendly Transport if every model in that unit ends a Normal, Advance, or Fall Back move within 3\" of that Transport (p. 17). Once embarked, the unit is removed from the battlefield and placed to one side; units cannot do anything or be affected in any way while embarked (p. 17). A unit cannot embark if it has already disembarked from a Transport in the same phase (p. 17).\n\n### Disembarking\nA unit can disembark during your Movement phase if it started the phase embarked within a Transport (p. 17). When disembarking, you must set the unit up on the battlefield wholly within 3\" of the Transport and not within Engagement Range of any enemy models; if this is not possible, the unit cannot disembark (p. 17).\n\nThe rules for a unit's actions after disembarking depend on the Transport's movement:\n*   **If the Transport Remained Stationary or has not yet moved:** The unit can act normally (move, Advance, shoot, charge, etc.), but cannot choose to Remain Stationary (p. 17).\n*   **If the Transport made a Normal move:** The unit counts as having made a Normal move, cannot move further, and cannot declare a charge, but can otherwise act normally (p. 17).\n*   **If the Transport Advanced or Fell Back:** Units cannot disembark (p. 17).\n\n### Destroyed Transports\nIf a Transport is destroyed, any embarked units must immediately disembark before the Transport is removed (p. 18). When disembarking from a destroyed Transport:\n*   You must roll one D6 for each disembarking model; for each roll of 1, the unit suffers 1 mortal wound (p. 18).\n*   The unit is Battle-shocked until the start of your next Command phase (p. 18).\n*   The unit counts as having made a Normal move and cannot declare a charge for the remainder of the turn (p. 18).",
+    "rationale": "Embarking and disembarking from transports are core game rules and mechanics covered in the rulebook.",
+    "answer": "Based on the provided Core Rules excerpts, here is how units embark and disembark from transports:\n\n### **Embarking**\n* **Conditions:** A unit can embark within a friendly Transport if every model in the unit ends a Normal, Advance, or Fall Back move within 3\" of that Transport (p. 17).\n* **Process & Restrictions:** \n  * Remove the unit from the battlefield and place it to one side (p. 17).\n  * Unless stated otherwise, embarked units cannot do anything or be affected in any way while embarked (p. 17).\n  * A unit cannot embark and disembark in the same phase (p. 17).\n\n---\n\n### **Disembarking (Normal)**\n* **Timing:** A unit can disembark during your Movement phase if it started that phase embarked within a Transport (p. 17).\n* **Placement:** The disembarking unit must be set up wholly within 3\" of the Transport and not within Engagement Range of any enemy models. If a disembarking model cannot be set up for any reason, the unit cannot disembark (p. 17).\n* **Restrictions based on Transport movement:**\n  * **Before Transport moves / Transport Remained Stationary:** If the unit disembarks before the Transport moves, or if the Transport Remained Stationary, the unit can act normally (make a Normal move, Advance, shoot, declare a charge, fight, etc.), but it cannot choose to Remain Stationary (p. 17).\n  * **After Transport makes a Normal move:** If the unit disembarks after the Transport makes a Normal move, the unit counts as having made a Normal move itself. It cannot move further that phase and cannot declare a charge this turn, but can otherwise act normally (p. 17).\n  * **Transport Advanced or Fell Back:** Units **cannot** disembark from a Transport model that Advanced or Fell Back this turn (p. 17).\n\n---\n\n### **Disembarking from a Destroyed Transport**\n* If a Transport is destroyed, any embarked units must immediately disembark before the Transport model is removed from the battlefield (p. 18).\n* **Hazards:** Roll one D6 for each disembarking model; for each roll of 1, the disembarking model's unit suffers 1 mortal wound (p. 18).\n* **Effects:** Until the start of its controlling player's next Command phase, the disembarking unit is Battle-shocked (p. 18). Until the end of the turn, the unit counts as having made a Normal move and cannot declare a charge (p. 18).",
     "contexts": [
       "[p. 17, EMBARK]\nIf a unit makes a Normal, Advance or Fall Back move, and every model in that unit ends that move within 3\" of a friendly Transport model, they can embark within it. A unit cannot embark if it has already disembarked from a Transport model in the same phase. Remove the unit from the battlefield and place it to one side - it is now embarked within that Transport model. Unless otherwise stated, units cannot do anything or be affected in any way while they are embarked.\n- ■ \u0007 A unit can embark within a friendly Transport if all of its models end a Normal, Advance or Fall Back move within 3\" of that Transport .\n- ■ \u0007 A unit cannot embark and disembark in the same phase.",
       "[p. 17, DISEMBARK]\nIf a unit from your army starts your Movement phase embarked within a Transport model, that unit can disembark in that phase.\nWhen a unit disembarks from a Transport model, set it up on the battlefield so that it is wholly within 3\" of that Transport model and not within Engagement Range of any enemy models. If, for any reason, a disembarking model cannot be set up, that model's unit cannot disembark.\nUnits that disembark from a Transport model that either Remained Stationary this phase or has not yet made a Normal, Advance or Fall Back move this phase can then act normally (make a Normal move, Advance, shoot, declare a charge, fight, etc.) in the remainder of the turn. Such a disembarking unit cannot choose to Remain Stationary.\nUnits that disembark from a Transport model that made a Normal move this phase count as having made a Normal move themselves; they cannot move further during this phase. Such a unit also cannot declare a charge in the same turn, but can otherwise act normally in the remainder of the turn.\nUnits cannot disembark from a Transport model that either Advanced or Fell Back this turn.\n- ■ \u0007 Units that start your Movement phase embarked within a Transport can disembark this phase, provided their Transport has not Advanced or Fallen Back.",
@@ -169,10 +169,10 @@
     "failure": null,
     "ragas": {
       "faithfulness": 1.0,
-      "answer_relevancy": 0.8651156494040478,
+      "answer_relevancy": 0.897431945199039,
       "llm_context_precision_with_reference": 0.0,
       "context_recall": 1.0,
-      "answer_correctness": 0.6818729774764954
+      "answer_correctness": 0.6366248788357407
     }
   },
   {
@@ -181,8 +181,8 @@
     "expected_source": "pdf",
     "reference": "Monster and Vehicle units can shoot, and be shot at, even while within Engagement Range of enemy units. Each ranged attack made by or against such a unit in that situation subtracts 1 from its Hit roll, unless it is made with a Pistol.",
     "routed_source": "pdf",
-    "rationale": "Big Guns Never Tire is a core rule mechanic described in the rulebook.",
-    "answer": "The \"Big Guns Never Tire\" rule allows Monster and Vehicle units to remain effective even when locked in melee combat. The rules state the following:\n\n*   **Eligibility to Shoot:** Monster and Vehicle units are eligible to shoot in their controlling player's Shooting phase even while they are within Engagement Range of one or more enemy units (p. 20).\n*   **Targeting:** Ranged weapons equipped by Monster and Vehicle units can target enemy units they are within Engagement Range of, even if other friendly units are also within Engagement Range of that same enemy unit (p. 20). Additionally, you can select an enemy Monster or Vehicle unit within Engagement Range of one or more units from your army as a target for ranged attacks (p. 20).\n*   **Hit Roll Penalty:** Each time a Monster or Vehicle model makes a ranged attack, if its unit was within Engagement Range of one or more enemy units when it selected its targets, you must subtract 1 from that attack's Hit roll, unless the attack is made with a Pistol (p. 20). Similarly, each time a model from your army makes a ranged attack against an enemy Monster or Vehicle unit that is within Engagement Range of one or more units from your army, you must subtract 1 from that attack's Hit roll, unless the attack is made with a Pistol (p. 20).\n\nNote that a unit that is within Engagement Range of an enemy Monster or Vehicle unit is still not eligible to shoot unless that unit is itself a Monster or Vehicle unit, or its models are equipped with Pistols (p. 20).",
+    "rationale": "Big Guns Never Tire is a core rules mechanic/rule explained in the core rulebook.",
+    "answer": "Based on page 20 of the Core Rules, the **Big Guns Never Tire** rule includes the following provisions:\n\n* **Shooting while in Engagement Range:** Monster and Vehicle units are eligible to shoot in their controlling player's Shooting phase even while they are within Engagement Range of one or more enemy units (p. 20). Their ranged weapons can target enemy units they are within Engagement Range of, even if other friendly units are also within Engagement Range of the same enemy unit (p. 20).\n* **Being Targeted while in Engagement Range:** An enemy Monster or Vehicle unit that is within Engagement Range of one or more units from your army can still be selected as a target for ranged weapons by eligible units from your army (p. 20). \n* **Hit Roll Modifier:** Subtract 1 from the Hit roll each time a ranged attack is made by or against a Monster or Vehicle unit that is within Engagement Range, unless that attack is made with a Pistol (p. 20).\n* **Restrictions on Non-Monster/Vehicle Units:** A unit within Engagement Range of an enemy Monster or Vehicle is still not eligible to shoot unless it has a rule allowing it to do so (such as being a Monster or Vehicle itself, or using Pistols) (p. 20). However, other friendly units that are eligible to shoot can still target that enemy Monster or Vehicle (p. 20).",
     "contexts": [
       "[p. 20, BIG GUNS NEVER TIRE]\n- ■ \u0007 Monsters and Vehicles can shoot, and be shot at, even while they are within Engagement Range of enemy units. Each time a ranged attack is made by or against such a unit, subtract 1 from that attack's Hit roll (unless shooting with a Pistol).\nWOUND ROLL ATTACK'S STRENGTH VS TARGET'S TOUGHNESS | D6 RESULT REQUIRED\nStrength is TWICE (or more than twice) the Toughness. | +\nStrength is GREATER than the Toughness. | +\nStrength is EQUAL to the Toughness. | +\nStrength is LESS than the Toughness. | +\nStrength is HALF (or less than half) the Toughness. | +",
       "[p. 26, HEAVY]\nHeavy weapons are amongst the biggest guns on the battlefield, but require bracing to fire at full effect and are unwieldy to bring to bear at close quarters.\nWeapons with [HEAVY] in their profile are known as Heavy weapons. Each time an attack is made with such a weapon, if the attacking model's unit Remained Stationary this turn, add 1 to that attack's Hit roll.\n- ■ \u0007 Add 1 to Hit rolls if the bearer's unit Remained Stationary this turn.\nIMPERIAL REF: Weapon Designations\nFILE: 0-∆XE-15622100\nHeavy bolter\nForce weapon\nPlasma gun\nPlasma pistol\nSniper rifle\nBoltgun\nAstartes chainsword\nAssault cannon\nMissile launcher\nLightning claw\nFlamer\nAstartes shotgun\nMeltagun",
@@ -213,10 +213,10 @@
     "failure": null,
     "ragas": {
       "faithfulness": 1.0,
-      "answer_relevancy": 0.8870239091271521,
+      "answer_relevancy": 0.9143268979793201,
       "llm_context_precision_with_reference": 0.8333333332916666,
       "context_recall": 1.0,
-      "answer_correctness": 0.6001410735231052
+      "answer_correctness": 0.5941164006713566
     }
   },
   {
@@ -225,8 +225,8 @@
     "expected_source": "pdf",
     "reference": "When an attack with a Devastating Wounds weapon scores a Critical Wound, it inflicts mortal wounds on the target equal to the weapon's Damage characteristic and the attack sequence ends, so no saving throw is made.",
     "routed_source": "pdf",
-    "rationale": "Devastating Wounds is a core weapon ability defined in the rulebook.",
-    "answer": "When an attack is made with a weapon that has the [DEVASTATING WOUNDS] ability, the following rules apply:\n\n*   **Critical Wounds:** If the attack results in an unmodified Wound roll of 6 (a Critical Wound), the attack inflicts a number of mortal wounds on the target equal to the weapon's Damage characteristic (p. 21, p. 28).\n*   **End of Sequence:** When a Critical Wound is scored with a Devastating Wounds weapon, the attack sequence ends immediately (p. 28).\n*   **Bypassing Saves:** Because these attacks inflict mortal wounds, no saving throws (including invulnerable saves) can be made against them (p. 23).\n*   **Allocation:** Mortal wounds are applied one at a time. Unlike normal damage, excess damage from mortal wounds is not lost if the damage can be allocated to another model in the same unit (p. 23).\n*   **Feel No Pain:** If a model in the target unit has a \"Feel No Pain\" ability, it may still roll to ignore the damage caused by these mortal wounds (p. 23).",
+    "rationale": "Devastating Wounds is a core weapon keyword defined in the rulebook.",
+    "answer": "When an attack is made with a **[DEVASTATING WOUNDS]** weapon, scoring a **Critical Wound** (which is an unmodified Wound roll of 6) inflicts a number of mortal wounds on the target equal to the Damage characteristic of that weapon instead of normal damage, and the attack sequence ends (p. 21, p. 28).\n\nThe resulting mortal wounds are resolved as follows:\n\n* **No Saving Throws:** No saving throws of any kind (including invulnerable saving throws) can be made against mortal wounds (p. 23).\n* **Damage Application and Excess Damage:** Each mortal wound inflicts 1 point of damage (causing a model to lose 1 wound) and is applied one at a time (p. 23). Unlike normal attacks, excess damage from mortal wounds is not lost; you continue allocating damage to another model in the target unit until all damage has been allocated or the target unit is destroyed (p. 23).\n* **Resolution Timing:** If a unit inflicts mortal wounds alongside normal damage, resolve all normal damage inflicted by the attacking unit before inflicting any mortal wounds on that target (p. 23).\n* **Feel No Pain:** Models with a \"Feel No Pain\" ability can attempt to ignore lost wounds resulting from mortal wounds by rolling a D6 for each point of damage suffered (p. 23).",
     "contexts": [
       "[p. 28, DEVASTATING WOUNDS]\nSome weapons can inflict strikes of such power that they make a mockery of armour and can cleave through several foes.\nWeapons with [DEVASTATING WOUNDS] in their profile are known as Devastating Wounds weapons. Each time an attack is made with such a weapon, a Critical Wound inflicts a number of mortal wounds on the target equal to the Damage characteristic of that weapon and the attack sequence ends.\nExample: An attack made with a Devastating Wounds weapon with a Damage characteristic of 2 scores a Critical Wound. Instead of allocating the attack and making saving throws normally, the target suffers 2 mortal wounds.\n- ■ \u0007 A Critical Wound inflicts mortal wounds equal to the weapon's Damage characteristic, instead of any normal damage.",
       "[p. 23, MORTAL WOUNDS]\nSome attacks are so powerful that no armour or force field can withstand their fury.\nSome attacks inflict mortal wounds. Each mortal wound inflicts one point of damage on the target unit, and they are always applied one at a time. Do not make a Wound roll or saving throw (including invulnerable saving throws) against a mortal wound - just allocate it as you would any other attack and inflict damage to a model in the target unit as described on the right.\nUnlike damage inflicted by normal attacks, excess damage from mortal wounds is not lost if the damage can be allocated to another model. Instead, keep allocating damage to another model in the target unit until either all the damage has been allocated or the target unit is destroyed.\nIf, when a unit is selected to shoot or fight, one or more of its attacks can inflict mortal wounds on the target, resolve any normal damage inflicted by the attacking unit's attacks on that target before inflicting any mortal wounds on that target. If an attack inflicts mortal wounds in addition to any normal damage, but the normal damage is subsequently saved, the target unit still suffers those mortal wounds, as described above.\n- ■ \u0007 Each mortal wound inflicted on a unit causes one model in that unit to lose one wound.",
@@ -257,10 +257,10 @@
     "failure": null,
     "ragas": {
       "faithfulness": 1.0,
-      "answer_relevancy": 0.789073415232929,
+      "answer_relevancy": 0.8865257000959976,
       "llm_context_precision_with_reference": 0.9999999999,
       "context_recall": 1.0,
-      "answer_correctness": 0.5374438948710272
+      "answer_correctness": 0.4376954650849341
     }
   },
   {
@@ -269,8 +269,8 @@
     "expected_source": "pdf",
     "reference": "When a model with Deadly Demise x is destroyed, roll one D6 before removing it. On a 6, each unit within 6 inches suffers x mortal wounds, rolling separately for each unit if x is random. A Transport rolls before any embarked models disembark.",
     "routed_source": "pdf",
-    "rationale": "Deadly Demise is a core ability/keyword defined in the rulebook.",
-    "answer": "When a model with the 'Deadly Demise x' ability is destroyed, you must roll one D6 before removing the model from play (p. 23). If the model is a Transport, this roll occurs before any embarked models disembark (p. 23).\n\nOn a roll of a 6, each unit within 6\" of the destroyed model suffers a number of mortal wounds denoted by 'x' (p. 23). If 'x' is a random number, you must roll separately for each unit within 6\" (p. 23). \n\nNote that units disembarking from a destroyed Transport are not affected by that model's Deadly Demise ability (p. 18).",
+    "rationale": "Deadly Demise is a universal weapon/unit ability keyword explained in the core rules.",
+    "answer": "Based on the provided excerpts, when a model with the **Deadly Demise x** ability is destroyed, you do the following:\n\n* Roll one D6 before removing the model from play (p. 23). If the model is a Transport, you roll before any embarked models disembark (p. 23).\n* On a roll of 6, every unit within 6\" of that destroyed model suffers 'x' mortal wounds (p. 23). \n* If 'x' is a random number (such as D3), roll separately to determine the number of mortal wounds for each unit within 6\" (p. 23).\n* Units that disembark from a destroyed Transport are not affected by that Transport's Deadly Demise ability (p. 18).",
     "contexts": [
       "[p. 23, DEADLY DEMISE]\nFrom detonating ammo stores to corrosive innards or frenzied death throes, some targets are deadly even in defeat.\nSome models have 'Deadly Demise x ' listed in their abilities. When such a model is destroyed, roll one D6 before removing it from play (if such a model is a Transport , roll before any embarked models disembark). On a 6, each unit within 6\" of that model suffers a number of mortal wounds denoted by ' x ' (if this is a random number, roll separately for each unit within 6\").\nExample: A Transport model with the Deadly Demise D3 ability is destroyed. Before any models disembark and before removing it from play, its controlling player rolls one D6, getting a 6. There are three units within 6\" of that destroyed model, so its controlling player rolls one D3 for each of them, inflicting mortal wounds accordingly.\n- ■ \u0007 Deadly Demise x : When this model is destroyed, roll one D6. On a 6, each unit within 6\" suffers ' x ' mortal wounds.",
       "[p. 25, LETHAL HITS]\nSome weapons can inflict fatal injuries on any foe, no matter their resilience.\nWeapons with [LETHAL HITS] in their profile are known as Lethal Hits weapons. Each time an attack is made with such a weapon, a Critical Hit automatically wounds the target.",
@@ -304,7 +304,7 @@
       "answer_relevancy": 0.834435540090867,
       "llm_context_precision_with_reference": 0.9999999999,
       "context_recall": 1.0,
-      "answer_correctness": 0.9238885031807572
+      "answer_correctness": 0.7379581306232609
     }
   },
   {
@@ -313,8 +313,8 @@
     "expected_source": "pdf",
     "reference": "Select an eligible unit and declare a charge against enemy units within 12 inches; they need not be visible. Roll 2D6 for the Charge roll. The charge succeeds only if the unit can end within Engagement Range of every target, without entering Engagement Range of other enemies and in Unit Coherency. If so, each model moves up to the roll, ends closer to a target and must make base-to-base contact if possible; otherwise the charge fails and no models move.",
     "routed_source": "pdf",
-    "rationale": "The charge phase is a core game phase defined in the rulebook.",
-    "answer": "To perform a charge in the Charge phase, follow this sequence:\n\n**1. Select Eligible Units**\nIn your Charge phase, you can select eligible units one at a time to declare a charge (p. 29). A unit is eligible to charge if it is within 12\" of one or more enemy units at the start of the phase, provided it did not Advance or Fall Back this turn, is not already within Engagement Range of any enemy models, and is not an Aircraft unit (p. 29). Each unit can only be selected once per phase (p. 29).\n\n**2. Declare Targets**\nOnce a unit is selected, you must choose one or more enemy units within 12\" as the targets of the charge (p. 29). These targets do not need to be visible to the charging unit (p. 29).\n\n**3. Make a Charge Roll**\nRoll 2D6. This result is the maximum number of inches each model in the unit can move (p. 29).\n\n**4. Determine if the Charge is Possible**\nA charge is only possible if the roll is sufficient to allow the unit to end its move:\n*   Within Engagement Range of every unit selected as a target (p. 29).\n*   Without moving within Engagement Range of any enemy units that were not a target of the charge (p. 29).\n*   In Unit Coherency (p. 29).\n\nIf these conditions cannot be met, the charge fails and no models move (p. 29).\n\n**5. Make the Charge Move**\nIf the charge is successful, move each model up to the distance of the Charge roll (p. 29). When moving:\n*   Each model must end its move closer to one of the units selected as a target (p. 29).\n*   If a model can end its move in base-to-base contact with an enemy model while still satisfying all charge conditions, it must do so (p. 29).\n*   Special rules apply for terrain features: if an enemy unit is within 1\" of a terrain feature, a charging unit on the opposite side can charge them if they end the move as close as possible to the terrain and within 2\" of the enemy unit (p. 45).\n\n**6. Charge Bonus**\nEach time a unit makes a Charge move, it gains the Fights First ability until the end of the turn (p. 29).\n\nOnce all charges have been resolved, you progress to the Fight phase (p. 29).",
+    "rationale": "Asks for the rules and sequence of the Charge phase, which is a core mechanic detailed in the rulebook.",
+    "answer": "In the Charge phase, your units charge forward into battle at close quarters (p. 10). Players select eligible units from their army, one at a time, to declare charges (p. 29). Each unit can only be selected once per phase, and once all charges are resolved, you progress to the Fight phase (p. 29).\n\n### 1. Eligibility\nA unit is eligible to charge if it is within 12\" of one or more enemy units at the start of your Charge phase (p. 29). A unit is **not** eligible if (p. 29):\n* It Advanced or Fell Back this turn (p. 29).\n* It is within Engagement Range of any enemy models (p. 29).\n* It is an Aircraft unit (p. 29).\n\n### 2. Declaring Charges and Rolling\nWhen charging with an eligible unit:\n* **Select Targets:** Select one or more enemy units within 12\" as targets (p. 29). Targets do not need to be visible to the charging unit (p. 29).\n* **Charge Roll:** Roll 2D6 (p. 29). The result is the maximum number of inches each model in the unit can move if the charge is possible (p. 29).\n\n### 3. Conditions for a Successful Charge\nFor a charge to be possible, the Charge roll must be sufficient for the unit to end its move satisfying all of the following conditions (p. 29):\n* Within Engagement Range of *every* unit selected as a target of the charge (p. 29).\n* Without moving within Engagement Range of any enemy units that were *not* targeted (p. 29).\n* In Unit Coherency (p. 29).\n\n*(Note: If an enemy target is within 1\" of certain terrain features, a charging unit on the opposite side can make a Charge move provided it ends as close as possible to the terrain feature and within 2\" of the enemy unit) (p. 45).*\n\n### 4. Making the Move or Failing\n* **Failed Charge:** If any of the required conditions cannot be met, the charge fails and no models in the unit move this phase (p. 29).\n* **Successful Charge:** If the conditions are met, each model moves up to the Charge roll distance (p. 29). The controlling player chooses the order to move their models (p. 29). Each model must end closer to one of the target units, and models must end in base-to-base contact with enemy models if possible while still maintaining all required conditions (p. 29).\n\n### 5. Charge Bonus\nEach time a unit successfully makes a Charge move, it gains the Fights First ability until the end of the turn (p. 29).",
     "contexts": [
       "[p. 10, CHARGE PHASE]\nYour units charge forward to battle at close quarters.",
       "[p. 45, ENGAGEMENT RANGE]\n- \u0007 In the Charge phase, if an enemy unit is within 1\" of this terrain feature, a charging unit on the opposite side of this terrain feature can still make a Charge move against that enemy unit provided it ends that Charge move as close as possible to this terrain feature and within 2\" of that enemy unit.\n- \u0007 In the Fight phase, units are eligible to fight - and models can make attacks - if their target is on the opposite side of this terrain feature and within 2\" of them.",
@@ -345,10 +345,10 @@
     "failure": null,
     "ragas": {
       "faithfulness": 1.0,
-      "answer_relevancy": 0.8649199449566977,
+      "answer_relevancy": 0.8539323820527571,
       "llm_context_precision_with_reference": 0.3333333333,
       "context_recall": 1.0,
-      "answer_correctness": 0.7431698964758633
+      "answer_correctness": 0.7391123336645828
     }
   },
   {
@@ -357,8 +357,8 @@
     "expected_source": "pdf",
     "reference": "In the Battle-shock step of your Command phase, each of your units on the battlefield that is Below Half-strength must take the test by rolling 2D6 against its best Leadership.",
     "routed_source": "pdf",
-    "rationale": "Battle-shock tests are a core mechanic defined in the rules section regarding the Morale phase or Battle-shock tests.",
-    "answer": "A unit must take a Battle-shock test during the Battle-shock step of your Command phase (p. 11). Specifically, you must take a test for each of your units on the battlefield that is Below Half-strength (p. 11).",
+    "rationale": "Asks for the conditions and rules triggering a battle-shock test, which is explained in the core rules.",
+    "answer": "A unit must take a Battle-shock test during the second step (the Battle-shock step) of your Command phase (p. 11, 42). \n\nSpecifically, you must take a Battle-shock test for each unit from your army on the battlefield that is Below Half-strength during this step (p. 11).",
     "contexts": [
       "[p. 42, INSANE BRAVERY]\nCORE - EPIC DEED STRATAGEM\nIndifferent to their own survival, these warriors hold their ground against seemingly impossible odds.\nWHEN: Battle-shock step of your Command phase, just after you have failed a Battle-shock test taken for a unit from your army (pg 11).\nTARGET: The unit from your army that Battle-shock test was just taken for (even though your Battle-shocked units cannot normally be affected by your Stratagems).\nEFFECT: Your unit is treated as having passed that test instead, and is not Battle-shocked as a result.",
       "[p. 11, 2. BATTLE-SHOCK]\nIn this step, you must take a Battle-shock test for each of your units on the battlefield that is Below Half-strength (pg 12). To do so, roll 2D6: if the result is greater than or equal to the best Leadership characteristic in that unit, the test is passed; otherwise, the test is failed and, until the start of your next Command phase, that unit is Battle-shocked.\nWhile a unit is Battle-shocked:\n- ■ \u0007 The Objective Control characteristic of all of its models is 0.\n- ■ \u0007 If it Falls Back, you must take a Desperate Escape test for every model in that unit (pg 14).\n- ■ Its controlling player cannot use Stratagems to affect that unit.\nOnce you have taken Battle-shock tests for all of your units that require them, your Command phase ends and you progress to your Movement phase.\n- ■ \u0007 Take a Battle-shock test for each unit from your army on the battlefield that is Below Half-strength.\n- ■ \u0007 Roll 2D6: if the result is greater than or equal to the unit's Leadership, the test is passed. Otherwise, the unit is Battle-shocked until the start of your next Command phase.\n- ■ \u0007 Battle-shocked units have an OC of 0 and their controlling player cannot use Stratagems to affect them.\n- ■ \u0007 Battle-shocked units must take Desperate Escape tests if they Fall Back.",
@@ -388,11 +388,11 @@
     "sql_relaxed": null,
     "failure": null,
     "ragas": {
-      "faithfulness": 0.5,
-      "answer_relevancy": 0.8558048659473746,
+      "faithfulness": 0.8333333333333334,
+      "answer_relevancy": 0.9741832271525578,
       "llm_context_precision_with_reference": 0.49999999995,
       "context_recall": 1.0,
-      "answer_correctness": 0.5777346317898272
+      "answer_correctness": 0.5750537914192712
     }
   },
   {
@@ -401,8 +401,8 @@
     "expected_source": "pdf",
     "reference": "Each model can make a Fall Back move of up to its Move characteristic. It can move within Engagement Range of enemy models but cannot end there; if that is impossible the unit cannot Fall Back. A unit that Fell Back cannot shoot or declare a charge in that turn.",
     "routed_source": "pdf",
-    "rationale": "Falling back is a specific movement mechanic defined in the core rules.",
-    "answer": "To Fall Back from combat, a unit must follow these rules:\n\n*   **Movement:** Each model in the unit can move a distance in inches less than or equal to its Move characteristic (p. 14).\n*   **Engagement Range:** While you can move models within Engagement Range of enemy models during the move, the unit cannot end its move within Engagement Range of any enemy models. If it is not possible to end the move outside of Engagement Range, the unit cannot Fall Back (p. 14).\n*   **Restrictions:** A unit that Falls Back cannot shoot or declare a charge in the same turn (p. 14).\n*   **Eligibility:** Units that are within Engagement Range of enemy models can only choose to Fall Back or Remain Stationary during the Movement phase (p. 13).",
+    "rationale": "Asks for the core rule mechanics of making a Fall Back move from combat.",
+    "answer": "Based on the provided excerpts, a unit falls back from combat according to the following rules:\n\n* **Eligibility:** Units that start within Engagement Range of any enemy models can only choose to Fall Back or Remain Stationary (p. 13).\n* **Making the Move:** Each model in the unit can make a Fall Back move by moving a distance in inches less than or equal to its Move characteristic (p. 14). \n* **Positioning:** While moving, models can move within Engagement Range of enemy models, provided they **do not end** the move within Engagement Range of any enemy models (p. 14). If it is not possible to end the move outside of Engagement Range, the unit cannot Fall Back (p. 14).\n* **Restrictions:** A unit cannot shoot or declare a charge in the same turn that it Fell Back (p. 14).",
     "contexts": [
       "[p. 14, FALL BACK MOVES]\nWhen a unit Falls Back, each model in that unit can make a Fall Back move by moving a distance in inches less than or equal to its Move characteristic, and when doing so you can move it within Engagement Range of enemy models, provided it does not end that move within Engagement Range of any enemy models - if this is not possible, that unit cannot Fall Back.\nA unit cannot shoot or declare a charge in the same turn that it Fell Back.",
       "[p. 32, REMAINING COMBATS]\nRemaining units that can fight do so",
@@ -433,10 +433,10 @@
     "failure": null,
     "ragas": {
       "faithfulness": 1.0,
-      "answer_relevancy": 0.9551312289738663,
+      "answer_relevancy": 0.9467968375023125,
       "llm_context_precision_with_reference": 0.9999999999,
       "context_recall": 1.0,
-      "answer_correctness": 0.8759987834000383
+      "answer_correctness": 0.9274360379490807
     }
   },
   {
@@ -445,8 +445,8 @@
     "expected_source": "pdf",
     "reference": "Roll one D6 and compare the attack's Strength with the target's Toughness: 2+ if Strength is at least twice Toughness, 3+ if greater, 4+ if equal, 5+ if less, and 6+ if at most half. An unmodified 6 is a Critical Wound and always succeeds, an unmodified 1 always fails, and the roll can never be modified by more than 1.",
     "routed_source": "pdf",
-    "rationale": "The wound roll is a core mechanic defined in the attack sequence section of the rulebook.",
-    "answer": "To calculate a Wound roll, you roll one D6 for each attack that successfully scored a hit against the target unit (p. 21). \n\nThe result required to successfully wound is determined by comparing the attack's Strength (S) characteristic to the target's Toughness (T) characteristic (p. 21). The specific requirements are as follows:\n\n*   **Strength is twice (or more than twice) the Toughness:** Requires a 2+ (p. 20).\n*   **Strength is greater than the Toughness:** Requires a 3+ (p. 20).\n*   **Strength is equal to the Toughness:** Requires a 4+ (p. 20).\n*   **Strength is less than the Toughness:** Requires a 5+ (p. 20).\n*   **Strength is half (or less than half) the Toughness:** Requires a 6+ (p. 20).\n\nIf the result of the roll is greater than or equal to the required number, the Wound roll is successful (p. 21). \n\n**Additional rules regarding Wound rolls:**\n*   An unmodified Wound roll of 6 is a Critical Wound and is always successful (p. 21).\n*   An unmodified Wound roll of 1 always fails (p. 21).\n*   A Wound roll can never be modified by more than -1 or +1 (p. 21).",
+    "rationale": "Asking for how wound rolls are calculated is a core attack-resolution rule found in the rulebook.",
+    "answer": "Based on the provided excerpts, a Wound roll is calculated as follows:\n\n1. **Rolling the Dice:** For each hit scored against a target unit, you roll one D6 (p. 21).\n2. **Comparing Characteristics:** The required D6 result to successfully wound is determined by comparing the attack's **Strength (S)** characteristic against the target's **Toughness (T)** characteristic (p. 21).\n   * **Strength is TWICE (or more than twice) the Toughness** (p. 20).\n   * **Strength is GREATER than the Toughness** (p. 20).\n   * **Strength is EQUAL to the Toughness:** Requires a D6 result of **4+** (p. 20, 24).\n   * **Strength is LESS than the Toughness** (p. 20).\n   * **Strength is HALF (or less than half) the Toughness** (p. 20).\n\n*(Note: The exact numeric target values for every category besides EQUAL are not fully rendered in the provided excerpt text, but they follow these five S vs. T comparisons).*\n\n3. **Determining Success:** \n   * If the Wound roll is greater than or equal to the required number, it is successful and scores one wound against the target unit; otherwise, the attack fails and ends (p. 21).\n   * An unmodified Wound roll of **6** is a **Critical Wound** and is always successful (p. 21).\n   * An unmodified Wound roll of **1** always fails (p. 21).\n   * A Wound roll can **never be modified by more than -1 or +1** (p. 21).",
     "contexts": [
       "[p. 21, 2. WOUND ROLL]\nEach time an attack scores a hit against a target unit, make a Wound roll for that attack by rolling one D6 to see if that attack successfully wounds the target unit. The result required is determined by comparing the attack's Strength (S) characteristic with the target's Toughness (T) characteristic, as shown below.\nIf the result of the Wound roll is greater than or equal to the required number shown in the table opposite, then that Wound roll is successful and scores one wound against the target unit. Otherwise, the attack fails and the attack sequence ends.\nAn unmodified Wound roll of 6 is called a Critical Wound and is always successful. An unmodified Wound roll of 1 always fails. A Wound roll can never be modified by more than -1 or +1.\n- ■ \u0007 Critical Wound: Unmodified Wound roll of 6. Always successful.\n- ■ An unmodified Wound roll of 1 always fails.\n- ■ \u0007 A Wound roll can never be modified by more than -1 or +1.",
       "[p. 24, Hints and Tips FAST DICE ROLLING]\nIf the attacks being allocated to a target inflict random damage, you cannot use the fast dice rolling approach exactly as stated above - you will need to roll the dice one at a time. Consider several attacks with a Damage characteristic of D3 being allocated to a target containing models with two wounds each. As excess damage is lost each time a model is destroyed, the order in which the attacks are allocated and resolved becomes important. If the results of those D3s were 1, then 2, then 3, the attacks would result in a total of two destroyed models, but applying them in the order 3, then 2, then 1 would result in two models being destroyed and a third being damaged with only one wound remaining. As such, the rolls should be made one at a time.\n\u0007 A unit of 20 Termagants targets a Terminators unit with their Fleshborers. As these weapons all have the same profile, the controlling player chooses to use the fast dice rolling method.\n\u0007 Each has an Attacks characteristic of 1, so the controlling player rolls twenty D6. Seven of the results are greater than or equal to the Fleshborers' Ballistic Skill of 4+, so seven hits are scored, and seven Wound rolls are then made.\n\u0007 The Strength characteristic of those attacks is 5, which is equal to the Toughness of a Terminator, so rolls of 4+ are required to successfully wound the target. Of those seven rolls, five successfully wound.",
@@ -476,11 +476,11 @@
     "sql_relaxed": null,
     "failure": null,
     "ragas": {
-      "faithfulness": 0.5833333333333334,
-      "answer_relevancy": 0.8481336397292023,
+      "faithfulness": 0.875,
+      "answer_relevancy": 0.8643085977348769,
       "llm_context_precision_with_reference": 0.0,
       "context_recall": 1.0,
-      "answer_correctness": 0.877745634683837
+      "answer_correctness": 0.6090382664950676
     }
   },
   {
@@ -489,8 +489,8 @@
     "expected_source": "pdf",
     "reference": "Both players gain 1 Command point at the start of the Command phase. Outside of that, each player can only gain a total of 1CP per battle round, regardless of the source.",
     "routed_source": "pdf",
-    "rationale": "Gaining command points is a core mechanic defined in the rules section regarding the Command phase.",
-    "answer": "You gain Command points (CP) in the following ways:\n\n*   **Command Phase:** At the start of your Command phase, before doing anything else, both players gain 1CP (p. 11).\n*   **Other Rules:** You may gain additional CP through other rules that specify they grant CP (p. 11).\n\n**Important Restriction:**\nRegardless of the source, each player can only gain a total of 1CP per battle round outside of the CP gained at the start of the Command phase (p. 11).",
+    "rationale": "Gaining Command Points (CP) is a core rule mechanic detailed in the rules.",
+    "answer": "Based on the provided excerpts, you gain Command Points (CP) in the following ways:\n\n* **Start of the Command Phase:** At the start of your Command phase, before doing anything else, both players gain 1 CP (p. 11). \n* **Other Sources:** You can gain CP through other rules, but outside of the CP gained at the start of the Command phase, each player can only gain a total of 1 CP per battle round, regardless of the source (p. 11).",
     "contexts": [
       "[p. 11, COMMAND / BATTLE-SHOCK / GAINING COMMAND POINTS]\nOutside of the CP players gain at the start of the Command phase, each player can only gain a total of 1CP per battle round, regardless of the source.",
       "[p. 11, 1. COMMAND]\nAt the start of your Command phase, before doing anything else, both players gain 1CP . Command points are a strategic resource that you can spend during the battle to use Stratagems. You can find out more about Stratagems on pages 41-42.\nThen, if you have any other rules that need to be resolved in the Command phase, you do so now before progressing to the Battle-shock step.\n- ■ \u0007 Both players gain 1CP .\n- ■ \u0007 Resolve any other rules that occur in the Command phase.",
@@ -521,10 +521,10 @@
     "failure": null,
     "ragas": {
       "faithfulness": 1.0,
-      "answer_relevancy": 0.9185342184040503,
+      "answer_relevancy": 0.9049368846363509,
       "llm_context_precision_with_reference": 0.9999999999,
       "context_recall": 1.0,
-      "answer_correctness": 0.7293037468374908
+      "answer_correctness": 0.6565307940083513
     }
   },
   {
@@ -533,8 +533,8 @@
     "expected_source": "pdf",
     "reference": "An ability tagged Aura that affects multiple models or units within a given range. A model is always within range of its own Aura. A unit can be affected by several Auras, but the same Aura applies to it only once.",
     "routed_source": "pdf",
-    "rationale": "Aura abilities are a core rule mechanic defined in the rulebook.",
-    "answer": "Aura abilities are special abilities that affect multiple models or units within a specified range (p. 38). They are identified by being tagged with the word 'Aura' (p. 38).\n\nKey rules regarding Aura abilities include:\n*   **Self-inclusion:** A model with an Aura ability is always considered to be within range of its own Aura ability (p. 38).\n*   **Stacking:** While a unit can be affected by multiple different Aura abilities at the same time, if a unit is within range of the same Aura ability more than once, that ability only applies to the unit a single time (p. 38).",
+    "rationale": "Asks for the definition of a core rule ability type (Aura abilities), which is explained in the rulebook.",
+    "answer": "An Aura ability is an ability that affects multiple models or units within a given range and is tagged with the word 'Aura' (p. 38). \n\nKey rules regarding Aura abilities include:\n* A model with an Aura ability is always within range of its own Aura ability (p. 38).\n* A unit can be affected by more than one Aura ability at a time (p. 38).\n* If a unit is within range of the same Aura ability more than once, that Aura ability only applies to that unit once (p. 38).",
     "contexts": [
       "[p. 38, AURA ABILITIES]\nSome abilities affect multiple models or units in a given range. These are known as Aura abilities and are tagged with the word ' Aura' . A model with an Aura ability is always within range of its own Aura ability. A unit can be affected by more than one Aura ability at a time, but if a unit is within range of the same Aura ability more than once, that Aura ability only applies to that unit once.",
       "[p. 38, ABILITIES]\nMany units have special abilities and rules that may apply during the game, from Core Rules shared by many units to bespoke Psychic abilities and invulnerable saves. These will be described here, along with any rules that apply when larger models such as vehicles have suffered sufficient damage.\nSome abilities are bestowed by items of wargear that models in a unit can be equipped with, and are known as Wargear abilities. These only apply while a model in the unit is equipped with the relevant item of wargear.",
@@ -565,10 +565,10 @@
     "failure": null,
     "ragas": {
       "faithfulness": 1.0,
-      "answer_relevancy": 0.8908974944102293,
+      "answer_relevancy": 0.9240513138245443,
       "llm_context_precision_with_reference": 0.9999999999,
       "context_recall": 1.0,
-      "answer_correctness": 0.8239379126679683
+      "answer_correctness": 0.9767730892870718
     }
   },
   {
@@ -577,8 +577,8 @@
     "expected_source": "pdf",
     "reference": "A model with the Benefit of Cover adds 1 to its armour saving throw against ranged attacks, not to invulnerable saves. Models with a Save of 3+ or better cannot have it against attacks with an AP of 0, and multiple instances are not cumulative.",
     "routed_source": "pdf",
-    "rationale": "Cover is a terrain feature rule defined in the core rules.",
-    "answer": "When a model has the Benefit of Cover against a ranged attack, you add 1 to the saving throw made for that attack (p. 44). \n\nHowever, this rule is subject to the following conditions:\n*   **Invulnerable Saves:** This bonus does not apply to invulnerable saving throws (p. 44).\n*   **Armour Penetration:** Models with a Save characteristic of 3+ or better cannot have the Benefit of Cover against attacks with an Armour Penetration (AP) characteristic of 0 (p. 44).\n*   **Non-cumulative:** Multiple instances of the Benefit of Cover are not cumulative; a model cannot benefit from this rule more than once at any one time (p. 44).",
+    "rationale": "Cover (Benefit of Cover) is a core terrain and attack-resolution rule explained in the rulebook.",
+    "answer": "When a model has the Benefit of Cover:\n\n* **Adds to Saving Throws:** Add 1 to the armour saving throw made for a ranged attack allocated to that model (p. 44). \n* **Does Not Affect Invulnerable Saves:** This bonus excludes invulnerable saving throws (p. 44).\n* **Restriction on 3+ Saves:** Models with a Save characteristic of 3+ or better cannot get the Benefit of Cover against attacks with an Armour Penetration (AP) characteristic of 0 (p. 44).\n* **Not Cumulative:** Multiple instances of the Benefit of Cover do not stack; a model cannot benefit from the rule more than once at any one time (p. 44).",
     "contexts": [
       "[p. 47, BENEFIT OF COVER]\nEach time a ranged attack is allocated to a model, if that model is either wholly within this terrain feature, or it is not fully visible to every model in the attacking unit because of this terrain feature, that model has the Benefit of Cover against that attack.",
       "[p. 48, BENEFIT OF COVER]\nEach time a ranged attack is allocated to a model, if that model is either wholly within this terrain feature, or it is not fully visible to every model in the attacking unit because of this terrain feature, that model has the Benefit of Cover against that attack.",
@@ -609,10 +609,10 @@
     "failure": null,
     "ragas": {
       "faithfulness": 1.0,
-      "answer_relevancy": 0.8354805527761798,
+      "answer_relevancy": 0.7450727762078,
       "llm_context_precision_with_reference": 0.3333333333,
       "context_recall": 1.0,
-      "answer_correctness": 0.7373103163640461
+      "answer_correctness": 0.9052855014274762
     }
   },
   {
@@ -621,14 +621,14 @@
     "expected_source": "sql",
     "reference": "The Tyranids faction has 57 datasheets.",
     "routed_source": "sql",
-    "rationale": "A count query against the datasheets table filtered by faction.",
-    "answer": "The Tyranids faction has 57 datasheets.\n\nSource:\nSELECT count(DISTINCT d.Id) AS n_datasheets FROM datasheets d JOIN factions f ON f.Id = d.factionId WHERE f.name = 'Tyranids' AND d.virtual = 'false'",
+    "rationale": "A count query asking for the number of datasheets in the Tyranids faction from the datasheets table.",
+    "answer": "The Tyranids faction has 57 datasheets.\n\nSource:\n```sql\nSELECT count(*) AS n_datasheets FROM datasheets d JOIN factions f ON f.Id = d.factionId WHERE f.name = 'Tyranids' AND d.virtual = 'false'\n```",
     "contexts": [
-      "SQL query:\nSELECT count(DISTINCT d.Id) AS n_datasheets FROM datasheets d JOIN factions f ON f.Id = d.factionId WHERE f.name = 'Tyranids' AND d.virtual = 'false'\n\nRows:\nn_datasheets\n57"
+      "SQL query:\nSELECT count(*) AS n_datasheets FROM datasheets d JOIN factions f ON f.Id = d.factionId WHERE f.name = 'Tyranids' AND d.virtual = 'false'\n\nRows:\nn_datasheets\n57"
     ],
     "pages": [],
     "sections": [],
-    "sql": "SELECT count(DISTINCT d.Id) AS n_datasheets FROM datasheets d JOIN factions f ON f.Id = d.factionId WHERE f.name = 'Tyranids' AND d.virtual = 'false'",
+    "sql": "SELECT count(*) AS n_datasheets FROM datasheets d JOIN factions f ON f.Id = d.factionId WHERE f.name = 'Tyranids' AND d.virtual = 'false'",
     "sql_error": null,
     "section_hit": null,
     "page_hit": null,
@@ -636,7 +636,7 @@
     "sql_relaxed": true,
     "failure": null,
     "ragas": {
-      "faithfulness": 0.0,
+      "faithfulness": 1.0,
       "answer_relevancy": 1.0,
       "llm_context_precision_with_reference": 0.9999999999,
       "context_recall": 1.0,
@@ -649,26 +649,26 @@
     "expected_source": "sql",
     "reference": "The Orks detachments are Blitz Brigade, Bully Boyz, Da Big Hunt, Dread Mob, Equatorial Hordes, Freebooter Krew, Green Tide, Kaptin Killers, Kult of Speed, More Dakka!, Ramship Raiders, Rollin' Deff, Speedwaaagh!, Taktikal Brigade and War Horde.",
     "routed_source": "sql",
-    "rationale": "A list query from the detachments table filtered by faction.",
-    "answer": "The Orks faction currently has 15 detachments available: Blitz Brigade, Bully Boyz, Da Big Hunt, Dread Mob, Equatorial Hordes, Freebooter Krew, Green Tide, Kaptin Killers, Kult of Speed, More Dakka!, Ramship Raiders, Rollin’ Deff, Speedwaaagh!, Taktikal Brigade, and War Horde.\n\nSource:\nSELECT d.name FROM detachments d JOIN factions f ON f.Id = d.factionId WHERE f.name = 'Orks'",
+    "rationale": "A list query from the detachments table filtered by the Orks faction.",
+    "answer": "The detachments for the Orks faction are:\n\n* Blitz Brigade\n* Bully Boyz\n* Da Big Hunt\n* Dread Mob\n* Equatorial Hordes\n* Freebooter Krew\n* Green Tide\n* Kaptin Killers (Boarding Actions)\n* Kult of Speed\n* More Dakka!\n* Ramship Raiders (Boarding Actions)\n* Rollin’ Deff\n* Speedwaaagh!\n* Taktikal Brigade\n* War Horde\n\nSource:\n```sql\nSELECT dt.name, dt.type FROM detachments dt JOIN factions f ON f.Id = dt.factionId WHERE f.name = 'Orks' ORDER BY dt.name\n```",
     "contexts": [
-      "SQL query:\nSELECT d.name FROM detachments d JOIN factions f ON f.Id = d.factionId WHERE f.name = 'Orks'\n\nRows:\nname\nBlitz Brigade\nBully Boyz\nDa Big Hunt\nDread Mob\nEquatorial Hordes\nFreebooter Krew\nGreen Tide\nKaptin Killers\nKult of Speed\nMore Dakka!\nRamship Raiders\nRollin’ Deff\nSpeedwaaagh!\nTaktikal Brigade\nWar Horde"
+      "SQL query:\nSELECT dt.name, dt.type FROM detachments dt JOIN factions f ON f.Id = dt.factionId WHERE f.name = 'Orks' ORDER BY dt.name\n\nRows:\nname | type\nBlitz Brigade | \nBully Boyz | \nDa Big Hunt | \nDread Mob | \nEquatorial Hordes | \nFreebooter Krew | \nGreen Tide | \nKaptin Killers | Boarding Actions\nKult of Speed | \nMore Dakka! | \nRamship Raiders | Boarding Actions\nRollin’ Deff | \nSpeedwaaagh! | \nTaktikal Brigade | \nWar Horde | "
     ],
     "pages": [],
     "sections": [],
-    "sql": "SELECT d.name FROM detachments d JOIN factions f ON f.Id = d.factionId WHERE f.name = 'Orks'",
+    "sql": "SELECT dt.name, dt.type FROM detachments dt JOIN factions f ON f.Id = dt.factionId WHERE f.name = 'Orks' ORDER BY dt.name",
     "sql_error": null,
     "section_hit": null,
     "page_hit": null,
-    "sql_exact": true,
+    "sql_exact": false,
     "sql_relaxed": true,
     "failure": null,
     "ragas": {
       "faithfulness": 1.0,
-      "answer_relevancy": 0.9148514288521339,
+      "answer_relevancy": 0.9203826268353426,
       "llm_context_precision_with_reference": 0.9999999999,
       "context_recall": 1.0,
-      "answer_correctness": 0.9628162409345195
+      "answer_correctness": 0.9863605079647279
     }
   },
   {
@@ -677,18 +677,18 @@
     "expected_source": "sql",
     "reference": "A Hive Tyrant has Toughness 10, Save 2+ and 10 Wounds.",
     "routed_source": "sql",
-    "rationale": "The user is asking for specific datasheet statistics (toughness, save, wounds) for a named unit, which is a direct lookup in the datasheets database.",
-    "answer": "A Hive Tyrant has a Toughness of 10, a Save of 2+, and 10 Wounds.\n\nSource:\nSELECT dm.t, dm.sv, dm.w FROM datasheets d JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE d.name = 'Hive Tyrant'",
+    "rationale": "A datasheet statistics lookup for a specific unit (Hive Tyrant).",
+    "answer": "A Hive Tyrant has a Toughness of 10, a Save of 2+, and 10 Wounds.\n\nSource:\n```sql\nSELECT dm.name, dm.t, dm.sv, dm.w FROM datasheets d JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE d.name = 'Hive Tyrant' AND d.virtual = 'false'\n```",
     "contexts": [
-      "SQL query:\nSELECT dm.t, dm.sv, dm.w FROM datasheets d JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE d.name = 'Hive Tyrant'\n\nRows:\nt | sv | w\n10 | 2+ | 10"
+      "SQL query:\nSELECT dm.name, dm.t, dm.sv, dm.w FROM datasheets d JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE d.name = 'Hive Tyrant' AND d.virtual = 'false'\n\nRows:\nname | t | sv | w\nHive Tyrant | 10 | 2+ | 10"
     ],
     "pages": [],
     "sections": [],
-    "sql": "SELECT dm.t, dm.sv, dm.w FROM datasheets d JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE d.name = 'Hive Tyrant'",
+    "sql": "SELECT dm.name, dm.t, dm.sv, dm.w FROM datasheets d JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE d.name = 'Hive Tyrant' AND d.virtual = 'false'",
     "sql_error": null,
     "section_hit": null,
     "page_hit": null,
-    "sql_exact": true,
+    "sql_exact": false,
     "sql_relaxed": true,
     "failure": null,
     "ragas": {
@@ -705,14 +705,14 @@
     "expected_source": "sql",
     "reference": "Ten Boyz cost 75 points for your 1st to 3rd units and 85 points for your 4th and later units. Twenty Boyz cost 160 points for your 1st to 3rd units and 170 points for your 4th and later units.",
     "routed_source": "sql",
-    "rationale": "A points-cost lookup for a specific unit from the datasheet-model table.",
-    "answer": "Boyz cost 75 points for a unit of 10 or 160 points for a unit of 20 for your first three units. For your fourth unit and beyond, the cost increases to 85 points for 10 models or 170 points for 20 models.\n\nSource:\nSELECT DISTINCT (SELECT h.description FROM datasheets_models_cost h WHERE h.DatasheetId = c.DatasheetId AND h.cost = '' AND CAST(h.line AS INTEGER) < CAST(c.line AS INTEGER) ORDER BY CAST(h.line AS INTEGER) DESC LIMIT 1) AS tier, c.description, CAST(c.cost AS INTEGER) AS points FROM datasheets d JOIN datasheets_models_cost c ON c.DatasheetId = d.Id WHERE d.name = 'Boyz' AND c.cost != '' ORDER BY CAST(c.line AS INTEGER)",
+    "rationale": "Asking for the points cost of a specific unit (Boyz) requires a database lookup.",
+    "answer": "Boyz cost points based on the unit size and how many units of them you include in your army:\n\n* **10 models:** 75 points (for your 1st to 3rd units), or 85 points (for your 4th+ unit)\n* **20 models:** 160 points (for your 1st to 3rd units), or 170 points (for your 4th+ unit)\n\nSource:\n```sql\nSELECT DISTINCT (SELECT h.description FROM datasheets_models_cost h WHERE h.DatasheetId = c.DatasheetId AND h.cost = '' AND CAST(h.line AS INTEGER) < CAST(c.line AS INTEGER) ORDER BY CAST(h.line AS INTEGER) DESC LIMIT 1) AS tier, c.description, CAST(c.cost AS INTEGER) AS points FROM datasheets d JOIN datasheets_models_cost c ON c.DatasheetId = d.Id WHERE d.name = 'Boyz' AND c.cost != '' ORDER BY points\n```",
     "contexts": [
-      "SQL query:\nSELECT DISTINCT (SELECT h.description FROM datasheets_models_cost h WHERE h.DatasheetId = c.DatasheetId AND h.cost = '' AND CAST(h.line AS INTEGER) < CAST(c.line AS INTEGER) ORDER BY CAST(h.line AS INTEGER) DESC LIMIT 1) AS tier, c.description, CAST(c.cost AS INTEGER) AS points FROM datasheets d JOIN datasheets_models_cost c ON c.DatasheetId = d.Id WHERE d.name = 'Boyz' AND c.cost != '' ORDER BY CAST(c.line AS INTEGER)\n\nRows:\ntier | description | points\nYOUR 1ST TO 3RD UNITS COST | 10 models | 75\nYOUR 1ST TO 3RD UNITS COST | 20 models | 160\nYOUR 4TH + UNIT COSTS | 10 models | 85\nYOUR 4TH + UNIT COSTS | 20 models | 170"
+      "SQL query:\nSELECT DISTINCT (SELECT h.description FROM datasheets_models_cost h WHERE h.DatasheetId = c.DatasheetId AND h.cost = '' AND CAST(h.line AS INTEGER) < CAST(c.line AS INTEGER) ORDER BY CAST(h.line AS INTEGER) DESC LIMIT 1) AS tier, c.description, CAST(c.cost AS INTEGER) AS points FROM datasheets d JOIN datasheets_models_cost c ON c.DatasheetId = d.Id WHERE d.name = 'Boyz' AND c.cost != '' ORDER BY points\n\nRows:\ntier | description | points\nYOUR 1ST TO 3RD UNITS COST | 10 models | 75\nYOUR 4TH + UNIT COSTS | 10 models | 85\nYOUR 1ST TO 3RD UNITS COST | 20 models | 160\nYOUR 4TH + UNIT COSTS | 20 models | 170"
     ],
     "pages": [],
     "sections": [],
-    "sql": "SELECT DISTINCT (SELECT h.description FROM datasheets_models_cost h WHERE h.DatasheetId = c.DatasheetId AND h.cost = '' AND CAST(h.line AS INTEGER) < CAST(c.line AS INTEGER) ORDER BY CAST(h.line AS INTEGER) DESC LIMIT 1) AS tier, c.description, CAST(c.cost AS INTEGER) AS points FROM datasheets d JOIN datasheets_models_cost c ON c.DatasheetId = d.Id WHERE d.name = 'Boyz' AND c.cost != '' ORDER BY CAST(c.line AS INTEGER)",
+    "sql": "SELECT DISTINCT (SELECT h.description FROM datasheets_models_cost h WHERE h.DatasheetId = c.DatasheetId AND h.cost = '' AND CAST(h.line AS INTEGER) < CAST(c.line AS INTEGER) ORDER BY CAST(h.line AS INTEGER) DESC LIMIT 1) AS tier, c.description, CAST(c.cost AS INTEGER) AS points FROM datasheets d JOIN datasheets_models_cost c ON c.DatasheetId = d.Id WHERE d.name = 'Boyz' AND c.cost != '' ORDER BY points",
     "sql_error": null,
     "section_hit": null,
     "page_hit": null,
@@ -721,10 +721,10 @@
     "failure": null,
     "ragas": {
       "faithfulness": 1.0,
-      "answer_relevancy": 0.8530150554902737,
+      "answer_relevancy": 0.8451069131364984,
       "llm_context_precision_with_reference": 0.9999999999,
       "context_recall": 1.0,
-      "answer_correctness": 0.9827323543087974
+      "answer_correctness": 0.828581121373946
     }
   },
   {
@@ -733,14 +733,14 @@
     "expected_source": "sql",
     "reference": "157 Space Marines units have the Infantry keyword.",
     "routed_source": "sql",
-    "rationale": "This is a count query filtering units by faction and keyword.",
-    "answer": "There are 157 Space Marines units that possess the Infantry keyword.\n\nSource:\nSELECT count(DISTINCT d.Id) FROM datasheets d JOIN factions f ON d.factionId = f.Id JOIN datasheets_keywords dk ON d.Id = dk.DatasheetId WHERE f.name = 'Space Marines' AND dk.keyword = 'Infantry' AND d.virtual = 'false'",
+    "rationale": "A count query of Space Marines units filtered by the Infantry keyword.",
+    "answer": "There are 157 Space Marines units that have the Infantry keyword.\n\nSource:\n```sql\nSELECT count(DISTINCT d.Id) AS n_units FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_keywords dk ON dk.DatasheetId = d.Id WHERE f.name = 'Space Marines' AND dk.keyword = 'Infantry' AND d.virtual = 'false'\n```",
     "contexts": [
-      "SQL query:\nSELECT count(DISTINCT d.Id) FROM datasheets d JOIN factions f ON d.factionId = f.Id JOIN datasheets_keywords dk ON d.Id = dk.DatasheetId WHERE f.name = 'Space Marines' AND dk.keyword = 'Infantry' AND d.virtual = 'false'\n\nRows:\ncount(DISTINCT d.Id)\n157"
+      "SQL query:\nSELECT count(DISTINCT d.Id) AS n_units FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_keywords dk ON dk.DatasheetId = d.Id WHERE f.name = 'Space Marines' AND dk.keyword = 'Infantry' AND d.virtual = 'false'\n\nRows:\nn_units\n157"
     ],
     "pages": [],
     "sections": [],
-    "sql": "SELECT count(DISTINCT d.Id) FROM datasheets d JOIN factions f ON d.factionId = f.Id JOIN datasheets_keywords dk ON d.Id = dk.DatasheetId WHERE f.name = 'Space Marines' AND dk.keyword = 'Infantry' AND d.virtual = 'false'",
+    "sql": "SELECT count(DISTINCT d.Id) AS n_units FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_keywords dk ON dk.DatasheetId = d.Id WHERE f.name = 'Space Marines' AND dk.keyword = 'Infantry' AND d.virtual = 'false'",
     "sql_error": null,
     "section_hit": null,
     "page_hit": null,
@@ -749,10 +749,10 @@
     "failure": null,
     "ragas": {
       "faithfulness": 1.0,
-      "answer_relevancy": 0.9874281489078148,
+      "answer_relevancy": 1.0000000000000002,
       "llm_context_precision_with_reference": 0.9999999999,
       "context_recall": 1.0,
-      "answer_correctness": 0.9969020117629643
+      "answer_correctness": 0.9979248357985209
     }
   },
   {
@@ -761,14 +761,14 @@
     "expected_source": "sql",
     "reference": "Bannernob, Big Mek, Big Mek With Kustom Force Field, Big Mek With Shokk Attack Gun, Bigboss, Ghazghkull Thraka, Mad Dok Grotsnik, Mek, Painboy, Ufthak Blackhawk, Warboss and Weirdboy can lead Boyz.",
     "routed_source": "sql",
-    "rationale": "This requires querying the leader/attachment rules or datasheet relationships to find which characters are eligible to lead a specific unit (Boyz).",
-    "answer": "The characters that can lead Boyz are the Warboss, Weirdboy, Ghazghkull Thraka, Mek, Painboy, Mad Dok Grotsnik, Big Mek With Shokk Attack Gun, Big Mek With Kustom Force Field, Big Mek, Ufthak Blackhawk, Bannernob, and Bigboss.\n\nSource:\nSELECT DISTINCT l.name FROM datasheets l JOIN datasheets_leader dl ON dl.LeaderId = l.Id JOIN datasheets a ON a.Id = dl.attachedId JOIN datasheets_keywords k ON k.DatasheetId = l.Id WHERE a.name = 'Boyz' AND k.keyword = 'Character'",
+    "rationale": "Asks for a list of leader units that can attach to the Boyz unit, which is a datasheet composition/leader lookup.",
+    "answer": "The following characters can lead a unit of Boyz:\n\n* Bannernob\n* Big Mek\n* Big Mek With Kustom Force Field\n* Big Mek With Shokk Attack Gun\n* Bigboss\n* Ghazghkull Thraka\n* Mad Dok Grotsnik\n* Mek\n* Painboy\n* Ufthak Blackhawk\n* Warboss\n* Weirdboy\n\nSource:\nSELECT DISTINCT l.name FROM datasheets l JOIN datasheets_leader dl ON dl.LeaderId = l.Id JOIN datasheets a ON a.Id = dl.attachedId JOIN datasheets_keywords dk ON dk.DatasheetId = l.Id WHERE a.name = 'Boyz' AND dk.keyword = 'Character' AND l.virtual = 'false' ORDER BY l.name",
     "contexts": [
-      "SQL query:\nSELECT DISTINCT l.name FROM datasheets l JOIN datasheets_leader dl ON dl.LeaderId = l.Id JOIN datasheets a ON a.Id = dl.attachedId JOIN datasheets_keywords k ON k.DatasheetId = l.Id WHERE a.name = 'Boyz' AND k.keyword = 'Character'\n\nRows:\nname\nWarboss\nWeirdboy\nGhazghkull Thraka\nMek\nPainboy\nMad Dok Grotsnik\nBig Mek With Shokk Attack Gun\nBig Mek With Kustom Force Field\nBig Mek\nUfthak Blackhawk\nBannernob\nBigboss"
+      "SQL query:\nSELECT DISTINCT l.name FROM datasheets l JOIN datasheets_leader dl ON dl.LeaderId = l.Id JOIN datasheets a ON a.Id = dl.attachedId JOIN datasheets_keywords dk ON dk.DatasheetId = l.Id WHERE a.name = 'Boyz' AND dk.keyword = 'Character' AND l.virtual = 'false' ORDER BY l.name\n\nRows:\nname\nBannernob\nBig Mek\nBig Mek With Kustom Force Field\nBig Mek With Shokk Attack Gun\nBigboss\nGhazghkull Thraka\nMad Dok Grotsnik\nMek\nPainboy\nUfthak Blackhawk\nWarboss\nWeirdboy"
     ],
     "pages": [],
     "sections": [],
-    "sql": "SELECT DISTINCT l.name FROM datasheets l JOIN datasheets_leader dl ON dl.LeaderId = l.Id JOIN datasheets a ON a.Id = dl.attachedId JOIN datasheets_keywords k ON k.DatasheetId = l.Id WHERE a.name = 'Boyz' AND k.keyword = 'Character'",
+    "sql": "SELECT DISTINCT l.name FROM datasheets l JOIN datasheets_leader dl ON dl.LeaderId = l.Id JOIN datasheets a ON a.Id = dl.attachedId JOIN datasheets_keywords dk ON dk.DatasheetId = l.Id WHERE a.name = 'Boyz' AND dk.keyword = 'Character' AND l.virtual = 'false' ORDER BY l.name",
     "sql_error": null,
     "section_hit": null,
     "page_hit": null,
@@ -777,10 +777,10 @@
     "failure": null,
     "ragas": {
       "faithfulness": 1.0,
-      "answer_relevancy": 0.9330527158039879,
+      "answer_relevancy": 0.9390163514105156,
       "llm_context_precision_with_reference": 0.9999999999,
       "context_recall": 1.0,
-      "answer_correctness": 0.9833725413336545
+      "answer_correctness": 0.9832835069691077
     }
   },
   {
@@ -788,32 +788,27 @@
     "question": "Which stratagems can Termagants use in the Fight phase?",
     "expected_source": "sql",
     "reference": "Termagants can use Adrenal Surge, Bio-Acid Surge, Counter-Offensive, Counteroffensive, Death Frenzy, Invisible Hunter, Overrun, Rapacious Hunger, Rapid Regeneration, Retreat Below, Secure Biomass, Swarming Masses and Teeming Masses in the Fight phase.",
-    "routed_source": "both",
-    "rationale": "Requires the Fight phase rules (PDF) to understand the timing and the list of stratagems available to a specific unit (SQL).",
-    "answer": "Termagants can use the **Counter-Offensive** Stratagem during the Fight phase, provided they meet the eligibility requirements to fight as defined in the Core Rules. According to the Core Rules (p. 32), a unit is eligible to fight if it is within Engagement Range of an enemy unit or made a Charge move this turn. While the provided SQL list contains 36 stratagems associated with Termagants, the list is partial (the true total of available stratagems in the database is higher).\n\n**Rule Explanation:**\nThe Fight phase is divided into two steps: units with the \"Fights First\" ability, followed by \"Remaining Combats\" (p. 32). A unit must be eligible to fight to be selected (p. 32). The **Counter-Offensive** Stratagem (a Core Stratagem) allows a player to select an eligible unit to fight immediately after an enemy unit has fought, interrupting the standard alternating sequence. Note that the *Epic Challenge* stratagem (p. 41) cannot be used by Termagants, as it is restricted to Character units.\n\n**Source:**\n```sql\nSELECT DISTINCT s.name FROM datasheets d JOIN datasheets_stratagems ds ON ds.DatasheetId = d.Id JOIN stratagems s ON s.id = ds.stratagemId WHERE d.name = 'Termagants'\n```",
+    "routed_source": "sql",
+    "rationale": "A lookup for stratagems available to Termagants filtered by phase; no core rule mechanics are requested.",
+    "answer": "Termagants can use the following stratagems in the Fight phase:\n\n* **Adrenal Surge** (2 CP)\n* **Bio-Acid Surge** (1 CP)\n* **Counter-Offensive** (2 CP)\n* **Counteroffensive** (2 CP)\n* **Death Frenzy** (1 CP)\n* **Invisible Hunter** (1 CP)\n* **Overrun** (1 CP)\n* **Rapacious Hunger** (1 CP)\n* **Rapid Regeneration** (1 CP)\n* **Retreat Below** (1 CP)\n* **Secure Biomass** (1 CP)\n* **Swarming Masses** (1 CP)\n* **Teeming Masses** (1 CP)\n\nSource:\n```sql\nSELECT DISTINCT s.name, s.cpCost, s.phase FROM datasheets d JOIN datasheets_stratagems ds ON ds.DatasheetId = d.Id JOIN stratagems s ON s.id = ds.stratagemId WHERE d.name = 'Termagants' AND s.phase LIKE '%Fight%' ORDER BY s.name\n```",
     "contexts": [
-      "[p. 32, FIGHT PHASE]\nCarnage engulfs the battlefield as the warring armies meet head-on. Fangs and claws crunch through bone. Blades ring like hammers on anvils. Blood spurts and flesh tears as hate-filled foes tear one another apart.\nIn both steps of the Fight phase, players alternate selecting eligible units from their army, one at a time, starting with the player whose turn is not taking place, and fighting with them. Note that a player cannot pass or opt not to fight when they have one or more eligible units that could fight - they must select one of them to fight.\nIn both steps, a unit is eligible to fight if either or both of the following apply:\n- ■ \u0007 It is within Engagement Range of one or more enemy units.\n- ■ It made a Charge move this turn.\nNo unit can fight more than once in the Fight phase. In each step, if all of one player's eligible units that can fight during that step have fought, the opposing player can then fight with all of their remaining eligible units that can fight during that step, one at a time.\nOnce neither player has any eligible units to fight with during the current step, you progress to the next step. Once all eligible units have fought in every step, the Fight phase ends. The player's turn then ends and, unless the battle ends, the next player's turn begins.",
-      "[p. 10, FIGHT PHASE]\nBoth players' units pile in and attack with melee weapons.\nOnce a player's turn has ended, their opponent then starts their turn. Once both players have completed a turn, the battle round has been completed and the next one begins, and so on, until the battle ends.\nL",
-      "[p. 3, Introduction]\nCOMMAND PHASE\b\nMOVEMENT PHASE \b\nSHOOTING PHASE \b\nCHARGE PHASE \b\nFIGHT PHASE \b\nIn a game as wide-ranging as Warhammer 40,000, there may be times when you are not sure exactly how to resolve a situation that has come up during play. When this happens, have a quick chat with your opponent and apply the solution that makes the most sense to both of you (or seems the most fun!). If no single solution presents itself, you and your opponent should roll off, and whoever rolls highest gets to choose what happens. Then you can get on with the fighting!",
-      "[p. 32, 2. REMAINING COMBATS]\nIn this step, all remaining eligible units fight. This includes any units with the Fights First ability that were not eligible to fight at the start of the Fight phase, but have since become eligible to fight.\nThe Fight phase is split into two steps. Units that have the ability to Fight First do so, followed by any remaining eligible units.",
-      "[p. 41, EPIC CHALLENGE]\nCORE - EPIC DEED STRATAGEM\nThe legends of the 41st Millennium are replete with deadly duels between mighty champions.\nWHEN: Fight phase, when a Character unit from your army that is within Engagement Range of one or more Attached units is selected to fight.\nTARGET: One Character model in your unit.\nEFFECT: Until the end of the phase, all melee attacks made by that model have the [PRECISION] ability (pg 26).",
-      "SQL query:\nSELECT DISTINCT s.name FROM datasheets d JOIN datasheets_stratagems ds ON ds.DatasheetId = d.Id JOIN stratagems s ON s.id = ds.stratagemId WHERE d.name = 'Termagants'\n\nRows:\nname\nRAPID REGENERATION\nADRENAL SURGE\nDEATH FRENZY\nOVERRUN\nPREDATORY IMPERATIVE\nENDLESS SWARM\nSYNAPTIC GOADING\nUNENDING WAVES\nTEEMING MASSES\nSWARMING MASSES\nBOUNDING ADVANCE\nPRESERVATION IMPERATIVE\nSECURE BIOMASS\nRAPACIOUS HUNGER\nSEEDED BROODS\nHYPERSENSORY SCILLIA\nINVISIBLE HUNTER\nIMPERATIVE DOMINANCE\nOVERRIDE INSTINCTS\nCOMMAND RE-ROLL\nCOUNTER-OFFENSIVE\nINSANE BRAVERY\nEXPLOSIVE CLEARANCE\nBIO-ACID SURGE\nLIVING AVALANCHE\nSQUIRMING MASSES\nSWARM HUNTERS\nONRUSHING HORDE\nREPLENISHING SWARMS\nENFILADING EMERGENCE\nTUNNEL NETWORK\nRETREAT BELOW\nRAPID INGRESS\nFIRE OVERWATCH\nHEROIC INTERVENTION\nCOUNTEROFFENSIVE"
+      "SQL query:\nSELECT DISTINCT s.name, s.cpCost, s.phase FROM datasheets d JOIN datasheets_stratagems ds ON ds.DatasheetId = d.Id JOIN stratagems s ON s.id = ds.stratagemId WHERE d.name = 'Termagants' AND s.phase LIKE '%Fight%' ORDER BY s.name\n\nRows:\nname | cpCost | phase\nADRENAL SURGE | 2 | Fight phase\nBIO-ACID SURGE | 1 | Fight phase\nCOUNTER-OFFENSIVE | 2 | Fight phase\nCOUNTEROFFENSIVE | 2 | Fight phase\nDEATH FRENZY | 1 | Fight phase\nINVISIBLE HUNTER | 1 | Fight phase\nOVERRUN | 1 | Fight phase\nRAPACIOUS HUNGER | 1 | Fight phase\nRAPID REGENERATION | 1 | Shooting or Fight phase\nRETREAT BELOW | 1 | Fight phase\nSECURE BIOMASS | 1 | Fight phase\nSWARMING MASSES | 1 | Shooting or Fight phase\nTEEMING MASSES | 1 | Shooting or Fight phase"
     ],
     "pages": [],
     "sections": [],
-    "sql": "SELECT DISTINCT s.name FROM datasheets d JOIN datasheets_stratagems ds ON ds.DatasheetId = d.Id JOIN stratagems s ON s.id = ds.stratagemId WHERE d.name = 'Termagants'",
+    "sql": "SELECT DISTINCT s.name, s.cpCost, s.phase FROM datasheets d JOIN datasheets_stratagems ds ON ds.DatasheetId = d.Id JOIN stratagems s ON s.id = ds.stratagemId WHERE d.name = 'Termagants' AND s.phase LIKE '%Fight%' ORDER BY s.name",
     "sql_error": null,
     "section_hit": null,
     "page_hit": null,
     "sql_exact": false,
-    "sql_relaxed": false,
+    "sql_relaxed": true,
     "failure": null,
     "ragas": {
-      "faithfulness": 0.625,
-      "answer_relevancy": 0.8628341151061951,
-      "llm_context_precision_with_reference": 0.0,
-      "context_recall": 0.0,
-      "answer_correctness": 0.23952444110689342
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9983987156371996,
+      "llm_context_precision_with_reference": 0.9999999999,
+      "context_recall": 1.0,
+      "answer_correctness": 0.722495297775344
     }
   },
   {
@@ -822,8 +817,8 @@
     "expected_source": "sql",
     "reference": "A Hive Tyrant has the Monstrous bonesword and lash whip (A6, WS 2+, S9, AP-2, D3) and Monstrous scything talons (A4, WS 2+, S7, AP-2, D2).",
     "routed_source": "sql",
-    "rationale": "This is a request for specific equipment data associated with a unit datasheet.",
-    "answer": "A Hive Tyrant is equipped with the following melee weapons: Monstrous bonesword and lash whip (6 attacks, hitting on 2+, Strength 9, AP -2, Damage 3) and Monstrous scything talons (4 attacks, hitting on 2+, Strength 7, AP -2, Damage 2).\n\nSource:\nSELECT w.name, w.range, w.a, w.bsWs, w.s, w.ap, w.d FROM datasheets d JOIN datasheets_wargear w ON w.DatasheetId = d.Id WHERE d.name = 'Hive Tyrant' AND w.type = 'Melee' ORDER BY CAST(w.line AS INTEGER), CAST(w.lineInWargear AS INTEGER)",
+    "rationale": "Asks for the specific melee weapon options/profiles listed on the Hive Tyrant datasheet.",
+    "answer": "A Hive Tyrant has two melee weapons:\n\n* **Monstrous bonesword and lash whip** (Range: Melee, Attacks: 6, WS: 2+, Strength: 9, AP: -2, Damage: 3)\n* **Monstrous scything talons** (Range: Melee, Attacks: 4, WS: 2+, Strength: 7, AP: -2, Damage: 2)\n\nSource:\n```sql\nSELECT w.name, w.range, w.a, w.bsWs, w.s, w.ap, w.d FROM datasheets d JOIN datasheets_wargear w ON w.DatasheetId = d.Id WHERE d.name = 'Hive Tyrant' AND w.type = 'Melee' ORDER BY CAST(w.line AS INTEGER), CAST(w.lineInWargear AS INTEGER)\n```",
     "contexts": [
       "SQL query:\nSELECT w.name, w.range, w.a, w.bsWs, w.s, w.ap, w.d FROM datasheets d JOIN datasheets_wargear w ON w.DatasheetId = d.Id WHERE d.name = 'Hive Tyrant' AND w.type = 'Melee' ORDER BY CAST(w.line AS INTEGER), CAST(w.lineInWargear AS INTEGER)\n\nRows:\nname | range | a | bsWs | s | ap | d\nMonstrous bonesword and lash whip | Melee | 6 | 2 | 9 | -2 | 3\nMonstrous scything talons | Melee | 4 | 2 | 7 | -2 | 2"
     ],
@@ -837,11 +832,11 @@
     "sql_relaxed": true,
     "failure": null,
     "ragas": {
-      "faithfulness": 1.0,
-      "answer_relevancy": 0.9268123065838333,
+      "faithfulness": 0.8666666666666667,
+      "answer_relevancy": 0.9606834936669107,
       "llm_context_precision_with_reference": 0.9999999999,
       "context_recall": 1.0,
-      "answer_correctness": 0.9838872108397834
+      "answer_correctness": 0.8723882670425801
     }
   },
   {
@@ -850,14 +845,14 @@
     "expected_source": "sql",
     "reference": "The Gladius Task Force has the Combat Doctrines detachment ability.",
     "routed_source": "sql",
-    "rationale": "This is a lookup of specific detachment rules and abilities stored in the datasheets database.",
-    "answer": "The Gladius Task Force detachment ability is called \"Combat Doctrines.\" At the start of your Command phase, you can select one of three doctrines (Devastator, Tactical, or Assault) to be active until your next Command phase. Each doctrine can only be selected once per battle and provides the following benefits to all ADEPTUS ASTARTES units in your army:\n\n*   **Devastator Doctrine:** Units are eligible to shoot in a turn in which they Advanced.\n*   **Tactical Doctrine:** Units are eligible to shoot and declare a charge in a turn in which they Fell Back.\n*   **Assault Doctrine:** Units are eligible to declare a charge in a turn in which they Advanced.\n\nSource:\nSELECT da.name, da.description FROM detachment_abilities da JOIN detachments dt ON dt.Id = da.detachmentId WHERE dt.name = 'Gladius Task Force'",
+    "rationale": "A lookup query to retrieve detachment abilities for a specific detachment (Gladius Task Force) from the database.",
+    "answer": "The Gladius Task Force has the **Combat Doctrines** detachment ability.\n\nThis ability allows you to select one of three Combat Doctrines (each usable once per battle) at the start of your Command phase. The selected doctrine applies to all ADEPTUS ASTARTES units in your army until the start of your next Command phase:\n* **Devastator Doctrine:** Allows units to shoot in a turn in which they Advanced.\n* **Tactical Doctrine:** Allows units to shoot and declare a charge in a turn in which they Fell Back.\n* **Assault Doctrine:** Allows units to declare a charge in a turn in which they Advanced.\n\nSource:\n```sql\nSELECT DISTINCT da.name, da.description FROM detachment_abilities da JOIN detachments d ON d.Id = da.detachmentId WHERE d.name = 'Gladius Task Force' ORDER BY da.name\n```",
     "contexts": [
-      "SQL query:\nSELECT da.name, da.description FROM detachment_abilities da JOIN detachments dt ON dt.Id = da.detachmentId WHERE dt.name = 'Gladius Task Force'\n\nRows:\nname | description\nCombat Doctrines | At the start of your Command phase, you can select one of the Combat Doctrines listed below. Until the start of your next Command phase, that Combat Doctrine is active and its effects apply to all ADEPTUS ASTARTES units from your army. You can only select each Combat Doctrine once per battle.Devastator DoctrineThe Codex Astartes details the strategic value of overwhelming firepower applied to key targets while advancing into position to eliminate threats.This unit is eligible to shoot in a turn in which it Advanced.Tactical DoctrineAs the warring armies close upon one another and vicious fire-fights erupt, the Codex lays out strategies for swiftly seizing the initiative and combining versatility with firepower.This unit is eligible to shoot and declare a charge in a turn in which it Fell Back.Assault DoctrineThe Codex Astartes leaves no doubt that the killing blow in most engagements must be delivered with a decisive close-quarters strike. It presents plentiful tactical means to achieve this end.This unit is eligible to declare a charge in a turn in which it Advanced."
+      "SQL query:\nSELECT DISTINCT da.name, da.description FROM detachment_abilities da JOIN detachments d ON d.Id = da.detachmentId WHERE d.name = 'Gladius Task Force' ORDER BY da.name\n\nRows:\nname | description\nCombat Doctrines | At the start of your Command phase, you can select one of the Combat Doctrines listed below. Until the start of your next Command phase, that Combat Doctrine is active and its effects apply to all ADEPTUS ASTARTES units from your army. You can only select each Combat Doctrine once per battle.Devastator DoctrineThe Codex Astartes details the strategic value of overwhelming firepower applied to key targets while advancing into position to eliminate threats.This unit is eligible to shoot in a turn in which it Advanced.Tactical DoctrineAs the warring armies close upon one another and vicious fire-fights erupt, the Codex lays out strategies for swiftly seizing the initiative and combining versatility with firepower.This unit is eligible to shoot and declare a charge in a turn in which it Fell Back.Assault DoctrineThe Codex Astartes leaves no doubt that the killing blow in most engagements must be delivered with a decisive close-quarters strike. It presents plentiful tactical means to achieve this end.This unit is eligible to declare a charge in a turn in which it Advanced."
     ],
     "pages": [],
     "sections": [],
-    "sql": "SELECT da.name, da.description FROM detachment_abilities da JOIN detachments dt ON dt.Id = da.detachmentId WHERE dt.name = 'Gladius Task Force'",
+    "sql": "SELECT DISTINCT da.name, da.description FROM detachment_abilities da JOIN detachments d ON d.Id = da.detachmentId WHERE d.name = 'Gladius Task Force' ORDER BY da.name",
     "sql_error": null,
     "section_hit": null,
     "page_hit": null,
@@ -865,11 +860,11 @@
     "sql_relaxed": true,
     "failure": null,
     "ragas": {
-      "faithfulness": 0.8888888888888888,
-      "answer_relevancy": 0.9370909417301463,
+      "faithfulness": 0.8571428571428571,
+      "answer_relevancy": 0.9144717888215678,
       "llm_context_precision_with_reference": 0.9999999999,
       "context_recall": 1.0,
-      "answer_correctness": 0.35293252753602855
+      "answer_correctness": 0.4038159692126673
     }
   },
   {
@@ -878,26 +873,26 @@
     "expected_source": "sql",
     "reference": "Six Tyranids enhancements tie at 30 points: Alien Cunning, Elevated Might, Hunting Grounds, Naturalised Camouflage, Psychostatic Disruption and Synaptoprescience.",
     "routed_source": "sql",
-    "rationale": "An aggregation over enhancements filtered by faction to find the highest points cost.",
-    "answer": "The most expensive enhancements for the Tyranids faction cost 30 points each. There are six enhancements that share this maximum cost: Alien Cunning, Elevated Might, Hunting Grounds, Naturalised Camouflage, Psychostatic Disruption, and Synaptoprescience.\n\nSource:\nSELECT e.name, e.detachment, CAST(e.cost AS INTEGER) AS points FROM enhancements e JOIN factions f ON f.Id = e.FactionId WHERE f.name = 'Tyranids' AND CAST(e.cost AS INTEGER) = (SELECT MAX(CAST(e2.cost AS INTEGER)) FROM enhancements e2 JOIN factions f2 ON e2.FactionId = f2.Id WHERE f2.name = 'Tyranids') ORDER BY e.name",
+    "rationale": "An aggregation over enhancements filtered by the Tyranids faction.",
+    "answer": "The most expensive enhancements in the Tyranids faction are tied at 30 points each. There are six enhancements that reach this maximum cost:\n\n* **Alien Cunning** (Invasion Fleet) – 30 points\n* **Elevated Might** (Warrior Bioform Onslaught) – 30 points\n* **Hunting Grounds** (Vanguard Onslaught) – 30 points\n* **Naturalised Camouflage** (Unending Swarm) – 30 points\n* **Psychostatic Disruption** (Synaptic Nexus) – 30 points\n* **Synaptoprescience** (Talons of the Norn Queen) – 30 points\n\nSource:\n```sql\nSELECT e.name, e.detachment, CAST(e.cost AS INTEGER) AS points FROM enhancements e JOIN factions f ON f.Id = e.FactionId WHERE f.name = 'Tyranids' AND CAST(e.cost AS INTEGER) = (SELECT max(CAST(e2.cost AS INTEGER)) FROM enhancements e2 WHERE e2.FactionId = f.Id) ORDER BY e.name\n```",
     "contexts": [
-      "SQL query:\nSELECT e.name, e.detachment, CAST(e.cost AS INTEGER) AS points FROM enhancements e JOIN factions f ON f.Id = e.FactionId WHERE f.name = 'Tyranids' AND CAST(e.cost AS INTEGER) = (SELECT MAX(CAST(e2.cost AS INTEGER)) FROM enhancements e2 JOIN factions f2 ON e2.FactionId = f2.Id WHERE f2.name = 'Tyranids') ORDER BY e.name\n\nRows:\nname | detachment | points\nAlien Cunning | Invasion Fleet | 30\nElevated Might | Warrior Bioform Onslaught | 30\nHunting Grounds | Vanguard Onslaught | 30\nNaturalised Camouflage | Unending Swarm | 30\nPsychostatic Disruption | Synaptic Nexus | 30\nSynaptoprescience | Talons of the Norn Queen | 30"
+      "SQL query:\nSELECT e.name, e.detachment, CAST(e.cost AS INTEGER) AS points FROM enhancements e JOIN factions f ON f.Id = e.FactionId WHERE f.name = 'Tyranids' AND CAST(e.cost AS INTEGER) = (SELECT max(CAST(e2.cost AS INTEGER)) FROM enhancements e2 WHERE e2.FactionId = f.Id) ORDER BY e.name\n\nRows:\nname | detachment | points\nAlien Cunning | Invasion Fleet | 30\nElevated Might | Warrior Bioform Onslaught | 30\nHunting Grounds | Vanguard Onslaught | 30\nNaturalised Camouflage | Unending Swarm | 30\nPsychostatic Disruption | Synaptic Nexus | 30\nSynaptoprescience | Talons of the Norn Queen | 30"
     ],
     "pages": [],
     "sections": [],
-    "sql": "SELECT e.name, e.detachment, CAST(e.cost AS INTEGER) AS points FROM enhancements e JOIN factions f ON f.Id = e.FactionId WHERE f.name = 'Tyranids' AND CAST(e.cost AS INTEGER) = (SELECT MAX(CAST(e2.cost AS INTEGER)) FROM enhancements e2 JOIN factions f2 ON e2.FactionId = f2.Id WHERE f2.name = 'Tyranids') ORDER BY e.name",
+    "sql": "SELECT e.name, e.detachment, CAST(e.cost AS INTEGER) AS points FROM enhancements e JOIN factions f ON f.Id = e.FactionId WHERE f.name = 'Tyranids' AND CAST(e.cost AS INTEGER) = (SELECT max(CAST(e2.cost AS INTEGER)) FROM enhancements e2 WHERE e2.FactionId = f.Id) ORDER BY e.name",
     "sql_error": null,
     "section_hit": null,
     "page_hit": null,
-    "sql_exact": true,
+    "sql_exact": false,
     "sql_relaxed": true,
     "failure": null,
     "ragas": {
       "faithfulness": 1.0,
-      "answer_relevancy": 0.9770549020079592,
+      "answer_relevancy": 0.9612628212063703,
       "llm_context_precision_with_reference": 0.9999999999,
       "context_recall": 1.0,
-      "answer_correctness": 0.9002110915616888
+      "answer_correctness": 0.8535771944398041
     }
   },
   {
@@ -906,14 +901,14 @@
     "expected_source": "sql",
     "reference": "16 different Space Marines stratagems cost 2 command points.",
     "routed_source": "sql",
-    "rationale": "This is a count query filtering stratagems by faction and cost.",
-    "answer": "There are 16 different Space Marines stratagems that cost 2 command points.\n\nSource:\nSELECT count(DISTINCT s.name) FROM stratagems s JOIN factions f ON s.FactionId = f.Id WHERE f.name = 'Space Marines' AND s.cpCost = '2'",
+    "rationale": "A count query over stratagems filtered by faction (Space Marines) and CP cost (2).",
+    "answer": "There are 16 different Space Marines stratagems that cost 2 command points.\n\nSource:\n```sql\nSELECT COUNT(DISTINCT s.name) FROM stratagems s JOIN factions f ON f.Id = s.FactionId WHERE f.name = 'Space Marines' AND CAST(s.cpCost AS INTEGER) = 2\n```",
     "contexts": [
-      "SQL query:\nSELECT count(DISTINCT s.name) FROM stratagems s JOIN factions f ON s.FactionId = f.Id WHERE f.name = 'Space Marines' AND s.cpCost = '2'\n\nRows:\ncount(DISTINCT s.name)\n16"
+      "SQL query:\nSELECT COUNT(DISTINCT s.name) FROM stratagems s JOIN factions f ON f.Id = s.FactionId WHERE f.name = 'Space Marines' AND CAST(s.cpCost AS INTEGER) = 2\n\nRows:\nCOUNT(DISTINCT s.name)\n16"
     ],
     "pages": [],
     "sections": [],
-    "sql": "SELECT count(DISTINCT s.name) FROM stratagems s JOIN factions f ON s.FactionId = f.Id WHERE f.name = 'Space Marines' AND s.cpCost = '2'",
+    "sql": "SELECT COUNT(DISTINCT s.name) FROM stratagems s JOIN factions f ON f.Id = s.FactionId WHERE f.name = 'Space Marines' AND CAST(s.cpCost AS INTEGER) = 2",
     "sql_error": null,
     "section_hit": null,
     "page_hit": null,
@@ -934,14 +929,14 @@
     "expected_source": "sql",
     "reference": "134 units can be equipped with a Lascannon.",
     "routed_source": "sql",
-    "rationale": "This is a count query against the datasheets and wargear tables to determine how many units have access to a specific weapon.",
-    "answer": "There are 134 units in the game that can be equipped with a Lascannon.\n\nSource:\nSELECT count(DISTINCT d.Id) FROM datasheets d JOIN datasheets_wargear dw ON d.Id = dw.DatasheetId WHERE (dw.name = 'Lascannon' OR dw.name = 'Lascannons') AND d.virtual = 'false'",
+    "rationale": "A count query asking how many units have access to/are equipped with a specific weapon (Lascannon) from the database.",
+    "answer": "There are 134 units that can be equipped with a Lascannon.\n\nSource:\n```sql\nSELECT count(DISTINCT d.Id) AS n_units FROM datasheets d JOIN datasheets_wargear dw ON dw.DatasheetId = d.Id WHERE dw.name IN ('Lascannon', 'Lascannons') AND d.virtual = 'false'\n```",
     "contexts": [
-      "SQL query:\nSELECT count(DISTINCT d.Id) FROM datasheets d JOIN datasheets_wargear dw ON d.Id = dw.DatasheetId WHERE (dw.name = 'Lascannon' OR dw.name = 'Lascannons') AND d.virtual = 'false'\n\nRows:\ncount(DISTINCT d.Id)\n134"
+      "SQL query:\nSELECT count(DISTINCT d.Id) AS n_units FROM datasheets d JOIN datasheets_wargear dw ON dw.DatasheetId = d.Id WHERE dw.name IN ('Lascannon', 'Lascannons') AND d.virtual = 'false'\n\nRows:\nn_units\n134"
     ],
     "pages": [],
     "sections": [],
-    "sql": "SELECT count(DISTINCT d.Id) FROM datasheets d JOIN datasheets_wargear dw ON d.Id = dw.DatasheetId WHERE (dw.name = 'Lascannon' OR dw.name = 'Lascannons') AND d.virtual = 'false'",
+    "sql": "SELECT count(DISTINCT d.Id) AS n_units FROM datasheets d JOIN datasheets_wargear dw ON dw.DatasheetId = d.Id WHERE dw.name IN ('Lascannon', 'Lascannons') AND d.virtual = 'false'",
     "sql_error": null,
     "section_hit": null,
     "page_hit": null,
@@ -949,11 +944,11 @@
     "sql_relaxed": true,
     "failure": null,
     "ragas": {
-      "faithfulness": 0.5,
-      "answer_relevancy": 0.9561512208252766,
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.986761818326219,
       "llm_context_precision_with_reference": 0.9999999999,
       "context_recall": 1.0,
-      "answer_correctness": 0.7323628986545008
+      "answer_correctness": 0.9988616249140331
     }
   },
   {
@@ -962,26 +957,26 @@
     "expected_source": "sql",
     "reference": "The C'tan Shard of the Deceiver has a 4+ invulnerable save.",
     "routed_source": "sql",
-    "rationale": "This is a specific unit datasheet lookup for a stat value.",
-    "answer": "The C'tan Shard of the Deceiver has a 4+ invulnerable save.\n\nSource:\nSELECT DISTINCT dm.invSv FROM datasheets d JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE d.name LIKE 'C%tan Shard of the Deceiver'",
+    "rationale": "This is a datasheet attribute lookup for a specific unit (C'tan Shard of the Deceiver).",
+    "answer": "The C'tan Shard of the Deceiver has an invulnerable save of 4+.\n\nSource:\n```sql\nSELECT dm.name, dm.invSv FROM datasheets d JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE d.name LIKE 'C%tan Shard of the Deceiver'\n```",
     "contexts": [
-      "SQL query:\nSELECT DISTINCT dm.invSv FROM datasheets d JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE d.name LIKE 'C%tan Shard of the Deceiver'\n\nRows:\ninvSv\n4"
+      "SQL query:\nSELECT dm.name, dm.invSv FROM datasheets d JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE d.name LIKE 'C%tan Shard of the Deceiver'\n\nRows:\nname | invSv\nC’tan Shard of the Deceiver | 4"
     ],
     "pages": [],
     "sections": [],
-    "sql": "SELECT DISTINCT dm.invSv FROM datasheets d JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE d.name LIKE 'C%tan Shard of the Deceiver'",
+    "sql": "SELECT dm.name, dm.invSv FROM datasheets d JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE d.name LIKE 'C%tan Shard of the Deceiver'",
     "sql_error": null,
     "section_hit": null,
     "page_hit": null,
     "sql_exact": false,
-    "sql_relaxed": false,
+    "sql_relaxed": true,
     "failure": null,
     "ragas": {
       "faithfulness": 1.0,
       "answer_relevancy": 0.9999999999999999,
       "llm_context_precision_with_reference": 0.9999999999,
       "context_recall": 1.0,
-      "answer_correctness": 1.0
+      "answer_correctness": 0.9968866109288712
     }
   },
   {
@@ -990,14 +985,14 @@
     "expected_source": "sql",
     "reference": "Space Marines (279), Chaos Space Marines (105), Aeldari (100), Necrons (79) and Orks (74) have the most stratagems.",
     "routed_source": "sql",
-    "rationale": "This requires an aggregation and sorting of stratagem counts grouped by faction, which is a database query.",
-    "answer": "The five factions with the highest number of stratagems are the Space Marines (279), Chaos Space Marines (105), Aeldari (100), Necrons (79), and Orks (74).\n\nSource:\nSELECT f.name, count(s.id) AS n_stratagems FROM factions f JOIN stratagems s ON f.Id = s.FactionId GROUP BY f.name ORDER BY n_stratagems DESC LIMIT 5",
+    "rationale": "This asks for an aggregation and ranking of factions based on their total number of stratagems in the database.",
+    "answer": "The five factions with the most stratagems are:\n\n1. **Space Marines** (279)\n2. **Chaos Space Marines** (105)\n3. **Aeldari** (100)\n4. **Necrons** (79)\n5. **Orks** (74)\n\nSource:\n```sql\nSELECT f.name, COUNT(DISTINCT s.id) AS n_stratagems FROM stratagems s JOIN factions f ON f.Id = s.FactionId GROUP BY f.name ORDER BY n_stratagems DESC LIMIT 5\n```",
     "contexts": [
-      "SQL query:\nSELECT f.name, count(s.id) AS n_stratagems FROM factions f JOIN stratagems s ON f.Id = s.FactionId GROUP BY f.name ORDER BY n_stratagems DESC LIMIT 5\n\nRows:\nname | n_stratagems\nSpace Marines | 279\nChaos Space Marines | 105\nAeldari | 100\nNecrons | 79\nOrks | 74"
+      "SQL query:\nSELECT f.name, COUNT(DISTINCT s.id) AS n_stratagems FROM stratagems s JOIN factions f ON f.Id = s.FactionId GROUP BY f.name ORDER BY n_stratagems DESC LIMIT 5\n\nRows:\nname | n_stratagems\nSpace Marines | 279\nChaos Space Marines | 105\nAeldari | 100\nNecrons | 79\nOrks | 74"
     ],
     "pages": [],
     "sections": [],
-    "sql": "SELECT f.name, count(s.id) AS n_stratagems FROM factions f JOIN stratagems s ON f.Id = s.FactionId GROUP BY f.name ORDER BY n_stratagems DESC LIMIT 5",
+    "sql": "SELECT f.name, COUNT(DISTINCT s.id) AS n_stratagems FROM stratagems s JOIN factions f ON f.Id = s.FactionId GROUP BY f.name ORDER BY n_stratagems DESC LIMIT 5",
     "sql_error": null,
     "section_hit": null,
     "page_hit": null,
@@ -1009,7 +1004,7 @@
       "answer_relevancy": 0.9660199354254215,
       "llm_context_precision_with_reference": 0.9999999999,
       "context_recall": 1.0,
-      "answer_correctness": 0.9752210298853392
+      "answer_correctness": 0.9743842127660921
     }
   },
   {
@@ -1018,31 +1013,31 @@
     "expected_source": "both",
     "reference": "A unit with Deep Strike can be set up in Reserves during Declare Battle Formations, then set up in the Reinforcements step of one of your Movement phases anywhere more than 9 inches horizontally from all enemy models. The Necrons units with it are Canoptek Tomb Sentinel, Canoptek Tomb Stalker, C'tan Shard of the Deceiver, C'tan Shard of the Nightbringer, C'tan Shard of the Void Dragon, Deathmarks, Hexmark Destroyer, Monolith, Nekrosor Ammentar, Night Scythe, Obelisk, Ophydian Destroyers, Transcendent C'tan and Triarch Praetorians.",
     "routed_source": "both",
-    "rationale": "Requires the definition of the Deep Strike rule (PDF) and a list of units possessing that keyword (SQL).",
-    "answer": "Deep Strike allows units to be set up in Reserves during the Declare Battle Formations step instead of on the battlefield. During the Reinforcements step of your Movement phase, these units can be set up anywhere on the battlefield, provided they are more than 9\" horizontally away from all enemy models (Core Rules, p. 39). Units arriving via Deep Strike count as having made a Normal move, meaning they cannot move further that phase but may otherwise act normally (Core Rules, p. 16).\n\nThe following Necron units possess the Deep Strike ability:\n*   Deathmarks\n*   Triarch Praetorians\n*   C’tan Shard of the Nightbringer\n*   C’tan Shard of the Deceiver\n*   Night Scythe\n*   Monolith\n*   Transcendent C’tan\n*   Obelisk\n*   Canoptek Tomb Stalker\n*   Canoptek Tomb Sentinel\n*   Hexmark Destroyer\n*   C’tan Shard of the Void Dragon\n*   Ophydian Destroyers\n*   Nekrosor Ammentar\n\nSource:\nSELECT DISTINCT d.name FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_abilities da ON da.DatasheetId = d.Id JOIN abilities a ON a.Id = da.abilityId WHERE f.name = 'Necrons' AND a.name LIKE 'Deep Strike' AND d.virtual = 'false'",
+    "rationale": "Requires an explanation of the Deep Strike rule from the core rules alongside a list of specific Necrons units that possess Deep Strike from the datasheets database.",
+    "answer": "**Deep Strike** allows a unit to be placed in Reserves during the Declare Battle Formations step instead of setting it up on the battlefield, provided every model in the unit has the ability [p. 39]. In the Reinforcements step of one of your Movement phases, you can then set up that unit anywhere on the battlefield that is more than 9\" horizontally away from all enemy models [p. 39].\n\nThe Necrons units that have the Deep Strike ability are:\n* Canoptek Tomb Sentinel\n* Canoptek Tomb Stalker\n* C’tan Shard of the Deceiver\n* C’tan Shard of the Nightbringer\n* C’tan Shard of the Void Dragon\n* Deathmarks\n* Hexmark Destroyer\n* Monolith\n* Nekrosor Ammentar\n* Night Scythe\n* Obelisk\n* Ophydian Destroyers\n* Transcendent C’tan\n* Triarch Praetorians\n\nSource:\n```sql\nSELECT DISTINCT d.name FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_abilities da ON da.DatasheetId = d.Id JOIN abilities a ON a.Id = da.abilityId WHERE f.name = 'Necrons' AND a.name = 'Deep Strike' AND d.virtual = 'false' ORDER BY d.name\n```",
     "contexts": [
       "[p. 39, DEEP STRIKE]\nSome units make their way to battle via tunnelling, teleportation, high-altitude descent or other extraordinary means that allow them to appear suddenly in the thick of the fighting.\nDuring the Declare Battle Formations step, if every model in a unit has this ability, you can set it up in Reserves instead of setting it up on the battlefield. If you do, in the Reinforcements step of one of your Movement phases you can set up this unit anywhere on the battlefield that is more than 9\" horizontally away from all enemy models.\n- ■ \u0007 Unit can be set up in Reserves instead of on the battlefield.\n- ■ \u0007 Unit can be set up in your Reinforcements step, more than 9\" horizontally away from all enemy models.",
+      "[p. 33, FIGHT]\nWhen you select a unit to fight, it first Piles In, then its models make melee attacks, then the unit Consolidates.\nUse the following sequence when a unit fights.\nPILE IN\nMAKE MELEE ATTACKS Select weapon Select targets Make attacks\nCONSOLIDATE",
       "[p. 32, FIGHT PHASE]\nCarnage engulfs the battlefield as the warring armies meet head-on. Fangs and claws crunch through bone. Blades ring like hammers on anvils. Blood spurts and flesh tears as hate-filled foes tear one another apart.\nIn both steps of the Fight phase, players alternate selecting eligible units from their army, one at a time, starting with the player whose turn is not taking place, and fighting with them. Note that a player cannot pass or opt not to fight when they have one or more eligible units that could fight - they must select one of them to fight.\nIn both steps, a unit is eligible to fight if either or both of the following apply:\n- ■ \u0007 It is within Engagement Range of one or more enemy units.\n- ■ It made a Charge move this turn.\nNo unit can fight more than once in the Fight phase. In each step, if all of one player's eligible units that can fight during that step have fought, the opposing player can then fight with all of their remaining eligible units that can fight during that step, one at a time.\nOnce neither player has any eligible units to fight with during the current step, you progress to the next step. Once all eligible units have fought in every step, the Fight phase ends. The player's turn then ends and, unless the battle ends, the next player's turn begins.",
-      "[p. 16, 2. REINFORCEMENTS]\nSome units have a rule that allows them to start the battle in Reserves, such as Deep Strike (pg 39). Such units will arrive later in the battle and are known as Reserves units. Any Reserves units that have not been set up on the battlefield when the battle ends count as having been destroyed.\nIn the Reinforcements step of your Movement phase, if you have any Reserves units in your army, you can select one or more of them and set them up on the battlefield, one at a time. Once all your Reserves units that you wish to set up this turn have been set up, your Movement phase ends and you progress to your Shooting phase.\nDetails of how to set up Reserves units are described in the same rules that enabled the unit to be set up in Reserves. These rules will typically specify a distance away from all enemy models; whenever such a distance is specified, it always applies to the horizontal distance, even though normally you measure to and from the closest part of a model's base.\nReserves units always count as having made a Normal move in the turn they are set up on the battlefield, and so cannot move further during this phase. Otherwise, units set up in this way can act normally this turn (shoot, declare a charge, fight, etc.).",
-      "[p. 24, Hints and Tips FAST DICE ROLLING]\nThe rules for making attacks have been written assuming you will resolve them one at a time. However, it is possible to speed up your battles by rolling the dice for similar attacks together. In order to make several attacks at once, all of the attacks must have the same Ballistic Skill (if it's a ranged attack) or the same Weapon Skill (if it's a melee attack). They must also have the same Strength and Armour Penetration characteristics, they must inflict the same Damage, they must be affected by the same abilities, and they must be directed at the same unit. If this is the case, make all of the Hit rolls at the same time, then all of the Wound rolls. Your opponent can then allocate the attacks one at a time, making the saving throws and suffering damage each time as appropriate.\nNote that if all the models in the target unit would require the same saving throw against the attacks, and the order in which the attacks are allocated would make no difference, then your opponent can make all their saving throws at the same time, and can do so as soon as the Wound rolls have been made. If they do, they then allocate the attacks that resulted in failed saving throws one at a time, inflicting the damage as appropriate even though, strictly speaking, saving throws should be made after attacks have been allocated. In any case, remember that if the target unit contains a model that has already lost any wounds or has already had attacks allocated to it this phase, the controlling player must allocate further attacks to that model until either it is destroyed, or all the attacks have been saved or resolved.",
-      "[p. 41, COUNTER-OFFENSIVE]\nCORE - STRATEGIC PLOY STRATAGEM\nIn close-quarters combat, the slightest hesitation can leave an opening for a swift foe to exploit.\nWHEN: Fight phase, just after an enemy unit has fought.\nTARGET: One unit from your army that is within Engagement Range of one or more enemy units and that has not already been selected to fight this phase.\nEFFECT: Your unit fights next.",
-      "SQL query:\nSELECT DISTINCT d.name FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_abilities da ON da.DatasheetId = d.Id JOIN abilities a ON a.Id = da.abilityId WHERE f.name = 'Necrons' AND a.name LIKE 'Deep Strike' AND d.virtual = 'false'\n\nRows:\nname\nDeathmarks\nTriarch Praetorians\nC’tan Shard of the Nightbringer\nC’tan Shard of the Deceiver\nNight Scythe\nMonolith\nTranscendent C’tan\nObelisk\nCanoptek Tomb Stalker\nCanoptek Tomb Sentinel\nHexmark Destroyer\nC’tan Shard of the Void Dragon\nOphydian Destroyers\nNekrosor Ammentar"
+      "[p. 32, FIGHTS FIRST]\nSome warriors attack with blinding speed, landing their blows before their foes can react.\nUnits with this ability that are eligible to fight do so in the Fights First step, provided every model in the unit has this ability.",
+      "[p. 49, EXAMPLE BATTLEFIELDS]\nMatched Play Focused: This is a Strike Force battlefield (44\" x 60\") set up with an aspirational number and mixture of terrain features. Their placement creates a battlefield that does not give an advantage to one player or the other, making it well suited to an aspirational matched play game. While this battlefield uses lots of Battlezone: Fronteris terrain features, you could achieve the same gaming experience using many different kinds of terrain, bearing in mind the concepts discussed above.\nMatched Play Focused: This Strike Force battlefield has fewer terrain features set up on it than the one below. The terrain has still been set up so as not to give an advantage to one player or the other, and there is still terrain set up in the middle that blocks visibility from one side of the battlefield to the other. As a result, this battlefield would make for an ideal matched play game. Battlefields with less terrain than this will start to advantage armies that rely on shooting over melee.\nNarrative Play Focused: This Strike Force battlefield has an ideal number and mixture of terrain features. The largest pieces of Area Terrain have been set up along the two long battlefield edges, while the middle of the battlefield only has a scattering of Obstacles to provide any kind of shelter from enemy fire. While this battlefield is not ideal for a matched play game, it would make for a very thematic set-up for a narrative play game.",
+      "SQL query:\nSELECT DISTINCT d.name FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_abilities da ON da.DatasheetId = d.Id JOIN abilities a ON a.Id = da.abilityId WHERE f.name = 'Necrons' AND a.name = 'Deep Strike' AND d.virtual = 'false' ORDER BY d.name\n\nRows:\nname\nCanoptek Tomb Sentinel\nCanoptek Tomb Stalker\nC’tan Shard of the Deceiver\nC’tan Shard of the Nightbringer\nC’tan Shard of the Void Dragon\nDeathmarks\nHexmark Destroyer\nMonolith\nNekrosor Ammentar\nNight Scythe\nObelisk\nOphydian Destroyers\nTranscendent C’tan\nTriarch Praetorians"
     ],
     "pages": [
       39,
+      33,
       32,
-      16,
-      24,
-      41
+      32,
+      49
     ],
     "sections": [
       "DEEP STRIKE",
+      "FIGHT",
       "FIGHT PHASE",
-      "2. REINFORCEMENTS",
-      "Hints and Tips FAST DICE ROLLING",
-      "COUNTER-OFFENSIVE"
+      "FIGHTS FIRST",
+      "EXAMPLE BATTLEFIELDS"
     ],
-    "sql": "SELECT DISTINCT d.name FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_abilities da ON da.DatasheetId = d.Id JOIN abilities a ON a.Id = da.abilityId WHERE f.name = 'Necrons' AND a.name LIKE 'Deep Strike' AND d.virtual = 'false'",
+    "sql": "SELECT DISTINCT d.name FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_abilities da ON da.DatasheetId = d.Id JOIN abilities a ON a.Id = da.abilityId WHERE f.name = 'Necrons' AND a.name = 'Deep Strike' AND d.virtual = 'false' ORDER BY d.name",
     "sql_error": null,
     "section_hit": true,
     "page_hit": true,
@@ -1050,11 +1045,11 @@
     "sql_relaxed": true,
     "failure": null,
     "ragas": {
-      "faithfulness": 0.95,
+      "faithfulness": 0.9473684210526315,
       "answer_relevancy": 0.9345373990483153,
       "llm_context_precision_with_reference": 0.0,
       "context_recall": 1.0,
-      "answer_correctness": 0.9232690041794742
+      "answer_correctness": 0.944205075556759
     }
   },
   {
@@ -1063,15 +1058,15 @@
     "expected_source": "both",
     "reference": "Eligible units in which every model has Fights First fight in the Fights First step of the Fight phase. The Aeldari units with it are Howling Banshees, Jain Zar and Solitaire.",
     "routed_source": "both",
-    "rationale": "Requires the definition of the Fights First ability from the core rules (PDF) and a list of specific units filtered by faction and ability (SQL).",
-    "answer": "The Fights First ability allows a unit to fight during the \"Fights First\" step of the Fight phase, provided every model in the unit possesses the ability (Core Rules, p. 32). In this step, players alternate selecting eligible units to fight, starting with the player whose turn is not currently taking place (Core Rules, p. 32). The Aeldari units that possess this ability are Jain Zar, Howling Banshees, and the Solitaire.\n\nSource:\nSELECT DISTINCT d.name FROM datasheets d JOIN datasheets_abilities da ON d.Id = da.DatasheetId JOIN abilities a ON da.abilityId = a.Id JOIN factions f ON d.factionId = f.Id WHERE f.name = 'Aeldari' AND a.name LIKE 'Fights First' AND d.virtual = 'false'",
+    "rationale": "The question asks for the rule definition of the Fights First ability (PDF) as well as a list of Aeldari units that possess it (SQL).",
+    "answer": "The **Fights First** ability allows eligible units to fight during the Fights First step of the Fight phase before units in the Remaining Combats step, provided every model in the unit has the ability (p. 32). Units that made a Charge move that turn also fight in the Fights First step due to their Charge bonus (p. 32). During this step, players alternate selecting eligible units to fight, starting with the player whose turn is not currently taking place (p. 32).\n\nThe Aeldari units with the Fights First ability are:\n* Howling Banshees\n* Jain Zar\n* Solitaire\n\nSource:\n```sql\nSELECT DISTINCT d.name FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_abilities da ON da.DatasheetId = d.Id LEFT JOIN abilities a ON a.Id = da.abilityId WHERE f.name = 'Aeldari' AND (a.name = 'Fights First' OR da.name = 'Fights First') AND d.virtual = 'false' ORDER BY d.name\n```",
     "contexts": [
       "[p. 32, FIGHTS FIRST]\nSome warriors attack with blinding speed, landing their blows before their foes can react.\nUnits with this ability that are eligible to fight do so in the Fights First step, provided every model in the unit has this ability.",
       "[p. 32, 1. FIGHTS FIRST]\nIn this step, all eligible units with the Fights First ability fight (pg 33-36). Remember that this will include units that made a Charge move this turn and that have a Charge bonus (pg 29).",
       "[p. 32, FIGHTS FIRST]\nUnits that can Fight First do so",
       "[p. 32, FIGHT PHASE]\nCarnage engulfs the battlefield as the warring armies meet head-on. Fangs and claws crunch through bone. Blades ring like hammers on anvils. Blood spurts and flesh tears as hate-filled foes tear one another apart.\nIn both steps of the Fight phase, players alternate selecting eligible units from their army, one at a time, starting with the player whose turn is not taking place, and fighting with them. Note that a player cannot pass or opt not to fight when they have one or more eligible units that could fight - they must select one of them to fight.\nIn both steps, a unit is eligible to fight if either or both of the following apply:\n- ■ \u0007 It is within Engagement Range of one or more enemy units.\n- ■ It made a Charge move this turn.\nNo unit can fight more than once in the Fight phase. In each step, if all of one player's eligible units that can fight during that step have fought, the opposing player can then fight with all of their remaining eligible units that can fight during that step, one at a time.\nOnce neither player has any eligible units to fight with during the current step, you progress to the next step. Once all eligible units have fought in every step, the Fight phase ends. The player's turn then ends and, unless the battle ends, the next player's turn begins.",
       "[p. 32, 2. REMAINING COMBATS]\nIn this step, all remaining eligible units fight. This includes any units with the Fights First ability that were not eligible to fight at the start of the Fight phase, but have since become eligible to fight.\nThe Fight phase is split into two steps. Units that have the ability to Fight First do so, followed by any remaining eligible units.",
-      "SQL query:\nSELECT DISTINCT d.name FROM datasheets d JOIN datasheets_abilities da ON d.Id = da.DatasheetId JOIN abilities a ON da.abilityId = a.Id JOIN factions f ON d.factionId = f.Id WHERE f.name = 'Aeldari' AND a.name LIKE 'Fights First' AND d.virtual = 'false'\n\nRows:\nname\nJain Zar\nHowling Banshees\nSolitaire"
+      "SQL query:\nSELECT DISTINCT d.name FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_abilities da ON da.DatasheetId = d.Id LEFT JOIN abilities a ON a.Id = da.abilityId WHERE f.name = 'Aeldari' AND (a.name = 'Fights First' OR da.name = 'Fights First') AND d.virtual = 'false' ORDER BY d.name\n\nRows:\nname\nHowling Banshees\nJain Zar\nSolitaire"
     ],
     "pages": [
       32,
@@ -1087,7 +1082,7 @@
       "FIGHT PHASE",
       "2. REMAINING COMBATS"
     ],
-    "sql": "SELECT DISTINCT d.name FROM datasheets d JOIN datasheets_abilities da ON d.Id = da.DatasheetId JOIN abilities a ON da.abilityId = a.Id JOIN factions f ON d.factionId = f.Id WHERE f.name = 'Aeldari' AND a.name LIKE 'Fights First' AND d.virtual = 'false'",
+    "sql": "SELECT DISTINCT d.name FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_abilities da ON da.DatasheetId = d.Id LEFT JOIN abilities a ON a.Id = da.abilityId WHERE f.name = 'Aeldari' AND (a.name = 'Fights First' OR da.name = 'Fights First') AND d.virtual = 'false' ORDER BY d.name",
     "sql_error": null,
     "section_hit": true,
     "page_hit": true,
@@ -1095,11 +1090,11 @@
     "sql_relaxed": true,
     "failure": null,
     "ragas": {
-      "faithfulness": 1.0,
+      "faithfulness": 0.8888888888888888,
       "answer_relevancy": 0.9793102700792263,
       "llm_context_precision_with_reference": 0.0,
       "context_recall": 1.0,
-      "answer_correctness": 0.5755110455601484
+      "answer_correctness": 0.5686265414860516
     }
   },
   {
@@ -1108,15 +1103,15 @@
     "expected_source": "both",
     "reference": "If every model in a unit has Stealth, each ranged attack against it subtracts 1 from the Hit roll. The Tyranids units with it are Deathleaper, Lictor, Malanthrope, Neurolictor, Parasite Of Mortrex, Venomthropes and Von Ryan's Leapers.",
     "routed_source": "both",
-    "rationale": "Needs the Stealth rule definition (PDF) and a list of units with that keyword (SQL).",
-    "answer": "The Stealth ability dictates that if every model in a unit possesses this ability, you must subtract 1 from the Hit roll each time a ranged attack is made against that unit (Core Rules, p. 20). Regarding the Tyranids, the provided SQL database returned no results for units possessing the Stealth keyword.\n\nSource:\nSELECT DISTINCT d.name FROM datasheets d JOIN datasheets_keywords dk ON d.Id = dk.DatasheetId JOIN factions f ON d.factionId = f.Id WHERE f.name = 'Tyranids' AND dk.keyword = 'Stealth' AND d.virtual = 'false'",
+    "rationale": "Asks for the rule explanation of the Stealth keyword (PDF) and a lookup of Tyranids units that have it (SQL).",
+    "answer": "Stealth is an ability that subtracts 1 from the Hit roll of a ranged attack made against a unit, provided every model in that unit has the Stealth ability (p. 20). \n\nThe Tyranids units that possess the Stealth ability are:\n* Deathleaper\n* Lictor\n* Malanthrope\n* Neurolictor\n* Parasite Of Mortrex\n* Venomthropes\n* Von Ryan’s Leapers\n\nSource:\n```sql\nSELECT DISTINCT d.name FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_abilities da ON da.DatasheetId = d.Id LEFT JOIN abilities a ON a.Id = da.abilityId WHERE f.name = 'Tyranids' AND (a.name = 'Stealth' OR da.name = 'Stealth') AND d.virtual = 'false'\n```",
     "contexts": [
       "[p. 20, STEALTH]\nSome warriors are masters of disguise and concealment.\nIf every model in a unit has this ability, then each time a ranged attack is made against it, subtract 1 from that attack's Hit roll.",
       "[p. 5, KEYWORDS]\nAll datasheets have a list of keywords, separated into Faction keywords and other keywords. Faction keywords can be used to help you decide which models to include in your army, but otherwise both sets of keywords are functionally the same. In either case, keywords appear in Keyword Bold . Keywords are sometimes linked to (or 'tagged' by) a rule. For example, a rule might say that it applies to Infantry units. This means it only applies to units that have the Infantry keyword on their datasheet. The pluralisation (or otherwise) of keywords does not affect which units the rule in question applies to.",
       "[p. 4, STRATEGIC RESERVES AND STRATAGEMS (PG 41-43) / SUMMARIES]\ncan measure distances whenever you wish.\nWhen measuring the distance between models, measu\nbetween the closest points of the bases of the models y\nmeasuring to and from. If a model does not have a bas\nmeasure to the closest point of any part of that model i\nIf a rule says it applies 'within' a certain distance, it app\nany distance that is not more than the specified distanc\nexample, within 1\" means any distance that is not mor\n1\" away.\nInfantry\nInfantry\nKeyword Bold\n. Keywords\nunits. This means it\nkeyword on their\nand any page references to the Core Rules found elsewhere - are based on this system, and do not relate to any other page numbers outside of the Core Rules. otherwise both sets of keywords are functionally the same. In either case, keywords appear in are sometimes linked to (or 'tagged' by) a rule. For example, a rule might say that it applies to only applies to units that have the datasheet. The pluralisation (or otherwise) of keywords does not affect which units the rule in question applies to. 7",
       "[p. 28, ANTI]\nCertain weapons are the bane of a particular foe.\nWeapons with [ANTI-KEYWORD X+] in their profile are known as Anti weapons. Each time an attack is made with such a weapon against a target with the keyword after the word ' Anti-' , an unmodified Wound roll of ' x+' scores a Critical Wound.\nExample: An attack made with an [ANTI-VEHICLE 4+] weapon will score a Critical Wound against - and so successfully wound - a Vehicle unit on an unmodified Wound roll of 4+, while an attack made with an [ANTI-PSYKER 2+] weapon will score a Critical Wound against - and so successfully wound - a Psyker unit on an unmodified Wound roll of 2+.\n- ■ \u0007 [ANTI-KEYWORD X+]: An unmodified Wound roll of ' x +' against a target with the matching keyword scores a Critical Wound.",
       "[p. 38, KEYWORDS]\nDatasheets have a list of keywords, separated into Faction keywords and other keywords. The former are used when deciding which models to include in your army, but otherwise both sets of keywords are functionally the same.",
-      "SQL query:\nSELECT DISTINCT d.name FROM datasheets d JOIN datasheets_keywords dk ON d.Id = dk.DatasheetId JOIN factions f ON d.factionId = f.Id WHERE f.name = 'Tyranids' AND dk.keyword = 'Stealth' AND d.virtual = 'false'\n\nRows:\nname\n"
+      "SQL query:\nSELECT DISTINCT d.name FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_abilities da ON da.DatasheetId = d.Id LEFT JOIN abilities a ON a.Id = da.abilityId WHERE f.name = 'Tyranids' AND (a.name = 'Stealth' OR da.name = 'Stealth') AND d.virtual = 'false'\n\nRows:\nname\nLictor\nVenomthropes\nDeathleaper\nMalanthrope\nParasite Of Mortrex\nVon Ryan’s Leapers\nNeurolictor"
     ],
     "pages": [
       20,
@@ -1132,19 +1127,19 @@
       "ANTI",
       "KEYWORDS"
     ],
-    "sql": "SELECT DISTINCT d.name FROM datasheets d JOIN datasheets_keywords dk ON d.Id = dk.DatasheetId JOIN factions f ON d.factionId = f.Id WHERE f.name = 'Tyranids' AND dk.keyword = 'Stealth' AND d.virtual = 'false'",
+    "sql": "SELECT DISTINCT d.name FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_abilities da ON da.DatasheetId = d.Id LEFT JOIN abilities a ON a.Id = da.abilityId WHERE f.name = 'Tyranids' AND (a.name = 'Stealth' OR da.name = 'Stealth') AND d.virtual = 'false'",
     "sql_error": null,
     "section_hit": true,
     "page_hit": true,
-    "sql_exact": false,
-    "sql_relaxed": false,
+    "sql_exact": true,
+    "sql_relaxed": true,
     "failure": null,
     "ragas": {
-      "faithfulness": 0.8,
-      "answer_relevancy": 0.9420002480210096,
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9524675447506615,
       "llm_context_precision_with_reference": 0.0,
-      "context_recall": 0.5,
-      "answer_correctness": 0.3344541791996904
+      "context_recall": 1.0,
+      "answer_correctness": 0.8989282433606267
     }
   },
   {
@@ -1153,15 +1148,15 @@
     "expected_source": "both",
     "reference": "The controlling player chooses either the model's Save or its invulnerable save for each attack, and invulnerable saves are never modified by Armour Penetration. A Hive Tyrant has a 4+ invulnerable save.",
     "routed_source": "both",
-    "rationale": "Requires the core rule definition for invulnerable saves (PDF) and the specific datasheet value for a Hive Tyrant (SQL).",
-    "answer": "An invulnerable save allows a model to ignore the Armour Penetration (AP) characteristic of an attack. When an attack is allocated to a model with an invulnerable save, the controlling player must choose to use either the model's standard Save characteristic (modified by the attack's AP) or its invulnerable save (which is never modified by AP), but not both (Core Rules, p. 22). The Hive Tyrant has an invulnerable save of 4+.\n\nSource:\nSELECT DISTINCT dm.invSv FROM datasheets d JOIN datasheets_models dm ON d.Id = dm.DatasheetId WHERE d.name = 'Hive Tyrant' AND dm.invSv IS NOT NULL AND dm.invSv NOT IN ('', '-')",
+    "rationale": "Asks for the general rule on how invulnerable saves work (PDF) and the specific invulnerable save characteristic of a Hive Tyrant (SQL).",
+    "answer": "An invulnerable save is a special saving throw listed on a model's datasheet that protects it from attacks regardless of how much armor penetration the attack has. When an attack is allocated to a model with an invulnerable save, the controlling player chooses whether to use the model's normal Save characteristic or its invulnerable save, but cannot use both (p. 22). Unlike normal armour saving throws, invulnerable saves are never modified by an attack's Armour Penetration (AP) characteristic (p. 22). However, invulnerable saves cannot be used against mortal wounds (p. 23). \n\nA **Hive Tyrant** has an invulnerable save of **4+**.\n\nSource:\n```sql\nSELECT dm.invSv FROM datasheets d JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE d.name = 'Hive Tyrant' AND d.virtual = 'false'\n```",
     "contexts": [
       "[p. 22, INVULNERABLE SAVES]\nWhether shielded by force fields, enveloped in mystical energies or simply possessed of preternatural senses and lightning-fast reflexes, some warriors are protected by more than mere physical armour.\nSome models have an invulnerable save listed on their datasheet. Each time an attack is allocated to a model with an invulnerable save, the controlling player must choose to use either that model's Save characteristic or its invulnerable save, but not both. If a model has more than one invulnerable save, it can only use one of them - choose which it will use.\nUnlike armour saving throws (which use a model's Save characteristic), invulnerable saving throws are never modified by an attack's Armour Penetration characteristic, but otherwise follow the normal rules for saving throws.\n- ■ \u0007 Invulnerable Save: Never modified by an attack's AP . ■ \u0007 The controlling player can choose to use either a model's invulnerable save or its Save characteristic.",
       "[p. 22, 4. SAVING THROW]\nThe player controlling the target unit then makes one saving throw. By default, this will be an armour saving throw using their model's Save (Sv) characteristic, but some models have invulnerable saves that can be used instead (see right). To make an armour saving throw, roll one D6, then modify the result by the Armour Penetration (AP) characteristic of the attack. For example, if the attack has an AP of -1, then 1 is subtracted from the saving throw.\nIf the result is greater than or equal to the Save characteristic of the model the attack was allocated to, then that saving throw is successful and the attack sequence ends. Otherwise, that saving throw fails and that model suffers damage (pg 23).\nAn unmodified saving throw of 1 always fails. A saving throw can never be improved by more than +1.\n- ■ \u0007 Saving Throw: Roll one D6 and modify by the attack's AP . If the result is less than the Save of the model being rolled for, the saving throw is failed and that model suffers damage. Otherwise, that attack is saved.\n- ■ An unmodified saving throw of 1 always fails.\n- ■ A saving throw can never be improved by more than +1.",
       "[p. 24, Hints and Tips FAST DICE ROLLING]\n\u0007 As all the attacks have a Damage characteristic of 1, and as the saving throws required for the Terminators are all the same, the Space Marines player can continue to use the fast dice rolling method and make all of those saving throws at the same time, even though strictly you should allocate attacks beforehand.\n\u0007 The attacks all have an Armour Penetration characteristic of -1, so in this instance, even though the Terminators have an invulnerable saving throw, their normal Save characteristic will afford them a better chance of survival. The saving throws rolled result in a 1, 2, 4, 5 and 5, meaning that two are failed.\n\u0007 The Space Marines player now has to allocate those two attacks, one at a time. One Terminator model has already lost two wounds earlier in the battle, so they must allocate attacks to that model first. This means that model loses its last remaining wound (Terminator models have a Wounds characteristic of 3), and is destroyed. The last attack is allocated to a different model, and so that model suffers one wound.",
       "[p. 23, MORTAL WOUNDS]\nSome attacks are so powerful that no armour or force field can withstand their fury.\nSome attacks inflict mortal wounds. Each mortal wound inflicts one point of damage on the target unit, and they are always applied one at a time. Do not make a Wound roll or saving throw (including invulnerable saving throws) against a mortal wound - just allocate it as you would any other attack and inflict damage to a model in the target unit as described on the right.\nUnlike damage inflicted by normal attacks, excess damage from mortal wounds is not lost if the damage can be allocated to another model. Instead, keep allocating damage to another model in the target unit until either all the damage has been allocated or the target unit is destroyed.\nIf, when a unit is selected to shoot or fight, one or more of its attacks can inflict mortal wounds on the target, resolve any normal damage inflicted by the attacking unit's attacks on that target before inflicting any mortal wounds on that target. If an attack inflicts mortal wounds in addition to any normal damage, but the normal damage is subsequently saved, the target unit still suffers those mortal wounds, as described above.\n- ■ \u0007 Each mortal wound inflicted on a unit causes one model in that unit to lose one wound.",
       "[p. 18, DESTROYED TRANSPORTS]\nIf a Transport model is destroyed, any units embarked within that Transport model must immediately disembark (see opposite) before that Transport model is removed from the battlefield.\nUnits that disembark from a destroyed Transport model are not affected by that model's Deadly Demise ability (pg 23). Instead, you must roll one D6 for each disembarking model. For each roll of 1, that disembarking model's unit suffers 1 mortal wound (pg 23). In addition, if a unit disembarks from a destroyed Transport model:\n- ■ \u0007 Until the start of its controlling player's next Command phase, that unit is Battle-shocked.\n- ■ \u0007 Until the end of the turn, that unit counts as having made a Normal move this turn, and cannot declare a charge this turn (pg 29).\n- ■ \u0007 If a Transport is destroyed, any embarked units must disembark.\n- ■ \u0007 Roll one D6 for each model that disembarks: for each 1, that model's unit suffers 1 mortal wound.\n- ■ \u0007 Until the start of its controlling player's next Command phase, the disembarking unit is Battle-shocked.\n- ■ \u0007 Until the end of the turn, the disembarking unit counts as having made a Normal move, and cannot declare a charge.",
-      "SQL query:\nSELECT DISTINCT dm.invSv FROM datasheets d JOIN datasheets_models dm ON d.Id = dm.DatasheetId WHERE d.name = 'Hive Tyrant' AND dm.invSv IS NOT NULL AND dm.invSv NOT IN ('', '-')\n\nRows:\ninvSv\n4"
+      "SQL query:\nSELECT dm.invSv FROM datasheets d JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE d.name = 'Hive Tyrant' AND d.virtual = 'false'\n\nRows:\ninvSv\n4"
     ],
     "pages": [
       22,
@@ -1177,7 +1172,7 @@
       "MORTAL WOUNDS",
       "DESTROYED TRANSPORTS"
     ],
-    "sql": "SELECT DISTINCT dm.invSv FROM datasheets d JOIN datasheets_models dm ON d.Id = dm.DatasheetId WHERE d.name = 'Hive Tyrant' AND dm.invSv IS NOT NULL AND dm.invSv NOT IN ('', '-')",
+    "sql": "SELECT dm.invSv FROM datasheets d JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE d.name = 'Hive Tyrant' AND d.virtual = 'false'",
     "sql_error": null,
     "section_hit": true,
     "page_hit": true,
@@ -1185,11 +1180,11 @@
     "sql_relaxed": true,
     "failure": null,
     "ragas": {
-      "faithfulness": 0.8333333333333334,
-      "answer_relevancy": 0.9715673507754891,
-      "llm_context_precision_with_reference": 0.16666666665,
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9731313260101847,
+      "llm_context_precision_with_reference": 0.0,
       "context_recall": 1.0,
-      "answer_correctness": 0.571599819028558
+      "answer_correctness": 0.6758915226173177
     }
   },
   {
@@ -1198,8 +1193,8 @@
     "expected_source": "both",
     "reference": "During Declare Battle Formations a Leader can attach to one of its Bodyguard units listed on its datasheet, forming an Attached unit treated as a single unit, and each Bodyguard unit can only have one Leader. An Overlord can lead Immortals, Lychguard and Necron Warriors.",
     "routed_source": "both",
-    "rationale": "The question requires the core rules for the Leader attachment mechanic (PDF) and a specific list of units eligible for an Overlord to lead (SQL).",
-    "answer": "A Leader attaches to a unit during the Declare Battle Formations step of the pre-battle sequence (Core Rules, p. 39). You select one of the Bodyguard units listed on the Leader's datasheet to attach to, forming an \"Attached unit\" that functions as a single unit for most rules purposes (Core Rules, p. 39). Each Bodyguard unit can only have one Leader attached to it at a time (Core Rules, p. 39).\n\nAccording to the database, an Overlord can lead the following units:\n*   Immortals\n*   Lychguard\n*   Necron Warriors\n\nSource:\n```sql\nSELECT DISTINCT a.name FROM datasheets l JOIN datasheets_leader dl ON dl.LeaderId = l.Id JOIN datasheets a ON a.Id = dl.attachedId WHERE l.name = 'Overlord' ORDER BY a.name\n```",
+    "rationale": "Requires the general rule for how Leaders attach to units from the Core Rules and a specific lookup of which units an Overlord can lead from the database.",
+    "answer": "A Character unit with the **Leader** ability attaches to a unit during the Declare Battle Formations step before the battle begins (p. 39). If your army includes one or more of that Leader's designated Bodyguard units (as listed on its datasheet), you select one of those units for the Leader to attach to for the duration of the battle, merging them into an Attached unit (p. 12, p. 39). Under standard rules, each Bodyguard unit can only have one Leader attached to it (p. 39).\n\nSpecifically, an **Overlord** can attach to and lead the following Bodyguard units:\n* Immortals\n* Lychguard\n* Necron Warriors\n\nSource:\n```sql\nSELECT DISTINCT a.name FROM datasheets l JOIN datasheets_leader dl ON dl.LeaderId = l.Id JOIN datasheets a ON a.Id = dl.attachedId WHERE l.name = 'Overlord' ORDER BY a.name\n```",
     "contexts": [
       "[p. 39, LEADER]\nMighty heroes fight at the forefront of battle.\nSome Character units have 'Leader' listed on their datasheets. Such Character units are known as Leaders, and the units they can lead - known as their Bodyguard units - are listed on their datasheet.\nDuring the Declare Battle Formations step, for each Leader in your army, if your army also includes one or more of that Leader's Bodyguard units, you can select one of those Bodyguard units. That Leader will then attach to that Bodyguard unit for the duration of the battle and is said to be leading that unit. Each Bodyguard unit can only have one Leader attached to it.\nWhile a Bodyguard unit contains a Leader, it is known as an Attached unit and, with the exception of rules that are triggered when units are destroyed (pg 12), it is treated as a single unit for all rules purposes. Each time an attack targets an Attached unit, until the attacking unit has resolved all of its attacks, you must use the Toughness characteristic of the Bodyguard models in that unit, even if a Leader in that unit has a different Toughness characteristic. Each time an attack sucessfully wounds an Attached unit, that attack cannot be allocated to a Character model in that unit, even if that Character model has lost one or more wounds or has already had attacks allocated to it this phase. As soon as the last Bodyguard model in an Attached unit has been destroyed, any attacks made against that unit that have yet to be allocated can then be allocated to Character models in that unit.",
       "[p. 39, LEADER]\n- ■ \u0007 Before the battle, Character units with the Leader ability can be attached to one of their Bodyguard units to form an Attached unit.\n- ■ \u0007 Attached units can only contain one Leader.\n- ■ \u0007 Attacks cannot be allocated to Character models in Attached units.\nC",
@@ -1230,11 +1225,11 @@
     "sql_relaxed": true,
     "failure": null,
     "ragas": {
-      "faithfulness": 0.7272727272727273,
-      "answer_relevancy": 1.0000000000000002,
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.8833996603112622,
       "llm_context_precision_with_reference": 0.0,
       "context_recall": 1.0,
-      "answer_correctness": 0.8686065690713053
+      "answer_correctness": 0.9342214865420203
     }
   },
   {
@@ -1243,15 +1238,15 @@
     "expected_source": "both",
     "reference": "Blast weapons add 1 to their number of attacks for every five models in the target unit, rounding down, and can never target a unit within Engagement Range of the attacker's army. The Hive Tyrant's Blast weapons are the Heavy venom cannon and the Stranglethorn cannon.",
     "routed_source": "both",
-    "rationale": "Needs the definition of the Blast ability (PDF) and a lookup of specific weapons with that ability for a Hive Tyrant (SQL).",
-    "answer": "The Blast ability dictates that weapons with this profile make a random number of attacks, with an additional +1 attack added for every five models in the target unit (rounding down). Additionally, Blast weapons cannot be used to target units that are within Engagement Range of any unit from the attacking model's army (Core Rules, p. 26). The Hive Tyrant weapons equipped with the Blast ability are the Heavy venom cannon and the Stranglethorn cannon.\n\nSource:\nSELECT DISTINCT w.name FROM datasheets d JOIN datasheets_wargear w ON d.Id = w.DatasheetId WHERE d.name = 'Hive Tyrant' AND w.description LIKE '%Blast%'",
+    "rationale": "Needs the rule explanation for the Blast weapon ability from the core rules (PDF) and a list of Hive Tyrant weapons that possess the Blast keyword from the database (SQL).",
+    "answer": "The Blast ability modifies a weapon's Attacks characteristic by adding 1 to the total for every five models in the target unit, rounding down (p. 26). Furthermore, Blast weapons can never be used to make attacks against any unit that is within Engagement Range of one or more units from the attacking model's army (p. 26).\n\nThe Hive Tyrant weapons that have the Blast ability are:\n* Heavy venom cannon\n* Stranglethorn cannon\n\nSource:\n```sql\nSELECT DISTINCT w.name FROM datasheets d JOIN datasheets_wargear w ON w.DatasheetId = d.Id WHERE d.name = 'Hive Tyrant' AND lower(w.description) LIKE '%blast%'\n```",
     "contexts": [
       "[p. 26, BLAST]\nHigh-explosives can fell several warriors in a single blast, but firing them where your comrades will get caught in the ensuing detonation is simply unwise.\nWeapons with [BLAST] in their profile are known as Blast weapons, and they make a random number of attacks. Each time you determine how many attacks are made with a Blast weapon, add 1 to the result for every five models that were in the target unit when you selected it as the target (rounding down). Blast weapons can never be used to make attacks against a unit that is within Engagement Range of one or more units from the attacking model's army (including its own unit).\nExample: If a weapon with the [BLAST] ability and an Attacks characteristic of 2D6 targets a unit that contains 11 models, and the roll to determine how many attacks are made is a 9, a total of 11 attacks would be made against that unit.\n- ■ \u0007 Add 1 to the Attacks characteristic for every five models in the target unit (rounding down).\n- ■ \u0007 Can never be used against a target that is within Engagement Range of any units from the attacking model's army (including its own).",
       "[p. 32, FIGHTS FIRST]\nSome warriors attack with blinding speed, landing their blows before their foes can react.\nUnits with this ability that are eligible to fight do so in the Fights First step, provided every model in the unit has this ability.",
       "[p. 25, RAPID FIRE]\nRapid fire weapons are capable of long-ranged precision shots or controlled bursts at nearby targets.\nWeapons with [RAPID FIRE X] in their profile are known as Rapid Fire weapons. Each time such a weapon targets a unit within half that weapon's range, the Attacks characteristic of that weapon is increased by the amount denoted by ' x ' .\nExample: A model targets a unit that is within half range of a weapon with an Attacks characteristic of 1 and the [RAPID FIRE 1] ability. That weapon therefore makes two attacks at the target, and you make two Hit rolls.\n- ■ \u0007 [RAPID FIRE X]: Increase the Attacks by ' x ' when targeting units within half range.",
       "[p. 38, ABILITIES]\nMany units have special abilities and rules that may apply during the game, from Core Rules shared by many units to bespoke Psychic abilities and invulnerable saves. These will be described here, along with any rules that apply when larger models such as vehicles have suffered sufficient damage.\nSome abilities are bestowed by items of wargear that models in a unit can be equipped with, and are known as Wargear abilities. These only apply while a model in the unit is equipped with the relevant item of wargear.",
       "[p. 42, FIRE OVERWATCH]\nCORE - STRATEGIC PLOY STRATAGEM\nA hail of wildfire can drive back advancing foes.\nWHEN: Your opponent's Movement or Charge phase, just after an enemy unit is set up or when an enemy unit starts or ends a Normal, Advance, Fall Back or Charge move.\nTARGET: One unit from your army that is within 24\" of that enemy unit and that would be eligible to shoot if it were your Shooting phase.\nEFFECT: Your unit can shoot that enemy unit as if it were your Shooting phase.\nRESTRICTIONS: Until the end of the phase, each time a model in your unit makes a ranged attack, an unmodified Hit roll of 6 is required to score a hit, irrespective of the attacking weapon's Ballistic Skill or any modifiers. You can only use this Stratagem once per turn.",
-      "SQL query:\nSELECT DISTINCT w.name FROM datasheets d JOIN datasheets_wargear w ON d.Id = w.DatasheetId WHERE d.name = 'Hive Tyrant' AND w.description LIKE '%Blast%'\n\nRows:\nname\nHeavy venom cannon\nStranglethorn cannon"
+      "SQL query:\nSELECT DISTINCT w.name FROM datasheets d JOIN datasheets_wargear w ON w.DatasheetId = d.Id WHERE d.name = 'Hive Tyrant' AND lower(w.description) LIKE '%blast%'\n\nRows:\nname\nHeavy venom cannon\nStranglethorn cannon"
     ],
     "pages": [
       26,
@@ -1267,7 +1262,7 @@
       "ABILITIES",
       "FIRE OVERWATCH"
     ],
-    "sql": "SELECT DISTINCT w.name FROM datasheets d JOIN datasheets_wargear w ON d.Id = w.DatasheetId WHERE d.name = 'Hive Tyrant' AND w.description LIKE '%Blast%'",
+    "sql": "SELECT DISTINCT w.name FROM datasheets d JOIN datasheets_wargear w ON w.DatasheetId = d.Id WHERE d.name = 'Hive Tyrant' AND lower(w.description) LIKE '%blast%'",
     "sql_error": null,
     "section_hit": true,
     "page_hit": true,
@@ -1276,10 +1271,10 @@
     "failure": null,
     "ragas": {
       "faithfulness": 1.0,
-      "answer_relevancy": 0.978230575881219,
+      "answer_relevancy": 0.980745358220148,
       "llm_context_precision_with_reference": 0.0,
       "context_recall": 1.0,
-      "answer_correctness": 0.9215059233786176
+      "answer_correctness": 0.9129601003470342
     }
   },
   {
@@ -1288,43 +1283,43 @@
     "expected_source": "both",
     "reference": "A unit can embark if every model ends a Normal, Advance or Fall Back move within 3 inches of a friendly Transport, and it cannot have disembarked in the same phase. A Trukk can transport 12 Orks Infantry models; each Mega Armour model takes the space of 2, and it cannot carry Jump Pack models or Ghazghkull Thraka.",
     "routed_source": "both",
-    "rationale": "The question requires the rules for embarking on a transport (PDF) and the specific transport capacity stat for a Trukk (SQL).",
-    "answer": "To embark on a Transport, a unit must end a Normal, Advance, or Fall Back move with every model in that unit within 3\" of a friendly Transport model (Core Rules, p. 17). A Trukk has a transport capacity of 12 Orks Infantry models; note that each Mega Armour model counts as 2 models, and it cannot transport Jump Pack or Ghazghkull Thraka models.\n\nSource:\nSELECT transport FROM datasheets WHERE name = 'Trukk'",
+    "rationale": "Asks for the general core rules on embarking on a Transport and a specific transport capacity stat for a Trukk.",
+    "answer": "To embark on a Transport during a phase, a unit must make a Normal, Advance, or Fall Back move, and every model in that unit must end that move within 3\" of the friendly Transport model (p. 17). A unit cannot embark if it has already disembarked from a Transport in the same phase (p. 17). Alternatively, units can start the battle already embarked within a Transport model during the Declare Battle Formations step before the game begins (p. 17, 57, 59).\n\nThe transport capacity of a Trukk is 12 **Orks Infantry** models. Each **Mega Armour** model counts as 2 models, and it cannot transport **Jump Pack** or **Ghazghkull Thraka** models.\n\nSource:\nSELECT d.name, d.transport FROM datasheets d WHERE d.name = 'Trukk'",
     "contexts": [
       "[p. 17, TRANSPORTS]\nSome units can carry others across the battlefield, providing their passengers with greater speed and protection as they are ferried to the front lines or towards vital objectives.\nSome models have the Transport keyword. The following rules describe how units can embark within and disembark from such models, and how they are used to move these passengers across the battlefield.",
       "[p. 17, EMBARK]\nIf a unit makes a Normal, Advance or Fall Back move, and every model in that unit ends that move within 3\" of a friendly Transport model, they can embark within it. A unit cannot embark if it has already disembarked from a Transport model in the same phase. Remove the unit from the battlefield and place it to one side - it is now embarked within that Transport model. Unless otherwise stated, units cannot do anything or be affected in any way while they are embarked.\n- ■ \u0007 A unit can embark within a friendly Transport if all of its models end a Normal, Advance or Fall Back move within 3\" of that Transport .\n- ■ \u0007 A unit cannot embark and disembark in the same phase.",
+      "[p. 17, TRANSPORT CAPACITY]\nAll Transport models have a transport capacity listed on their datasheet. This determines the type and maximum number of friendly models that can embark within them.\nUnits can start the battle embarked within a Transport model instead of being set up separately - declare which units are embarked within a Transport model before you set it up.",
       "[p. 57, DECLARE BATTLE FORMATIONS]\nIn the order stated below, both players now secretly note down:\n- ■ \u0007 Which of their Leader units will start the battle attached (they must specify which Leader unit is attached to which Bodyguard unit).\n- ■ \u0007 Which of their units will start the battle embarked within Transport models (they must specify which units are embarked within which models).\n- ■ \u0007 Which of their units will start the battle in Reserves (including Strategic Reserves).\nWhen both players have done so, they declare their selections to their opponent.",
       "[p. 59, DECLARE BATTLE FORMATIONS]\nIn the order stated below, both players now secretly note down:\n- ■ \u0007 Which of their Leader units will start the battle attached (they must specify which Leader unit is attached to which Bodyguard unit).\n- ■ \u0007 Which of their units will start the battle embarked within Transport models (they must specify which units are embarked within which models).\n- ■ \u0007 Which of their units will start the battle in Reserves (including Strategic Reserves).\nWhen both players have done so, they declare their selections to their opponent.",
-      "[p. 17, TRANSPORT CAPACITY]\nAll Transport models have a transport capacity listed on their datasheet. This determines the type and maximum number of friendly models that can embark within them.\nUnits can start the battle embarked within a Transport model instead of being set up separately - declare which units are embarked within a Transport model before you set it up.",
-      "SQL query:\nSELECT transport FROM datasheets WHERE name = 'Trukk'\n\nRows:\ntransport\nThis model has a transport capacity of 12 Orks Infantry models. Each Mega Armour model takes up the space of 2 models. It cannot transport Jump Pack or Ghazghkull Thraka models."
+      "SQL query:\nSELECT d.name, d.transport FROM datasheets d WHERE d.name = 'Trukk'\n\nRows:\nname | transport\nTrukk | This model has a transport capacity of 12 Orks Infantry models. Each Mega Armour model takes up the space of 2 models. It cannot transport Jump Pack or Ghazghkull Thraka models."
     ],
     "pages": [
       17,
       17,
+      17,
       57,
-      59,
-      17
+      59
     ],
     "sections": [
       "TRANSPORTS",
       "EMBARK",
+      "TRANSPORT CAPACITY",
       "DECLARE BATTLE FORMATIONS",
-      "DECLARE BATTLE FORMATIONS",
-      "TRANSPORT CAPACITY"
+      "DECLARE BATTLE FORMATIONS"
     ],
-    "sql": "SELECT transport FROM datasheets WHERE name = 'Trukk'",
+    "sql": "SELECT d.name, d.transport FROM datasheets d WHERE d.name = 'Trukk'",
     "sql_error": null,
     "section_hit": true,
     "page_hit": true,
-    "sql_exact": true,
+    "sql_exact": false,
     "sql_relaxed": true,
     "failure": null,
     "ragas": {
       "faithfulness": 1.0,
-      "answer_relevancy": 0.9536460973032336,
+      "answer_relevancy": 0.9588387702951633,
       "llm_context_precision_with_reference": 0.0,
       "context_recall": 1.0,
-      "answer_correctness": 0.9317392690602243
+      "answer_correctness": 0.9359606721334306
     }
   },
   {
@@ -1333,31 +1328,31 @@
     "expected_source": "both",
     "reference": "Each time a model with Feel No Pain x+ would lose a wound, roll one D6: on x or higher that wound is not lost. 7 Death Guard units have it.",
     "routed_source": "both",
-    "rationale": "Needs the Feel No Pain rule definition (PDF) and a count of units with that keyword (SQL).",
-    "answer": "Feel No Pain is an ability that allows a model to ignore wounds; each time a model with 'Feel No Pain x+' would lose a wound, you roll a D6, and if the result is equal to or greater than 'x', that wound is ignored and not lost (Core Rules, p. 23). There are 7 Death Guard units that possess this ability.\n\nSource:\nSELECT count(DISTINCT d.Id) FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_abilities da ON da.DatasheetId = d.Id JOIN abilities a ON a.Id = da.abilityId WHERE f.name = 'Death Guard' AND a.name LIKE 'Feel No Pain%' AND d.virtual = 'false'",
+    "rationale": "Requires the rule explanation for the Feel No Pain keyword (PDF) and a count of Death Guard units that possess it (SQL).",
+    "answer": "**Feel No Pain** is an ability that allows a model to ignore damage: each time a model with \"Feel No Pain x+\" would lose a wound (including from mortal wounds), you roll one D6, and if the result equals or exceeds 'x', that wound is not lost (p. 23). If a model possesses multiple Feel No Pain abilities, you can only use one of them for each wound suffered (p. 23).\n\nThere are **7** Death Guard units that have the Feel No Pain ability.\n\nSource:\n`SELECT count(DISTINCT d.Id) AS n_units FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_abilities da ON da.DatasheetId = d.Id JOIN abilities a ON a.Id = da.abilityId WHERE f.name = 'Death Guard' AND a.name = 'Feel No Pain' AND d.virtual = 'false'`",
     "contexts": [
       "[p. 23, FEEL NO PAIN]\nSome warriors refuse to be laid low, even by what should be fatal wounds.\nSome models have 'Feel No Pain x +' listed in their abilities. Each time a model with this ability suffers damage and so would lose a wound (including wounds lost due to mortal wounds), roll one D6: if the result is greater than or equal to the number denoted by ' x ' , that wound is ignored and is not lost. If a model has more than one Feel No Pain ability, you can only use one of those abilities each time that model suffers damage and so would lose a wound.\n- ■ \u0007 Feel No Pain x +: Each time this model would lose a wound, roll one D6: if the result equals or exceeds ' x ' , that wound is not lost.",
-      "[p. 38, PSYCHIC WEAPONS AND ABILITIES]\nSome weapons and abilities can only be used by Psykers . Such weapons and abilities are tagged with the word 'Psychic' . If a Psychic weapon or ability causes any unit to suffer one or more wounds, each of those wounds is considered to have been inflicted by a Psychic Attack.",
-      "[p. 38, ABILITIES]\nMany units have special abilities and rules that may apply during the game, from Core Rules shared by many units to bespoke Psychic abilities and invulnerable saves. These will be described here, along with any rules that apply when larger models such as vehicles have suffered sufficient damage.\nSome abilities are bestowed by items of wargear that models in a unit can be equipped with, and are known as Wargear abilities. These only apply while a model in the unit is equipped with the relevant item of wargear.",
+      "[p. 23, MORTAL WOUNDS]\nSome attacks are so powerful that no armour or force field can withstand their fury.\nSome attacks inflict mortal wounds. Each mortal wound inflicts one point of damage on the target unit, and they are always applied one at a time. Do not make a Wound roll or saving throw (including invulnerable saving throws) against a mortal wound - just allocate it as you would any other attack and inflict damage to a model in the target unit as described on the right.\nUnlike damage inflicted by normal attacks, excess damage from mortal wounds is not lost if the damage can be allocated to another model. Instead, keep allocating damage to another model in the target unit until either all the damage has been allocated or the target unit is destroyed.\nIf, when a unit is selected to shoot or fight, one or more of its attacks can inflict mortal wounds on the target, resolve any normal damage inflicted by the attacking unit's attacks on that target before inflicting any mortal wounds on that target. If an attack inflicts mortal wounds in addition to any normal damage, but the normal damage is subsequently saved, the target unit still suffers those mortal wounds, as described above.\n- ■ \u0007 Each mortal wound inflicted on a unit causes one model in that unit to lose one wound.",
       "[p. 21, 2. WOUND ROLL]\nEach time an attack scores a hit against a target unit, make a Wound roll for that attack by rolling one D6 to see if that attack successfully wounds the target unit. The result required is determined by comparing the attack's Strength (S) characteristic with the target's Toughness (T) characteristic, as shown below.\nIf the result of the Wound roll is greater than or equal to the required number shown in the table opposite, then that Wound roll is successful and scores one wound against the target unit. Otherwise, the attack fails and the attack sequence ends.\nAn unmodified Wound roll of 6 is called a Critical Wound and is always successful. An unmodified Wound roll of 1 always fails. A Wound roll can never be modified by more than -1 or +1.\n- ■ \u0007 Critical Wound: Unmodified Wound roll of 6. Always successful.\n- ■ An unmodified Wound roll of 1 always fails.\n- ■ \u0007 A Wound roll can never be modified by more than -1 or +1.",
-      "[p. 38, AURA ABILITIES]\nSome abilities affect multiple models or units in a given range. These are known as Aura abilities and are tagged with the word ' Aura' . A model with an Aura ability is always within range of its own Aura ability. A unit can be affected by more than one Aura ability at a time, but if a unit is within range of the same Aura ability more than once, that Aura ability only applies to that unit once.",
-      "SQL query:\nSELECT count(DISTINCT d.Id) FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_abilities da ON da.DatasheetId = d.Id JOIN abilities a ON a.Id = da.abilityId WHERE f.name = 'Death Guard' AND a.name LIKE 'Feel No Pain%' AND d.virtual = 'false'\n\nRows:\ncount(DISTINCT d.Id)\n7"
+      "[p. 23, MORTAL WOUNDS]\n- ■ \u0007 No saving throws can be made against mortal wounds.\n- ■ \u0007 Mortal wounds inflicted by attacks always apply after any normal damage, even if that damage was saved.",
+      "[p. 29, CHARGE PHASE]\nWarriors hurl themselves into battle to slay with blade, hammer and claw. Strident war cries and frantic screams echo through the whirling smoke as the moment of cataclysmic violence draws near.\nUse the following sequence to charge with your units.",
+      "SQL query:\nSELECT count(DISTINCT d.Id) AS n_units FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_abilities da ON da.DatasheetId = d.Id JOIN abilities a ON a.Id = da.abilityId WHERE f.name = 'Death Guard' AND a.name = 'Feel No Pain' AND d.virtual = 'false'\n\nRows:\nn_units\n7"
     ],
     "pages": [
       23,
-      38,
-      38,
+      23,
       21,
-      38
+      23,
+      29
     ],
     "sections": [
       "FEEL NO PAIN",
-      "PSYCHIC WEAPONS AND ABILITIES",
-      "ABILITIES",
+      "MORTAL WOUNDS",
       "2. WOUND ROLL",
-      "AURA ABILITIES"
+      "MORTAL WOUNDS",
+      "CHARGE PHASE"
     ],
-    "sql": "SELECT count(DISTINCT d.Id) FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_abilities da ON da.DatasheetId = d.Id JOIN abilities a ON a.Id = da.abilityId WHERE f.name = 'Death Guard' AND a.name LIKE 'Feel No Pain%' AND d.virtual = 'false'",
+    "sql": "SELECT count(DISTINCT d.Id) AS n_units FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_abilities da ON da.DatasheetId = d.Id JOIN abilities a ON a.Id = da.abilityId WHERE f.name = 'Death Guard' AND a.name = 'Feel No Pain' AND d.virtual = 'false'",
     "sql_error": null,
     "section_hit": true,
     "page_hit": true,
@@ -1366,10 +1361,170 @@
     "failure": null,
     "ragas": {
       "faithfulness": 1.0,
-      "answer_relevancy": 0.949447162624241,
+      "answer_relevancy": 0.9464599476660077,
       "llm_context_precision_with_reference": 0.0,
       "context_recall": 1.0,
-      "answer_correctness": 0.7088733874433648
+      "answer_correctness": 0.6242936612484049
+    }
+  },
+  {
+    "id": "t-grenades",
+    "question": "What is the rule for grenades?",
+    "expected_source": "pdf",
+    "reference": "Grenade is a Core Wargear Stratagem used in your Shooting phase. Target one Grenades unit that is not within Engagement Range and has not been selected to shoot this phase. Select an enemy unit that is not within Engagement Range of your army and is within 8 inches and visible, then roll six D6: for each 4+ that unit suffers 1 mortal wound.",
+    "routed_source": "pdf",
+    "rationale": "Asks for the rules regarding grenades, which is a core weapon keyword and stratagem described in the Core Rules.",
+    "answer": "The rule for grenades is a Core Wargear Stratagem called **GRENADE** (p. 42):\n\n* **When:** Used in your Shooting phase (p. 42).\n* **Target:** One Grenades unit from your army that is not within Engagement Range of any enemy units and has not been selected to shoot this phase (p. 42).\n* **Effect:** Select one enemy unit that is not within Engagement Range of any units from your army and is within 8\" of and visible to your Grenades unit (p. 42). Roll six D6: for each result of 4+, that enemy unit suffers 1 mortal wound (p. 42).",
+    "contexts": [
+      "[p. 42, GRENADE]\nCORE - WARGEAR STRATAGEM\nPriming their hand-held projectiles, these warriors draw back and hurl death into the enemy's midst.\nWHEN: Your Shooting phase.\nTARGET: One Grenades unit from your army that is not within Engagement Range of any enemy units and has not been selected to shoot this phase.\nEFFECT: Select one enemy unit that is not within Engagement Range of any units from your army and is within 8\" of and visible to your Grenades unit. Roll six D6: for each 4+, that enemy unit suffers 1 mortal wound.",
+      "[p. 24, Hints and Tips FAST DICE ROLLING]\nIf the attacks being allocated to a target inflict random damage, you cannot use the fast dice rolling approach exactly as stated above - you will need to roll the dice one at a time. Consider several attacks with a Damage characteristic of D3 being allocated to a target containing models with two wounds each. As excess damage is lost each time a model is destroyed, the order in which the attacks are allocated and resolved becomes important. If the results of those D3s were 1, then 2, then 3, the attacks would result in a total of two destroyed models, but applying them in the order 3, then 2, then 1 would result in two models being destroyed and a third being damaged with only one wound remaining. As such, the rolls should be made one at a time.\n\u0007 A unit of 20 Termagants targets a Terminators unit with their Fleshborers. As these weapons all have the same profile, the controlling player chooses to use the fast dice rolling method.\n\u0007 Each has an Attacks characteristic of 1, so the controlling player rolls twenty D6. Seven of the results are greater than or equal to the Fleshborers' Ballistic Skill of 4+, so seven hits are scored, and seven Wound rolls are then made.\n\u0007 The Strength characteristic of those attacks is 5, which is equal to the Toughness of a Terminator, so rolls of 4+ are required to successfully wound the target. Of those seven rolls, five successfully wound.",
+      "[p. 24, Hints and Tips FAST DICE ROLLING]\nThe rules for making attacks have been written assuming you will resolve them one at a time. However, it is possible to speed up your battles by rolling the dice for similar attacks together. In order to make several attacks at once, all of the attacks must have the same Ballistic Skill (if it's a ranged attack) or the same Weapon Skill (if it's a melee attack). They must also have the same Strength and Armour Penetration characteristics, they must inflict the same Damage, they must be affected by the same abilities, and they must be directed at the same unit. If this is the case, make all of the Hit rolls at the same time, then all of the Wound rolls. Your opponent can then allocate the attacks one at a time, making the saving throws and suffering damage each time as appropriate.\nNote that if all the models in the target unit would require the same saving throw against the attacks, and the order in which the attacks are allocated would make no difference, then your opponent can make all their saving throws at the same time, and can do so as soon as the Wound rolls have been made. If they do, they then allocate the attacks that resulted in failed saving throws one at a time, inflicting the damage as appropriate even though, strictly speaking, saving throws should be made after attacks have been allocated. In any case, remember that if the target unit contains a model that has already lost any wounds or has already had attacks allocated to it this phase, the controlling player must allocate further attacks to that model until either it is destroyed, or all the attacks have been saved or resolved.",
+      "[p. 24, Hints and Tips FAST DICE ROLLING]\n\u0007 As all the attacks have a Damage characteristic of 1, and as the saving throws required for the Terminators are all the same, the Space Marines player can continue to use the fast dice rolling method and make all of those saving throws at the same time, even though strictly you should allocate attacks beforehand.\n\u0007 The attacks all have an Armour Penetration characteristic of -1, so in this instance, even though the Terminators have an invulnerable saving throw, their normal Save characteristic will afford them a better chance of survival. The saving throws rolled result in a 1, 2, 4, 5 and 5, meaning that two are failed.\n\u0007 The Space Marines player now has to allocate those two attacks, one at a time. One Terminator model has already lost two wounds earlier in the battle, so they must allocate attacks to that model first. This means that model loses its last remaining wound (Terminator models have a Wounds characteristic of 3), and is destroyed. The last attack is allocated to a different model, and so that model suffers one wound.",
+      "[p. 28, HAZARDOUS]\nWeapons powered by unstable and dangerous energy sources pose a substantial risk to the wielder every time they are used.\nWeapons with [HAZARDOUS] in their profile are known as Hazardous weapons. Each time a unit is selected to shoot or fight, if one or more models attack with Hazardous weapons, then after that unit has resolved all of its attacks, you must take one Hazardous test for each Hazardous weapon that was just used by rolling one D6. For each roll of 1, that test is failed and one model in that unit equipped with a Hazardous weapon is destroyed (selected by the controlling player), unless that model is a Character , Monster or Vehicle , in which case it suffers 3 mortal wounds instead. Note that if you selected a Character model in an Attached unit, the mortal wounds suffered must be allocated to that model first, even if there is another model in that unit that has lost one or more wounds or has had attacks allocated to it this phase.\nExample: A unit of five models make five attacks with ranged weapons with the [HAZARDOUS] ability. After the unit has finished shooting, its controlling player rolls five D6. One of the results is a 1, and as no models in the unit are Characters , Monsters or Vehicles , one of those models is destroyed."
+    ],
+    "pages": [
+      42,
+      24,
+      24,
+      24,
+      28
+    ],
+    "sections": [
+      "GRENADE",
+      "Hints and Tips FAST DICE ROLLING",
+      "Hints and Tips FAST DICE ROLLING",
+      "Hints and Tips FAST DICE ROLLING",
+      "HAZARDOUS"
+    ],
+    "sql": "",
+    "sql_error": null,
+    "section_hit": true,
+    "page_hit": true,
+    "sql_exact": null,
+    "sql_relaxed": null,
+    "failure": null,
+    "ragas": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9536701468641532,
+      "llm_context_precision_with_reference": 0.9999999999,
+      "context_recall": 1.0,
+      "answer_correctness": 0.9870981730980295
+    }
+  },
+  {
+    "id": "t-use-stratagem",
+    "question": "How can I use a stratagem?",
+    "expected_source": "pdf",
+    "reference": "Spend Command points equal to the Stratagem's cost, reducing your CP total; without enough CP you cannot use it. The same Stratagem can be used several times in a battle, but not more than once in the same phase. All players can use the Core Stratagems, and more are found in Codexes and other publications.",
+    "routed_source": "pdf",
+    "rationale": "Asks for the general core rules and mechanics governing how and when stratagems can be used.",
+    "answer": "To use a Stratagem, you must spend Command Points (CP) during the battle by reducing your CP total by the specified amount listed on that Stratagem (p. 41). Both players gain 1CP at the start of your Command phase to use as a resource for Stratagems (p. 11).\n\nWhen using Stratagems, follow these rules:\n* You must pay the specified CP cost to use a Stratagem (p. 41).\n* If you do not have enough CP for a specific Stratagem, you cannot use it (p. 41).\n* You can use the same Stratagem multiple times across a battle, but you cannot use the same Stratagem more than once in the same phase (p. 41).\n* All players can use Core Stratagems, and additional Stratagems can be found in Codexes and other publications (p. 41).",
+    "contexts": [
+      "[p. 41, STRATAGEMS]\nCommand points can be spent during the battle to use Stratagems. All players can use the Core Stratagems presented here. Additional Stratagems can be found in Codexes and other publications.\nWhen you use a Stratagem, reduce your CP total by the amount listed on that Stratagem. If you do not have enough CP for a specific Stratagem, you cannot use it. Y ou can use the same Stratagem multiple times during a battle, but you cannot use the same Stratagem more than once in the same phase.\n- ■ \u0007 To use a Stratagem you must pay the CP specified.\n- ■ \u0007 The same Stratagem cannot be used more than once in the same phase.",
+      "[p. 41, STRATAGEM CATEGORIES]\nEach Stratagem belongs to one of four categories, as described below. There are some rules (especially in Crusade games) that interact with Stratagems of a particular category.\nBATTLE TACTIC: These Stratagems bolster a unit's efficacy in battle, boosting their attacks or defensive capabilities at a critical moment.\nEPIC DEED: These Stratagems are used by individual models or units to perform mighty feats of heroism.\nSTRATEGIC PLOY: These Stratagems enable units to gain new strategic insights, granting them a small but valuable window of opportunity.\nWARGEAR: These Stratagems represent the effects of using specialised items of equipment in battle.\n2CP\n1CP",
+      "[p. 42, RAPID INGRESS]\nCORE - STRATEGIC PLOY STRATAGEM\nBe it cunning strategy, potent technology or supernatural ritual, there are many means by which a commander may hasten their warriors' onset.\nWHEN: End of your opponent's Movement phase.\nTARGET: One unit from your army that is in Reserves.\nEFFECT: Your unit can arrive on the battlefield as if it were the Reinforcements step of your Movement phase.\nRESTRICTIONS: You cannot use this Stratagem to enable a unit to arrive on the battlefield during a battle round it would not normally be able to do so in.\n1CP\n1CP\n1CP\n2CP",
+      "[p. 11, 1. COMMAND]\nAt the start of your Command phase, before doing anything else, both players gain 1CP . Command points are a strategic resource that you can spend during the battle to use Stratagems. You can find out more about Stratagems on pages 41-42.\nThen, if you have any other rules that need to be resolved in the Command phase, you do so now before progressing to the Battle-shock step.\n- ■ \u0007 Both players gain 1CP .\n- ■ \u0007 Resolve any other rules that occur in the Command phase.",
+      "[p. 41, STRATAGEMS KEY / EITHER PLAYER'S TURN / YOUR TURN / OPPONENT'S TURN]\n1CP"
+    ],
+    "pages": [
+      41,
+      41,
+      42,
+      11,
+      41
+    ],
+    "sections": [
+      "STRATAGEMS",
+      "STRATAGEM CATEGORIES",
+      "RAPID INGRESS",
+      "1. COMMAND",
+      "STRATAGEMS KEY / EITHER PLAYER'S TURN / YOUR TURN / OPPONENT'S TURN"
+    ],
+    "sql": "",
+    "sql_error": null,
+    "section_hit": true,
+    "page_hit": true,
+    "sql_exact": null,
+    "sql_relaxed": null,
+    "failure": null,
+    "ragas": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9008357965092276,
+      "llm_context_precision_with_reference": 0.9999999999,
+      "context_recall": 1.0,
+      "answer_correctness": 0.8199428202740986
+    }
+  },
+  {
+    "id": "t-score-points",
+    "question": "What are the different ways to score points?",
+    "expected_source": "pdf",
+    "reference": "Each mission says what is needed to win. Victory points are scored from objectives: under Capture and Control, from the second battle round, at the end of each player's Command phase the player whose turn it is scores 1VP for each objective marker they control, up to 3VP per turn. At the end of the battle the player with the most Victory points wins, unless an army was destroyed.",
+    "routed_source": "pdf",
+    "rationale": "Asks about the rules and mechanics for scoring victory points, which are explained in the mission and victory condition sections of the core rulebook.",
+    "answer": "Based on the provided excerpts, points can be scored or gained in the following ways:\n\n* **Victory Points (VP):**\n  * Each mission specifies what is required in order to win the game (p. 57).\n  * Under the \"Capture and Control\" progressive objective, starting from the second battle round, the player whose turn it is scores 1 Victory point (VP) at the end of their Command phase for each objective marker they control, up to a maximum of 3 VP per turn (p. 59).\n\n* **Command Points (CP):**\n  * Both players gain 1 CP at the start of the Command phase (p. 11).\n\n*(Note: \"Points\" are also used as a measure of unit power that players spend to build their army rosters prior to the battle rather than points scored during the game (p. 55). The excerpts do not detail all mission-specific ways to score Victory Points, as each mission specifies its own rules for winning (p. 57).)*",
+    "contexts": [
+      "[p. 55, SELECT BATTLE SIZE / START YOUR ARMY ROSTER / SELECT ARMY FACTION]\nWith your opponent, select one of the battle sizes below. This will determine the total number of points each player can spend to build their army and, as a result, how long the battle will last. Points are a measure of a unit's power on the battlefield; the higher a unit's points value, the more powerful that unit is. The points values for units are presented in other publications, such as Codexes and the Munitorum Field Manual. You will need to refer to these when building your army.",
+      "[p. 57, DETERMINE VICTOR]\nEach mission will tell you what you need to do in order to win the game. If neither player manages to achieve a victory then the game is considered to be a draw.",
+      "[p. 11, 1. COMMAND]\nAt the start of your Command phase, before doing anything else, both players gain 1CP . Command points are a strategic resource that you can spend during the battle to use Stratagems. You can find out more about Stratagems on pages 41-42.\nThen, if you have any other rules that need to be resolved in the Command phase, you do so now before progressing to the Battle-shock step.\n- ■ \u0007 Both players gain 1CP .\n- ■ \u0007 Resolve any other rules that occur in the Command phase.",
+      "[p. 59, MISSION OBJECTIVES / CAPTURE AND CONTROL]\nProgressive Objective\nStarting from the second battle round, at the end of each player's Command phase, the player whose turn it is scores 1 Victory point (VP) for each objective marker they control (to a maximum of 3VP per turn). Details of how to control objective markers can be found on page 58.",
+      "[p. 57, DETERMINE FIRST TURN]\nEach mission will tell you how to determine which player has the first turn."
+    ],
+    "pages": [
+      55,
+      57,
+      11,
+      59,
+      57
+    ],
+    "sections": [
+      "SELECT BATTLE SIZE / START YOUR ARMY ROSTER / SELECT ARMY FACTION",
+      "DETERMINE VICTOR",
+      "1. COMMAND",
+      "MISSION OBJECTIVES / CAPTURE AND CONTROL",
+      "DETERMINE FIRST TURN"
+    ],
+    "sql": "",
+    "sql_error": null,
+    "section_hit": true,
+    "page_hit": true,
+    "sql_exact": null,
+    "sql_relaxed": null,
+    "failure": null,
+    "ragas": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.792623127526437,
+      "llm_context_precision_with_reference": 0.249999999975,
+      "context_recall": 0.6666666666666666,
+      "answer_correctness": 0.5332021531651236
+    }
+  },
+  {
+    "id": "t-toughness-space-marine",
+    "question": "What is the toughness of a space marine?",
+    "expected_source": "sql",
+    "reference": "It depends on the datasheet. Standard Space Marine infantry such as an Intercessor Squad have Toughness 4, while other units differ: a Land Raider has Toughness 12.",
+    "routed_source": "sql",
+    "rationale": "Asks for a specific unit characteristic (Toughness stat) from the Space Marine datasheets.",
+    "answer": "A standard Space Marine infantry model (such as those in a Tactical Squad, Assault Squad, or Infiltrator Squad) has a **Toughness of 4**. \n\nToughness varies depending on the unit type, armor, and equipment:\n* **Toughness 4:** Standard infantry (Tactical, Assault, Infiltrator, Infernus, Bladeguard, basic Captains/Lieutenants)\n* **Toughness 5:** Space Marine Bikers and models wearing Terminator Armour\n* **Toughness 6:** Models in heavy Gravis Armour (such as Eradicators, Inceptors, or an Apothecary Biologis)\n* **Toughness 6–12:** Turrets, Dreadnoughts, Speeder/Flyer craft, and heavy vehicles (like Land Raiders at Toughness 12)\n\n*(Note: The query returned 293 total rows; the displayed list is partial).*\n\nSource:\n```sql\nSELECT DISTINCT d.name, dm.name, dm.t FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE f.name = 'Space Marines' AND d.virtual = 'false'\n```",
+    "contexts": [
+      "SQL query:\nSELECT DISTINCT d.name, dm.name, dm.t FROM datasheets d JOIN factions f ON f.Id = d.factionId JOIN datasheets_models dm ON dm.DatasheetId = d.Id WHERE f.name = 'Space Marines' AND d.virtual = 'false'\n\nRows:\nname | name | t\nApothecary Biologis | Apothecary Biologis | 6\nAssault Squad | Assault Squad | 4\nApothecary On Bike | Apothecary On Bike | 5\nAssault Squad With Jump Packs | Assault Squad With Jump Packs | 4\nLand Raider | Land Raider | 12\nLand Raider Crusader | Land Raider Crusader | 12\nLand Raider Excelsior | Land Raider Excelsior | 12\nSuppressor Squad | Suppressor Squad | 4\nTactical Squad | Tactical Squad | 4\nBladeguard Veteran Squad | Bladeguard Veteran Squad | 4\nCaestus Assault Ram | Caestus Assault Ram | 10\nCaptain | Captain | 4\nLieutenant With Combi-weapon | Lieutenant With Combi-weapon | 4\nLibrarian In Terminator Armour | Librarian In Terminator Armour | 5\nCaptain With Jump Pack | Captain With Jump Pack | 4\nStormhawk Interceptor | Stormhawk Interceptor | 9\nRhino Primaris | Rhino Primaris | 9\nFirestrike Servo-turrets | Firestrike Servo-turrets | 6\nDrop Pod | Drop Pod | 7\nBallistus Dreadnought | Ballistus Dreadnought | 10\nSicaran Venator | Sicaran Venator | 11\nTyphon | Typhon | 12\nChaplain On Bike | Chaplain On Bike | 5\nCarab Culln The Risen | Carab Culln The Risen | 10\nHammerfall Bunker | Hammerfall Bunker | 12\nTarantula Sentry Battery | Tarantula Sentry Battery | 6\nTarantula Air Defence Battery | Tarantula Air Defence Battery | 5\nEradicator Squad | Eradicator Squad | 6\nRelic Terminator Squad | Relic Terminator Squad | 5\nJavelin Attack Speeder | Javelin Attack Speeder | 8\nRapier Carrier | Rapier Carrier | 6\nMortis Dreadnought | Mortis Dreadnought | 9\nChaplain With Jump Pack | Chaplain With Jump Pack | 4\nStorm Eagle Gunship | Storm Eagle Gunship | 10\nStorm Speeder Hammerstrike | Storm Speeder Hammerstrike | 9\nChaplain In Terminator Armour | Chaplain In Terminator Armour | 5\nATTACK BIKE | ATTACK BIKE | 5\nSPACE MARINE BIKE | SPACE MARINE BIKE | 5\nDreadnought | Dreadnought | 9\nTerminator Assault Squad | Terminator Assault Squad | 5\nLibrarian In Phobos Armour | Librarian In Phobos Armour | 4\nVenerable Dreadnought | Venerable Dreadnought | 9\nUriel Ventris | Uriel Ventris | 4\nDreadnought Drop Pod | Dreadnought Drop Pod | 7\nSicaran Punisher | Sicaran Punisher | 11\nStorm Speeder Hailstrike | Storm Speeder Hailstrike | 9\nInceptor Squad | Inceptor Squad | 6\nInfernus Squad | Infernus Squad | 4\nIron Father Feirros | Iron Father Feirros | 6\nInfiltrator Squad | Infiltrator Squad | 4\n(cut off: showing 50 of 293 rows)"
+    ],
+    "pages": [],
+    "sections": [],
+    "sql": "",
+    "sql_error": null,
+    "section_hit": null,
+    "page_hit": null,
+    "sql_exact": null,
+    "sql_relaxed": null,
+    "failure": null,
+    "ragas": {
+      "faithfulness": 0.36363636363636365,
+      "answer_relevancy": 0.9004796296578412,
+      "llm_context_precision_with_reference": 0.9999999999,
+      "context_recall": 1.0,
+      "answer_correctness": 0.5106811286983944
     }
   }
 ]
