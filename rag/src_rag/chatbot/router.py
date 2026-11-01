@@ -1,20 +1,64 @@
-"""Keyword-based router stub.
+"""LLM-driven router: classify a question as pdf-rules, sql-data, or both.
 
-Phase-1 placeholder so the pipeline is end-to-end runnable. Replace with an LLM-driven
-router (per the lecture-4 pattern) once the LLM wrapper is in.
+Uses `llm.complete_json` with an enum-restricted schema plus few-shot examples
+from `router_examples.py`. On any error — bad JSON, invalid source, API
+failure — falls back to the PDF path: rules questions are the more common
+case and the rulebook is a safer place to look than a possibly-wrong SQL
+query.
 """
 from __future__ import annotations
 
-from rag.src_rag.interfaces import RouterDecision
+from typing import Any
 
-SQL_HINTS = (
-    "how many", "count", "list all", "stats", "faction", "datasheet", "stratagem",
-    "点数", "数值", "数据表",
+from rag.src_rag.chatbot.router_examples import EXAMPLES
+from rag.src_rag.interfaces import Llm, RouterDecision
+
+_SCHEMA: dict[str, Any] = {
+    "type": "object",
+    "properties": {
+        "source": {"type": "string", "enum": ["pdf", "sql", "both"]},
+        "rationale": {"type": "string"},
+    },
+    "required": ["source", "rationale"],
+}
+
+_SYSTEM = (
+    "You route Warhammer 40k Q&A to one of two retrieval backends.\n"
+    "- pdf: rules, mechanics, phases, keywords, abilities, actions "
+    "(the Core Rules PDF).\n"
+    "- sql: faction/unit/datasheet/stratagem/enhancement lookups by name, "
+    "counts, points costs (the SQLite datasheets DB).\n"
+    "- both: the question needs a rule explanation AND a specific "
+    "unit/data lookup.\n"
+    "Return JSON only."
 )
 
 
-def route(question: str) -> RouterDecision:
-    q = question.lower()
-    if any(h in q for h in SQL_HINTS):
-        return RouterDecision(source="sql", rationale="matched a structured-data keyword")
-    return RouterDecision(source="pdf", rationale="default: rules questions go to PDF")
+def _build_prompt(question: str) -> str:
+    lines = [_SYSTEM, "", "Examples:"]
+    for ex in EXAMPLES:
+        lines.append(f"Q: {ex.question}")
+        lines.append(
+            f'A: {{"source": "{ex.source}", "rationale": "{ex.rationale}"}}'
+        )
+    lines.append("")
+    lines.append(f"Q: {question}")
+    lines.append("A:")
+    return "\n".join(lines)
+
+
+def route(question: str, llm: Llm) -> RouterDecision:
+    prompt = _build_prompt(question)
+    try:
+        resp = llm.complete_json(prompt, _SCHEMA)
+    except Exception as e:
+        return RouterDecision(
+            source="pdf", rationale=f"router error, defaulting to pdf: {e}"
+        )
+    source = resp.get("source")
+    if source not in ("pdf", "sql", "both"):
+        return RouterDecision(
+            source="pdf",
+            rationale=f"invalid source {source!r} from LLM, defaulting to pdf",
+        )
+    return RouterDecision(source=source, rationale=resp.get("rationale") or "")
