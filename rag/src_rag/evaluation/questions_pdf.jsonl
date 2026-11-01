@@ -1,0 +1,20 @@
+{"id": "deep-strike", "question": "How does deep strike work?", "expected_pages": [39], "expected_sections": ["DEEP STRIKE"]}
+{"id": "flying-charge", "question": "How do flying models charge?", "expected_pages": [30], "expected_sections": ["CHARGING WITH FLYING MODELS"]}
+{"id": "attacker-defender", "question": "When do I determine the attacker and defender?", "expected_pages": [57], "expected_sections": ["DETERMINE ATTACKER AND DEFENDER"]}
+{"id": "fight-phase", "question": "How do melee attacks resolve in the fight phase?", "expected_pages": [32, 33, 34], "expected_sections": ["FIGHT PHASE", "2. MAKE MELEE ATTACKS", "FIGHT"]}
+{"id": "engagement-range", "question": "What is engagement range?", "expected_pages": [7], "expected_sections": ["ENGAGEMENT RANGE"]}
+{"id": "saving-throw", "question": "What happens on a save roll?", "expected_pages": [22], "expected_sections": ["4. SAVING THROW"]}
+{"id": "blast", "question": "What do blast weapons do?", "expected_pages": [26], "expected_sections": ["BLAST"]}
+{"id": "feel-no-pain", "question": "How does feel no pain work?", "expected_pages": [23], "expected_sections": ["FEEL NO PAIN"]}
+{"id": "hit-roll", "question": "How is the hit roll resolved?", "expected_pages": [21], "expected_sections": ["1. HIT ROLL"]}
+{"id": "embark-disembark", "question": "How do units embark and disembark from transports?", "expected_pages": [17], "expected_sections": ["EMBARK", "DISEMBARK"]}
+{"id": "big-guns", "question": "What is the big guns never tire rule?", "expected_pages": [20], "expected_sections": ["BIG GUNS NEVER TIRE"]}
+{"id": "devastating-wounds", "question": "How do devastating wounds work?", "expected_pages": [28], "expected_sections": ["DEVASTATING WOUNDS"]}
+{"id": "deadly-demise", "question": "What does deadly demise do?", "expected_pages": [23], "expected_sections": ["DEADLY DEMISE"]}
+{"id": "charge-phase", "question": "How does the charge phase work?", "expected_pages": [10, 29], "expected_sections": ["CHARGE PHASE", "CHARGING WITH A UNIT"]}
+{"id": "battle-shock", "question": "When does a unit have to take a battle-shock test?", "expected_pages": [11], "expected_sections": ["2. BATTLE-SHOCK"]}
+{"id": "fall-back", "question": "How does a unit fall back from combat?", "expected_pages": [14], "expected_sections": ["FALL BACK MOVES"]}
+{"id": "wound-roll", "question": "How is the wound roll calculated?", "expected_pages": [21], "expected_sections": ["2. WOUND ROLL"]}
+{"id": "command-points", "question": "How do I gain command points?", "expected_pages": [11], "expected_sections": ["COMMAND / BATTLE-SHOCK / GAINING COMMAND POINTS"]}
+{"id": "aura-abilities", "question": "What is an aura ability?", "expected_pages": [38], "expected_sections": ["AURA ABILITIES"]}
+{"id": "cover", "question": "What does cover do?", "expected_pages": [44, 45, 46, 47, 48], "expected_sections": ["BENEFIT OF COVER"]}

@@ -9,14 +9,17 @@ sync:
 parse:
 	uv run python -m rag.src_rag.parser.parse_pdf
 
+chunk:
+	uv run python -m rag.src_rag.chunker.chunk
+
 index:
-	uv run python -m rag.src_rag.retriever.build_index
+	uv run python -m rag.src_rag.retriever.pdf
 
 chat:
 	uv run python -m rag.src_rag.chatbot.app
 
 eval:
-	uv run python -m rag.src_rag.evaluation.run
+	uv run python -m rag.src_rag.evaluation.pdf_eval --verbose
 
 test:
 	uv run pytest -q
