@@ -24,6 +24,7 @@ __pycache__/
 # Derived artifacts (regenerable, keep local)
 rag/data/chunks.jsonl
 rag/data/index/
+rag/data/cache/
 
 # Personal course notes — not shared
 class notes/

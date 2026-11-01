@@ -5,6 +5,8 @@ requires-python = ">=3.13"
 dependencies = [
     "chromadb>=1.5.9",
     "docling>=2.145.0",
+    "google-genai>=2.34.0",
+    "python-dotenv>=1.2.4",
     "sentence-transformers>=6.2.0",
 ]
 
