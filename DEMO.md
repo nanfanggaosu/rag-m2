@@ -7,6 +7,10 @@ Reference run of `make demo` on `gemini-3.1-flash-lite`, 2026-11-01. Covers the 
 GEMINI_MODEL=gemini-3.1-flash-lite make demo
 ```
 
+For the four sanity questions the grader said he would ask (Lecture 1 PDF, p. 42), see the
+["Teacher sanity questions"](#teacher-sanity-questions-make-sanity) section at the bottom.
+Reproduce with `make sanity`.
+
 The LLM-driven router, retrievers and synthesizer are not deterministic, so the exact wording
 may change between runs. Pages, SQL queries, row counts, and the router's choice should match.
 
@@ -120,3 +124,77 @@ WHERE f.name = 'Necrons' AND a.name = 'Deep Strike' AND dk.keyword = 'Fly'
 
 The pronoun "them" is resolved against the prior turn (Necron Deep-Strike units), and the router
 goes straight to SQL instead of asking the PDF again.
+
+---
+
+## Teacher sanity questions (`make sanity`)
+
+Four questions the grader explicitly listed in the Lecture 1 PDF (p. 42) as what the chatbot
+should be able to answer. Run on `gemini-3.1-flash-lite`, 2026-11-01.
+
+### 1. "What is the rule for grenades?"
+
+```
+router: pdf  —  Grenades are a specific stratagem/action rule defined in the core rules.
+pdf: 5 chunks, pages [24, 28, 42]
+```
+
+> The rules for the Grenades Stratagem are as follows:
+>
+> * **When:** Your Shooting phase (p. 42).
+> * **Target:** One Grenades unit from your army that is not within Engagement Range of any enemy units and has not been selected to shoot this phase (p. 42).
+> * **Effect:** Select one enemy unit that is not within Engagement Range of any units from your army and is within 8" of and visible to your Grenades unit. Roll six D6: for each 4+, that enemy unit suffers 1 mortal wound (p. 42).
+
+### 2. "How can I use a stratagem?"
+
+```
+router: pdf  —  The process of using a stratagem is a core game mechanic defined in the rules.
+pdf: 5 chunks, pages [11, 41, 42]
+```
+
+> To use a Stratagem, you must pay the Command Point (CP) cost specified on that Stratagem (p. 41). You can spend CP during the battle to use them (p. 11, p. 41).
+>
+> When using a Stratagem, you must adhere to the following rules:
+> * **Cost:** You must have enough CP to pay the amount listed on the Stratagem; if you do not, you cannot use it (p. 41).
+> * **Frequency:** You can use the same Stratagem multiple times during a battle, but you cannot use the same Stratagem more than once in the same phase (p. 41).
+> * **Timing:** You must use the Stratagem at the time specified in its rules (e.g., the "WHEN" section of the Stratagem) (p. 42).
+
+### 3. "What are the different ways to score points?"
+
+```
+router: pdf  —  Scoring points is a core mechanic defined in the mission rules and core rulebook.
+pdf: 5 chunks, pages [11, 55, 57, 59]
+```
+
+> According to the Core Rules, the ways to score points are determined by the specific mission being played:
+>
+> * **Mission Objectives:** Each mission will tell you what you need to do in order to win the game (p. 57).
+> * **Progressive Objectives:** In missions using the "Capture and Control" rules, the player whose turn it is scores 1 Victory point (VP) for each objective marker they control at the end of their Command phase, starting from the second battle round (to a maximum of 3VP per turn) (p. 59).
+>
+> The provided excerpts do not list any other specific methods for scoring points. Note that "points" used for building an army (p. 55) and "Command points" (p. 11) are distinct from Victory points used to determine the victor.
+
+The answer explicitly distinguishes army-building points, Command points, and Victory points — the
+same three senses of "points" in the rulebook.
+
+### 4. "What is the toughness of a space marine?"
+
+```
+router: sql  —  The user is asking for a specific stat (toughness) of a unit (Space Marine), which
+                requires a lookup in the datasheets.
+sql: 50 rows of 287
+```
+
+```sql
+SELECT DISTINCT dm.name, dm.t
+FROM datasheets d
+  JOIN factions f ON d.factionId = f.Id
+  JOIN datasheets_models dm ON d.Id = dm.DatasheetId
+WHERE f.name = 'Space Marines'
+```
+
+> The toughness of a Space Marine varies depending on the specific unit, armor, and equipment. Standard infantry (such as Tactical Squads, Captains, or Infiltrators) typically have a Toughness of 4, while units in Terminator armor or on bikes have a Toughness of 5. Heavier units, such as those in Gravis armor (like Eradicators) or specialized support units, have a Toughness of 6. Vehicles and Dreadnoughts have significantly higher values, ranging from 7 to 12.
+>
+> The list provided is partial, as there are 287 total rows in the database for the Space Marines faction.
+
+The router correctly chose SQL (datasheet stats, not a rules question); the answer honestly flags
+that the 50-row limit cut off the full list.
