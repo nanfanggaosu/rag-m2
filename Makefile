@@ -12,7 +12,7 @@ parse:
 chunk:
 	uv run python -m rag.src_rag.chunker.chunk
 
-index:
+index: chunk
 	uv run python -m rag.src_rag.retriever.pdf
 
 chat:

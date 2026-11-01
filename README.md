@@ -11,11 +11,12 @@ A two-source Retrieval-Augmented-Generation system for the course mini-project.
 ```bash
 uv sync                                       # installs everything from uv.lock
 cp .env.example .env && $EDITOR .env          # paste GOOGLE_API_KEY
-make test                                     # 163 passed, 1 skipped
+make test                                     # 172 passed, 1 skipped (with the index built)
+make index                                    # chunk + embed the rulebook (first run downloads the model)
 make sanity                                   # the 4 teacher sanity questions (Lecture 1 PDF p. 42)
 make demo                                     # 4 scripted turns across pdf / sql / both / follow-up
 make chat                                     # multi-turn CLI with /zh /fr /en translation
-make eval-e2e                                 # 36-question RAGAS run (results checked in)
+make eval-e2e                                 # 40-question RAGAS run (results checked in)
 ```
 
 ### Grading rubric → where to find the evidence
@@ -232,7 +233,7 @@ Section hit@5 is still 8/8.
 |---|---|
 | `make parse` | Run docling on `rag/data/raw/*.pdf` |
 | `make chunk` | Chunk the parsed JSON into `rag/data/chunks.jsonl` |
-| `make index` | Embed chunks into the Chroma vector DB |
+| `make index` | Chunk, then embed into the Chroma vector DB |
 | `make chat`  | Launch the multi-turn chat loop (CLI) |
 | `make demo`  | Run the scripted 4-step demo (pdf / sql / both / follow-up) |
 | `make sanity` | Run the four teacher sanity questions (Lecture 1 PDF p. 42) |
@@ -259,10 +260,11 @@ Section hit@5 is still 8/8.
 - **RAGAS install:** `pyproject.toml` drops `scikit-network` (no Windows wheel on Python
   3.14, only used for test-set generation) and keeps `langchain-community<0.4` (ragas 0.4
   imports a module removed in 0.4).
-- **Model:** chat and evaluation both default to `gemini-3.5-flash`, currently served by
-  `gemini-3.6-flash`. One end-to-end run needs about 410 calls, more than its free tier allows
-  (5 per minute, about 20 per day). The results in `rag/data/eval_results/` were produced with
-  `gemini-3.1-flash-lite` and have not been rerun on `gemini-3.5-flash`.
+- **Model:** the chatbot defaults to `gemini-3.5-flash`, currently served by `gemini-3.6-flash`.
+  Its free tier allows about 5 requests per minute and 20 per day, and one question takes 2 or 3
+  calls, so set `GEMINI_MIN_INTERVAL_S=12` on a free key. RAGAS judges with the cheaper
+  `gemini-3.1-flash-lite`, because one end-to-end run needs well over 400 calls. A stronger judge
+  would be better; this is a known limitation.
 - **SQL path choices:** the full schema stays in the prompt, because with 21 tables pruning
   halved the prompt without improving accuracy. Few-shot selection is hybrid (fuzzy match plus
   embeddings, merged by reciprocal rank fusion) with 5 examples, because fuzzy match alone fell
