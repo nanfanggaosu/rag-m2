@@ -6,6 +6,23 @@ A two-source Retrieval-Augmented-Generation system for the course mini-project.
 - **SQL source:** `rag/data/raw/wahadb.sqlite` (21 tables of Warhammer 40k rules/datasheets)
 - **Router agent** picks which source to query per question.
 
+## Quick start
+
+```bash
+uv sync                                       # installs everything from uv.lock
+cp .env.example .env && $EDITOR .env          # paste GOOGLE_API_KEY
+make test                                     # 161 passed, 1 skipped
+make demo                                     # 4 scripted turns, see DEMO.md
+make chat                                     # multi-turn CLI
+make eval-e2e                                 # 36-question RAGAS run
+```
+
+All teacher-provided data (PDF, SQLite, data dictionary) is committed under
+`rag/data/raw/`, so `git clone` + `uv sync` is enough to start. The LLM is
+Google AI Studio (Gemini); get a free key at <https://aistudio.google.com/>.
+Everything LLM-touching (`make chat`, `make demo`, `make eval-e2e`) needs
+`GOOGLE_API_KEY`; `make test` and `make eval` don't.
+
 ## Architecture
 
 ```
