@@ -2,10 +2,7 @@
 
 Written by hand from `e2e_report.md`, `e2e_records.json` and the cached RAGAS verdicts.
 
-**Status: partly provisional.** Router, retrieval, SQL and context metrics are complete. The
-rescored faithfulness, relevancy and correctness cover 23 of 36 questions, because the free-tier
-daily limit stopped the run. Run `make eval-e2e` after the quota resets to finish them, then
-update the numbers below.
+**Status: complete.** All 36 questions have every score, with no LLM failures in the final run.
 
 ## Setup
 
@@ -18,28 +15,29 @@ update the numbers below.
 
 ## Results
 
-| Metric | Overall | PDF | SQL | Both | Status |
-|---|---|---|---|---|---|
-| Router accuracy | 35/36 | 14/14 | 13/14 | 8/8 | complete |
-| PDF section hit@5 | 22/22 | 14/14 | | 8/8 | complete |
-| SQL exact match | 17/22 | | 10/14 | 7/8 | complete |
-| SQL relaxed match | 19/22 | | 12/14 | 7/8 | complete |
-| Context recall | 0.951 | 0.982 | 0.929 | 0.938 | complete |
-| Context precision | 0.623 | 0.661 | 0.929 | 0.021 | complete, see artefacts |
-
-Metrics that depend on the answer, scored two ways:
-
-| Metric | Scoring | PDF (14) | SQL | Both |
+| Metric | Overall | PDF (14) | SQL (14) | Both (8) |
 |---|---|---|---|---|
-| Faithfulness | first run, with SQL citation | 0.935 | 0.973 (14) | 0.960 (8) |
-| Faithfulness | citation removed | 0.935 | 0.835 (9) | pending |
-| Answer relevancy | first run, with SQL citation | 0.859 | 0.943 (14) | 0.954 (8) |
-| Answer relevancy | citation removed | 0.859 | 0.917 (9) | pending |
-| Answer correctness | first run, with SQL citation | 0.731 | 0.694 (14) | 0.753 (8) |
-| Answer correctness | citation removed | 0.731 | 0.833 (9) | pending |
+| Router accuracy | 35/36 | 14/14 | 13/14 | 8/8 |
+| PDF section hit@5 | 22/22 | 14/14 | | 8/8 |
+| SQL exact match | 17/22 | | 10/14 | 7/8 |
+| SQL relaxed match | 19/22 | | 12/14 | 7/8 |
+| Context recall | 0.951 | 0.982 | 0.929 | 0.938 |
+| Context precision | 0.623 | 0.661 | 0.929 | 0.021 (see artefacts) |
 
-The two SQL rows use different question subsets, so they cannot be compared directly.
-The complete first run is kept in `first_run/`.
+Metrics that depend on the answer, scored without and with the SQL citation:
+
+| Metric | Scoring | Overall | PDF | SQL | Both |
+|---|---|---|---|---|---|
+| Faithfulness | citation removed (final) | 0.900 | 0.935 | 0.858 | 0.914 |
+| Faithfulness | first run, with citation | 0.955 | 0.935 | 0.973 | 0.960 |
+| Answer relevancy | citation removed (final) | 0.913 | 0.859 | 0.939 | 0.964 |
+| Answer relevancy | first run, with citation | 0.913 | 0.859 | 0.943 | 0.954 |
+| Answer correctness | citation removed (final) | 0.783 | 0.731 | 0.864 | 0.729 |
+| Answer correctness | first run, with citation | 0.721 | 0.731 | 0.694 | 0.753 |
+
+The first run is kept in `first_run/`. PDF answers have no SQL citation, so their scores are
+identical in both. Removing the citation raised SQL correctness but lowered faithfulness, because
+statements about the query are easy for the judge to confirm and had been raising that score.
 
 ## Real failures
 
@@ -69,7 +67,9 @@ The complete first run is kept in `first_run/`.
   0.353.
 - **The judge is noisy.** `s-e01` has faithfulness 0.000 after rescoring because the judge
   separates "57 non-virtual datasheets" from "57 datasheets". It accepted the same sentence in the
-  first run. `p-battle-shock` lost points for how a page citation was phrased.
+  first run. `s-e12` (0.500) split "134 units can have a Lascannon" into a separate claim that the
+  game has 134 units. `p-battle-shock` lost points for how a page citation was phrased. Treat
+  single-question scores as prompts to read the answer, not as verdicts.
 - **Exact SQL match undercounts.** `s-e13` is marked wrong only because its gold query also
   returns the unit name; the answer (4+) is right. `s-e08` and `s-e09` return extra columns and are
   right. By reading these cases, 20 of 22 queries returned the right data; the other 2 are

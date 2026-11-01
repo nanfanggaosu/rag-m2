@@ -2,8 +2,6 @@
 
 Model: `gemini-3.1-flash-lite`. Questions: 36, incomplete: 0.
 
-**Incomplete: RAGAS scores missing, rerun to finish: {'faithfulness': 13, 'answer_relevancy': 13, 'answer_correctness': 13}**
-
 | Metric | overall | pdf | sql | both |
 |---|---|---|---|---|
 | Questions | 36 | 14 | 14 | 8 |
@@ -13,11 +11,11 @@ Model: `gemini-3.1-flash-lite`. Questions: 36, incomplete: 0.
 | SQL exact match | 0.773 | n/a | 0.714 | 0.875 |
 | SQL relaxed match | 0.864 | n/a | 0.857 | 0.875 |
 | SQL errors | 0 | 0 | 0 | 0 |
-| RAGAS faithfulness | 0.896 | 0.935 | 0.835 | n/a |
-| RAGAS answer_relevancy | 0.882 | 0.859 | 0.917 | n/a |
+| RAGAS faithfulness | 0.900 | 0.935 | 0.858 | 0.914 |
+| RAGAS answer_relevancy | 0.913 | 0.859 | 0.939 | 0.964 |
 | RAGAS llm_context_precision_with_reference | 0.623 | 0.661 | 0.929 | 0.021 |
 | RAGAS context_recall | 0.951 | 0.982 | 0.929 | 0.938 |
-| RAGAS answer_correctness | 0.771 | 0.731 | 0.833 | n/a |
+| RAGAS answer_correctness | 0.783 | 0.731 | 0.864 | 0.729 |
 
 ## Router confusion (rows: expected, columns: routed)
 
@@ -54,16 +52,16 @@ Model: `gemini-3.1-flash-lite`. Questions: 36, incomplete: 0.
 | s-e07 | both |  | wrong | 0.625 | 0.863 | 0.000 | 0.000 | 0.240 |
 | s-e08 | sql |  | relaxed | 1.000 | 0.927 | 1.000 | 1.000 | 0.984 |
 | s-e09 | sql |  | relaxed | 0.889 | 0.937 | 1.000 | 1.000 | 0.353 |
-| s-e10 | sql |  | exact | nan | nan | 1.000 | 1.000 | nan |
-| s-e11 | sql |  | exact | nan | nan | 1.000 | 1.000 | nan |
-| s-e12 | sql |  | exact | nan | nan | 1.000 | 1.000 | nan |
-| s-e13 | sql |  | wrong | nan | nan | 1.000 | 1.000 | nan |
-| s-e14 | sql |  | exact | nan | nan | 1.000 | 1.000 | nan |
-| b-deep-strike-necrons | both | hit | exact | nan | nan | 0.000 | 1.000 | nan |
-| b-fights-first-aeldari | both | hit | exact | nan | nan | 0.000 | 1.000 | nan |
-| b-stealth-tyranids | both | hit | wrong | nan | nan | 0.000 | 0.500 | nan |
-| b-invuln-hive-tyrant | both | hit | exact | nan | nan | 0.167 | 1.000 | nan |
-| b-leader-overlord | both | hit | exact | nan | nan | 0.000 | 1.000 | nan |
-| b-blast-hive-tyrant | both | hit | exact | nan | nan | 0.000 | 1.000 | nan |
-| b-embark-trukk | both | hit | exact | nan | nan | 0.000 | 1.000 | nan |
-| b-fnp-death-guard | both | hit | exact | nan | nan | 0.000 | 1.000 | nan |
+| s-e10 | sql |  | exact | 1.000 | 0.977 | 1.000 | 1.000 | 0.900 |
+| s-e11 | sql |  | exact | 1.000 | 0.996 | 1.000 | 1.000 | 0.995 |
+| s-e12 | sql |  | exact | 0.500 | 0.956 | 1.000 | 1.000 | 0.732 |
+| s-e13 | sql |  | wrong | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
+| s-e14 | sql |  | exact | 1.000 | 0.966 | 1.000 | 1.000 | 0.975 |
+| b-deep-strike-necrons | both | hit | exact | 0.950 | 0.935 | 0.000 | 1.000 | 0.923 |
+| b-fights-first-aeldari | both | hit | exact | 1.000 | 0.979 | 0.000 | 1.000 | 0.576 |
+| b-stealth-tyranids | both | hit | wrong | 0.800 | 0.942 | 0.000 | 0.500 | 0.334 |
+| b-invuln-hive-tyrant | both | hit | exact | 0.833 | 0.972 | 0.167 | 1.000 | 0.572 |
+| b-leader-overlord | both | hit | exact | 0.727 | 1.000 | 0.000 | 1.000 | 0.869 |
+| b-blast-hive-tyrant | both | hit | exact | 1.000 | 0.978 | 0.000 | 1.000 | 0.922 |
+| b-embark-trukk | both | hit | exact | 1.000 | 0.954 | 0.000 | 1.000 | 0.932 |
+| b-fnp-death-guard | both | hit | exact | 1.000 | 0.949 | 0.000 | 1.000 | 0.709 |
